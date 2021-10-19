@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
+using Ivas.Transactions.Domain.Abstractions.Dtos;
 using Ivas.Transactions.Domain.Abstractions.Dtos.Base;
-using Ivas.Transactions.Domain.Abstractions.Entities;
+using Ivas.Transactions.Persistency.Abstractions.Entities;
 
-namespace Ivas.Transactions.Core.Base.Services.Interfaces
+namespace Ivas.Transactions.Core.Abstractions.Services.Interfaces
 {
     public interface IUpdateableAsyncService<T, TDto> where T : Entity
                                                      where TDto : Dto

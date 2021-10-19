@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Ivas.Transactions.Core.Base.Services.Interfaces;
+using Ivas.Transactions.Core.Abstractions.Services.Interfaces;
+using Ivas.Transactions.Domain.Abstractions.Dtos;
 using Ivas.Transactions.Domain.Abstractions.Dtos.Base;
-using Ivas.Transactions.Domain.Abstractions.Entities;
+using Ivas.Transactions.Persistency.Abstractions.Entities;
 using Ivas.Transactions.Persistency.Abstractions.UnitOfWork.Interfaces;
 
-namespace Ivas.Transactions.Core.Base.Services
+namespace Ivas.Transactions.Core.Abstractions.Services
 {
     /// <summary>
     /// The BaseAsyncService abstract class.
@@ -48,14 +49,14 @@ namespace Ivas.Transactions.Core.Base.Services
             return _mapper.Map<IEnumerable<T>, IEnumerable<TDto>>(await _unitOfWork.RepositoryAsync<T>().QueryAsync());
         }
 
-        // /// <summary>
-        // /// Asynchronous query to fetch a given entity.
-        // /// </summary>
-        // /// <param name="id">The Id of the entity.</param>
-        // /// <returns>The entity.</returns>
-        // public virtual async Task<TDto> GetByIdAsync(long id)
-        // {
-        //     return _mapper.Map<T, TDto>(await _unitOfWork.RepositoryAsync<T>().SingleOrDefaultAsync(x => x.Id == id));
-        // }
+        /// <summary>
+        /// Asynchronous query to fetch a given entity.
+        /// </summary>
+        /// <param name="id">The Id of the entity.</param>
+        /// <returns>The entity.</returns>
+        public virtual async Task<TDto> GetByIdAsync(long id)
+        {
+            return _mapper.Map<T, TDto>(await _unitOfWork.RepositoryAsync<T>().SingleOrDefaultAsync(x => x.Id == id));
+        }
     }
 }
