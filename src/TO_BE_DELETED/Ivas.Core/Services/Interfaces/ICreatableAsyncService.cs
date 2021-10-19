@@ -1,0 +1,24 @@
+﻿using Ivas.Core.Dtos.Base;
+using Ivas.Entities.Base;
+using System.Threading.Tasks;
+
+namespace Ivas.Core.Services.Interfaces
+{
+    public interface ICreatableAsyncService<T, TDto> where T : Entity
+                                                     where TDto : Dto
+    {
+        /// <summary>
+        /// Creates and persists a given entity in the database.
+        /// </summary>
+        /// <param name="dto">The entity/dto to persist.</param>
+        /// <returns>The entity Id.</returns>
+        Task<long> CreateAsync(TDto entity);
+
+        /// <summary>
+        /// Deletes a previously created entity.
+        /// </summary>
+        /// <param name="id">The Id of the entity to be deleted.</param>
+        /// <returns>The result code of the operation.</returns>
+        Task<long> DeleteAsync(long id);
+    }
+}
