@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ivas.Transactions.Domain.Abstractions\Ivas.Transactions.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\Ivas.Entities\Ivas.Entities.csproj" />
+    <ProjectReference Include="..\Ivas.Transactions.Persistency.Abstractions\Ivas.Transactions.Persistency.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Base" />
+  </ItemGroup>
+
+</Project>
