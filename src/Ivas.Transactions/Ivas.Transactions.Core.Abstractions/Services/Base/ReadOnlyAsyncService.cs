@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Ivas.Transactions.Core.Abstractions.Services.Interfaces;
-using Ivas.Transactions.Domain.Abstractions.Dtos;
+using Ivas.Transactions.Core.Abstractions.Services.Base.Interfaces;
 using Ivas.Transactions.Domain.Abstractions.Dtos.Base;
 using Ivas.Transactions.Persistency.Abstractions.Entities;
 using Ivas.Transactions.Persistency.Abstractions.UnitOfWork.Interfaces;
 
-namespace Ivas.Transactions.Core.Abstractions.Services
+namespace Ivas.Transactions.Core.Abstractions.Services.Base
 {
     /// <summary>
     /// The BaseAsyncService abstract class.
@@ -21,12 +20,12 @@ namespace Ivas.Transactions.Core.Abstractions.Services
         /// <summary>
         /// The unit of work.
         /// </summary>
-        private readonly IUnitOfWork _unitOfWork;
+        protected readonly IUnitOfWork UnitOfWork;
 
         /// <summary>
         /// The mapper profile.
         /// </summary>
-        private readonly IMapper _mapper;
+        protected readonly IMapper Mapper;
 
         /// <summary>
         /// The BaseAsyncService constructor.
@@ -36,8 +35,8 @@ namespace Ivas.Transactions.Core.Abstractions.Services
         protected ReadOnlyAsyncService(IUnitOfWork unitOfWork,
                                 IMapper mapper)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            UnitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>
@@ -46,7 +45,7 @@ namespace Ivas.Transactions.Core.Abstractions.Services
         /// <returns>The list of entities.</returns>
         public virtual async Task<IEnumerable<TDto>> GetAsync()
         {
-            return _mapper.Map<IEnumerable<T>, IEnumerable<TDto>>(await _unitOfWork.RepositoryAsync<T>().QueryAsync());
+            return Mapper.Map<IEnumerable<T>, IEnumerable<TDto>>(await UnitOfWork.RepositoryAsync<T>().QueryAsync());
         }
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace Ivas.Transactions.Core.Abstractions.Services
         /// <returns>The entity.</returns>
         public virtual async Task<TDto> GetByIdAsync(long id)
         {
-            return _mapper.Map<T, TDto>(await _unitOfWork.RepositoryAsync<T>().SingleOrDefaultAsync(x => x.Id == id));
+            return Mapper.Map<T, TDto>(await UnitOfWork.RepositoryAsync<T>().SingleOrDefaultAsync(x => x.Id == id));
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using Ivas.Transactions.Core.Abstractions.Services.Interfaces;
-using Ivas.Transactions.Domain.Abstractions.Dtos;
+using Ivas.Transactions.Core.Abstractions.Services.Base.Interfaces;
 using Ivas.Transactions.Domain.Abstractions.Dtos.Base;
 using Ivas.Transactions.Persistency.Abstractions.Entities;
 using Ivas.Transactions.Persistency.Abstractions.UnitOfWork.Interfaces;
 
-namespace Ivas.Transactions.Core.Abstractions.Services
+namespace Ivas.Transactions.Core.Abstractions.Services.Base
 {
     /// <summary>
     /// The AsyncService abstract class.

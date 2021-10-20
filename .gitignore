@@ -61,6 +61,9 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
+# Rider
+.idea
+
 # StyleCop
 StyleCopReport.xml
 
@@ -106,6 +109,9 @@ ipch/
 *.cachefile
 *.VC.db
 *.VC.VC.opendb
+
+# Visual Studio 2015
+.vs/
 
 # Visual Studio profiler
 *.psess

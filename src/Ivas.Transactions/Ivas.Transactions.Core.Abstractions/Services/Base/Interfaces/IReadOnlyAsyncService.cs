@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ivas.Transactions.Domain.Abstractions.Dtos;
 using Ivas.Transactions.Domain.Abstractions.Dtos.Base;
 using Ivas.Transactions.Persistency.Abstractions.Entities;
 
-namespace Ivas.Transactions.Core.Abstractions.Services.Interfaces
+namespace Ivas.Transactions.Core.Abstractions.Services.Base.Interfaces
 {
     public interface IReadOnlyAsyncService<T, TDto> where T : Entity
                                                     where TDto : Dto

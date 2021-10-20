@@ -10,4 +10,8 @@
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="6.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ivas.Transactions.Core.Abstractions\Ivas.Transactions.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\Ivas.Transactions.Injection\Ivas.Transactions.Injection.csproj" />
+  </ItemGroup>
 </Project>

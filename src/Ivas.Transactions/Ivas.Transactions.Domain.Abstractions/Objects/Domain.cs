@@ -1,7 +1,9 @@
-﻿namespace Ivas.Transactions.Domain.Abstractions.Objects
+﻿using System.Collections.Generic;
+
+namespace Ivas.Transactions.Domain.Abstractions.Objects
 {
     public abstract class Domain
     {
-        
+        public ICollection<string> DomainErrors { get; set; }
     }
 }

@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Objects" />
+      <ProjectReference Include="..\Ivas.Transactions.Domain.Abstractions\Ivas.Transactions.Domain.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>
