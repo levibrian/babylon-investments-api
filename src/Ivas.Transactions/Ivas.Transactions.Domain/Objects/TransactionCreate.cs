@@ -31,6 +31,8 @@ namespace Ivas.Transactions.Domain.Objects
             Units = transactionCreateDto.Units;
             PricePerUnit = transactionCreateDto.PricePerUnit;
             TransactionType = transactionCreateDto.TransactionType;
+            
+            Validate();
         }
 
         public void Validate()

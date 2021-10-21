@@ -21,6 +21,8 @@ namespace Ivas.Transactions.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TransactionCreateDto createTransactionDto)
         {
+            var operation = await _transactionCreateService.CreateAsync(createTransactionDto);
+            
             return Ok();
         }
     }

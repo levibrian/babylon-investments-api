@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Ivas.Transactions.Core.Abstractions.Services;
 using Ivas.Transactions.Core.Abstractions.Services.Base;
 using Ivas.Transactions.Domain.Abstractions.Dtos;
+using Ivas.Transactions.Domain.Objects;
 using Ivas.Transactions.Persistency.Abstractions.UnitOfWork.Interfaces;
 using Ivas.Transactions.Persistency.Entities;
 
@@ -17,7 +20,9 @@ namespace Ivas.Transactions.Core.Services
 
         public override Task<long> CreateAsync(TransactionCreateDto dto)
         {
-            throw new System.NotImplementedException();
+            var domainObject = new TransactionCreate(dto);
+
+            return Task.FromResult((long)1);
         }
 
         public override Task<long> DeleteAsync(long id)
