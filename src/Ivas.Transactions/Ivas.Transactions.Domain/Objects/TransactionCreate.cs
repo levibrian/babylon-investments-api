@@ -1,6 +1,8 @@
 ﻿using System;
 using Ivas.Transactions.Domain.Abstractions.Dtos;
 using Ivas.Transactions.Domain.Abstractions.Enums;
+using Ivas.Transactions.Domain.Rules;
+using Ivas.Transactions.Shared.Extensions;
 
 namespace Ivas.Transactions.Domain.Objects
 {
@@ -35,8 +37,13 @@ namespace Ivas.Transactions.Domain.Objects
 
         public void Validate()
         {
-            if (string.IsNullOrEmpty(Ticker) || string.IsNullOrWhiteSpace(Ticker))
-                DomainErrors.Add("Ticker cannot be empty");
+            var transactionRules = new IsTickerProvided()
+                .And(new IsTransactionDateNotFuture());
+
+            var isTransactionValid = transactionRules.IsSatisfiedBy(this);
+            
+            if (!isTransactionValid)
+                DomainErrors.Add(nameof(transactionRules));
         }
     }
 }
