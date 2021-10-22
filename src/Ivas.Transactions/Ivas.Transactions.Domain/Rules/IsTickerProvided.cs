@@ -7,8 +7,16 @@ namespace Ivas.Transactions.Domain.Rules
     {
         public bool IsSatisfiedBy(TransactionCreate entityToEvaluate)
         {
-            return !string.IsNullOrEmpty(entityToEvaluate.Ticker) && 
-                   !string.IsNullOrWhiteSpace(entityToEvaluate.Ticker);
+            var expression = entityToEvaluate.Ticker != null && 
+                             !string.IsNullOrEmpty(entityToEvaluate.Ticker) &&
+                             !string.IsNullOrWhiteSpace(entityToEvaluate.Ticker);
+
+            if (!expression)
+            {
+                entityToEvaluate.DomainErrors.Add("Ticker is not provided.");
+            }
+            
+            return expression;
         }
     }
 }

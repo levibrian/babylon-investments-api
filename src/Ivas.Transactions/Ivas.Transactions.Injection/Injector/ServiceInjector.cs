@@ -1,5 +1,12 @@
 using System.Reflection;
+using Ivas.Transactions.Core.Abstractions.Services;
+using Ivas.Transactions.Core.Services;
+using Ivas.Transactions.Domain.Mappers;
 using Ivas.Transactions.Injection.Helpers;
+using Ivas.Transactions.Persistency.Abstractions.UnitOfWork;
+using Ivas.Transactions.Persistency.Abstractions.UnitOfWork.Interfaces;
+using Ivas.Transactions.Persistency.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,17 +20,34 @@ namespace Ivas.Transactions.Injection.Injector
 
             RegisterMapper(serviceDescriptors);
             
+            RegisterContext<TransactionsDbContext>(serviceDescriptors, configuration);
+            
+            RegisterPersistency<TransactionsDbContext>(serviceDescriptors);
+            
             return serviceDescriptors.BuildServiceProvider();
         }
 
         private static void RegisterCoreServices(IServiceCollection serviceDescriptors)
         {
-            InjectionHelper.Register(serviceDescriptors, "Ivas.Transactions.Core", "Service");
+            serviceDescriptors.AddScoped<ITransactionCreateService, TransactionCreateService>();
+            // InjectionHelper.Register(serviceDescriptors, "Ivas.Transactions.Core.Abstractions", "Service");
         }
 
         private static void RegisterMapper(IServiceCollection serviceDescriptors)
         {
-            serviceDescriptors.AddAutoMapper(Assembly.Load("Ivas.Transactions.Core"));
+            serviceDescriptors.AddAutoMapper(config => config.AddProfile(new TransactionCreateProfile()));
+        }
+        
+        private static void RegisterContext<TContext>(IServiceCollection serviceDescriptors, IConfiguration configuration) where TContext : DbContext
+        {
+            serviceDescriptors.AddDbContext<TContext>();
+        }
+        
+        private static void RegisterPersistency<TContext>(IServiceCollection serviceDescriptors) where TContext : DbContext
+        {
+            serviceDescriptors.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
+            
+            serviceDescriptors.AddScoped<IUnitOfWork<TContext>, UnitOfWork<TContext>>();
         }
     }
 }

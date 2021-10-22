@@ -18,11 +18,6 @@ namespace Ivas.Transactions.Domain.Objects
         
         public TransactionTypeEnum TransactionType { get; set; }
 
-        public TransactionCreate()
-        {
-            
-        }
-        
         public TransactionCreate(TransactionCreateDto transactionCreateDto)
         {
             if (transactionCreateDto == null)
@@ -39,13 +34,13 @@ namespace Ivas.Transactions.Domain.Objects
 
         public void Validate()
         {
-            var transactionRules = new IsTickerProvided()
-                .And(new IsTransactionDateNotFuture());
-
-            var isTransactionValid = transactionRules.IsSatisfiedBy(this);
-            
-            if (!isTransactionValid)
-                DomainErrors.Add(nameof(transactionRules));
+            var transactionRules = 
+                new IsTickerProvided()
+                .And(new IsDateNotFuture())
+                .And(new IsPricePositive())
+                .And(new AreUnitsPositive());
+                
+            transactionRules.IsSatisfiedBy(this);
         }
     }
 }

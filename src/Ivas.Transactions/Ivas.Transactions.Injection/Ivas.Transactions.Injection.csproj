@@ -10,4 +10,9 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-preview.6.21352.12" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Ivas.Transactions.Core.Abstractions\Ivas.Transactions.Core.Abstractions.csproj" />
+      <ProjectReference Include="..\Ivas.Transactions.Core\Ivas.Transactions.Core.csproj" />
+    </ItemGroup>
+
 </Project>

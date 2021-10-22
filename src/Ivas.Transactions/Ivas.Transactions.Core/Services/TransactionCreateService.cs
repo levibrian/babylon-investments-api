@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Ivas.Common.Exceptions.Custom;
 using Ivas.Transactions.Core.Abstractions.Services;
 using Ivas.Transactions.Core.Abstractions.Services.Base;
 using Ivas.Transactions.Domain.Abstractions.Dtos;
@@ -22,6 +23,11 @@ namespace Ivas.Transactions.Core.Services
         {
             var domainObject = new TransactionCreate(dto);
 
+            if (domainObject.DomainErrors.Any())
+            {
+                throw new IvasException(string.Join(", ", domainObject.DomainErrors));
+            }
+            
             return Task.FromResult((long)1);
         }
 

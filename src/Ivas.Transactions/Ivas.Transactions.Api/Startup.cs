@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ivas.Transactions.Injection.Injector;
+using Ivas.Transactions.Shared.Abstractions.Exceptions.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -44,6 +45,8 @@ namespace Ivas.Transactions.Api
 
             app.UseRouting();
 
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
