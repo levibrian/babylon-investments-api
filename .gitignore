@@ -65,6 +65,7 @@ artifacts/
 .terraform/
 
 # Rider
+.idea/
 .idea
 
 # StyleCop
