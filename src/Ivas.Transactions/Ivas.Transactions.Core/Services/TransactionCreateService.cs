@@ -14,12 +14,18 @@ namespace Ivas.Transactions.Core.Services
 {
     public class TransactionCreateService : AsyncService<TransactionEntity, TransactionCreateDto>, ITransactionCreateService
     {
+        private readonly IUnitOfWork _unitOfWork;
+
+        private readonly IMapper _mapper;
+        
         public TransactionCreateService(IUnitOfWork unitOfWork, 
             IMapper mapper) : base(unitOfWork, mapper)
         {
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public override Task<long> CreateAsync(TransactionCreateDto dto)
+        public override async Task<long> CreateAsync(TransactionCreateDto dto)
         {
             var domainObject = new TransactionCreate(dto);
 
@@ -27,8 +33,14 @@ namespace Ivas.Transactions.Core.Services
             {
                 throw new IvasException(string.Join(", ", domainObject.DomainErrors));
             }
+
+            var transactionEntity = await _unitOfWork
+                .RepositoryAsync<TransactionEntity>()
+                .Insert(_mapper.Map<TransactionCreate, TransactionEntity>(domainObject));
+
+            await _unitOfWork.CommitAsync();
             
-            return Task.FromResult((long)1);
+            return transactionEntity.Id;
         }
 
         public override Task<long> DeleteAsync(long id)

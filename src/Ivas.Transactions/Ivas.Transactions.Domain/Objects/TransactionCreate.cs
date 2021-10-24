@@ -6,25 +6,15 @@ using Ivas.Transactions.Shared.Extensions;
 
 namespace Ivas.Transactions.Domain.Objects
 {
-    public class TransactionCreate : Abstractions.Objects.Domain
+    public class TransactionCreate : Transaction
     {
-        public string Ticker { get; set; }
-
-        public DateTime Date { get; set; }
-
-        public decimal Units { get; set; }
-
-        public decimal PricePerUnit { get; set; }
-        
-        public TransactionTypeEnum TransactionType { get; set; }
-
         public TransactionCreate(TransactionCreateDto transactionCreateDto)
         {
             if (transactionCreateDto == null)
                 throw new ArgumentNullException(nameof(transactionCreateDto));
 
             Ticker = transactionCreateDto.Ticker;
-            Date = transactionCreateDto.Date;
+            Date = Date == new DateTime() ? DateTime.UtcNow : transactionCreateDto.Date;
             Units = transactionCreateDto.Units;
             PricePerUnit = transactionCreateDto.PricePerUnit;
             TransactionType = transactionCreateDto.TransactionType;

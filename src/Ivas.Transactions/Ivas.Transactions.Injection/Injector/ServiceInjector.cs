@@ -29,8 +29,8 @@ namespace Ivas.Transactions.Injection.Injector
 
         private static void RegisterCoreServices(IServiceCollection serviceDescriptors)
         {
-            serviceDescriptors.AddScoped<ITransactionCreateService, TransactionCreateService>();
-            // InjectionHelper.Register(serviceDescriptors, "Ivas.Transactions.Core.Abstractions", "Service");
+            // serviceDescriptors.AddScoped<ITransactionCreateService, TransactionCreateService>();
+            InjectionHelper.Register(serviceDescriptors, "Ivas.Transactions.Core", "Service");
         }
 
         private static void RegisterMapper(IServiceCollection serviceDescriptors)
@@ -40,7 +40,7 @@ namespace Ivas.Transactions.Injection.Injector
         
         private static void RegisterContext<TContext>(IServiceCollection serviceDescriptors, IConfiguration configuration) where TContext : DbContext
         {
-            serviceDescriptors.AddDbContext<TContext>();
+            serviceDescriptors.AddDbContext<TContext>(options => options.UseSqlServer(configuration.GetConnectionString("IvasTransactionsDbContext")));
         }
         
         private static void RegisterPersistency<TContext>(IServiceCollection serviceDescriptors) where TContext : DbContext

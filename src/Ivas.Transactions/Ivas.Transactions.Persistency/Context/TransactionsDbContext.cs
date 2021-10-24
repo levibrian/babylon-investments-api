@@ -11,6 +11,7 @@ namespace Ivas.Transactions.Persistency.Context
         }
 
         public virtual DbSet<TransactionEntity> Transactions { get; set; }
+        
         public virtual DbSet<TransactionTypeEntity> TransactionTypes { get; set; }
     }
 }
