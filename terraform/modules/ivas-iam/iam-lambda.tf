@@ -23,7 +23,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
   count  = var.create_lambda_role ? 1 : 0
   name   = "${var.lambda_name}-policy"
   role   = aws_iam_role.lambda_role[0].name
-  policy = var.policy != "" ? var.policy : <<EOF
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -56,11 +56,6 @@ resource "aws_iam_role_policy" "lambda_policy" {
         "iam:PassRole" 
       ],
       "Resource": "*"
-    },
-    {
-        "Effect": "Allow",
-        "Action": "sts:AssumeRole",
-        "Resource": "${var.allow_assume_role_lambda}"
     }
   ]
 }

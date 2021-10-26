@@ -3,8 +3,9 @@
 )
 
 function Build-Projects() {
-    $path = Resolve-Path -Path $RepoFolder   
-    $solutions = Get-ChildItem -Path $path -Filter src/Ivas.Transactions/*.sln
+    $path = Resolve-Path -Path $RepoFolder
+#     $solutions = Get-ChildItem -Path $path -Filter src/Ivas.Transactions/*.sln
+    $solutions = Get-ChildItem -Path $path -Recurse -Include "*.csproj"
     foreach ($file in $solutions) {
         Write-Host "Building '$file'..."
         dotnet restore $file

@@ -1,5 +1,5 @@
-﻿client        = "ivas"
-region        = "eu-west-1"
+client = "ivas"
+region = "eu-west-1"
 
 account_id = {
   description = "Deployment Account ID - ensures that we don't deploy to the wrong place"

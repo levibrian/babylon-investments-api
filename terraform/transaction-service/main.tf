@@ -1,4 +1,4 @@
-﻿module "transactions_lambda_iam" {
+module "transactions_lambda_iam" {
   source = "../modules/ivas-iam"
 
   create_lambda_role = true
@@ -8,22 +8,30 @@
 }
 
 module "transactions_lambda" {
-  source            = "../modules/ivas-lambda"
-  path              = var.packages_path
-  environment       = local.environment
-  tags              = local.default_tags
-  security_group_id = aws_security_group.security_group.id
-  log_retention     = local.logs_retention_in_days
-  config = {
-    description    = "Lambda to CRUD Transactions. Furthermore, the main purpose of this API is to store and analyze an investment portfolio."
-    function_name  = "${var.service_name}-${local.transactions_lambda_name}"
-    handler       = "Ivas.Transactions.Api::Ivas.Transactions.Api.LambdaEntryPoint::FunctionHandlerAsync"
-    filename      = "Ivas.Transactions.Api.zip"
-    role_arn       = module.transactions_lambda_iam.lambda_role_arn
-    memory_size    = 256
-    concurrency    = -1
-    lambda_timeout = 30
+  source  = "terraform-module/lambda/aws"
+  version = "2.10.0"
+
+  function_name    = "${var.service_name}-${local.transactions_lambda_name}"
+  filename         = var.transactions_lambda_packaged_file_name
+  description      = "Lambda to store and analyze an investment portfolio."
+  handler          = "Ivas.Transactions.Api::Ivas.Transactions.Api.LambdaEntryPoint::FunctionHandlerAsync"
+  runtime          = "dotnetcore3.1"
+  memory_size      = 256
+  concurrency      = -1
+  lambda_timeout   = 30
+  log_retention    = 400
+  role_arn         = module.transactions_lambda_iam.lambda_role_arn
+  source_code_hash = filebase64sha256("${var.packages_path}/${var.transactions_lambda_packaged_file_name}")
+
+  vpc_config = {
+    subnet_ids         = [aws_subnet.main.id]
+    security_group_ids = [aws_security_group.security_group.id]
   }
+
+  tags = merge(tomap({
+    "Name"      = "${var.service_name}-${local.transactions_lambda_name}",
+    "Workspace" = terraform.workspace
+  }))
 
   depends_on = [
     module.transactions_lambda_iam
@@ -49,6 +57,15 @@ resource "aws_security_group" "security_group" {
   }
 
   tags = local.default_tags
+}
+
+resource "aws_subnet" "main" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+
+  tags = {
+    Name = "Main"
+  }
 }
 
 resource "aws_vpc" "main" {
