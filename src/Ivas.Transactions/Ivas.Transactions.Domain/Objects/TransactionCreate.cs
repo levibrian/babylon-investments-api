@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ivas.Transactions.Domain.Abstractions.Dtos;
 using Ivas.Transactions.Domain.Abstractions.Enums;
 using Ivas.Transactions.Domain.Rules;
+using Ivas.Transactions.Shared.Abstractions.Specifications;
+using Ivas.Transactions.Shared.Abstractions.Specifications.Interfaces;
 using Ivas.Transactions.Shared.Extensions;
 
 namespace Ivas.Transactions.Domain.Objects
@@ -24,12 +27,11 @@ namespace Ivas.Transactions.Domain.Objects
 
         public void Validate()
         {
-            var transactionRules = 
-                new IsTickerProvided()
-                .And(new IsDateNotFuture())
-                .And(new IsPricePositive())
-                .And(new AreUnitsPositive());
-                
+            var transactionRules = new IsTickerProvided()
+                    .And(new IsDateNotFuture())
+                    .And(new AreUnitsPositive())
+                    .And(new IsPricePositive());
+
             transactionRules.IsSatisfiedBy(this);
         }
     }

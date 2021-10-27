@@ -1,22 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Ivas.Transactions.Shared.Abstractions.Specifications.Base;
 using Ivas.Transactions.Shared.Abstractions.Specifications.Interfaces;
 
 namespace Ivas.Transactions.Shared.Abstractions.Specifications
 {
-    public class OrSpecification<T> : ISpecification<T>
+    public class OrSpecification<T> : CompositeSpecification<T>
     {
-        private readonly ISpecification<T> _firstSpecification;
-        private readonly ISpecification<T> _secondSpecification;
-
-        public OrSpecification(ISpecification<T> firstSpecification, ISpecification<T> secondSpecification)
+        public OrSpecification(
+            ISpecification<T> firstSpecification, 
+            ISpecification<T> secondSpecification) : base(firstSpecification, secondSpecification)
         {
-            _firstSpecification = firstSpecification ?? throw new ArgumentNullException(nameof(firstSpecification));
-            _secondSpecification = secondSpecification ?? throw new ArgumentNullException(nameof(secondSpecification));
+        }
+
+        public OrSpecification(IEnumerable<ISpecification<T>> rulesToValidate) : base(rulesToValidate)
+        {
         }
         
-        public bool IsSatisfiedBy(T domainEntity)
+        public override bool IsSatisfiedBy(T domainEntity)
         {
-            return _firstSpecification.IsSatisfiedBy(domainEntity) || _secondSpecification.IsSatisfiedBy(domainEntity);
+            if (!ChildSpecifications.Any()) return false;
+            
+            var rulesResult = new List<bool>();
+            
+            foreach (var rule in ChildSpecifications)
+            {
+                rulesResult.Add(rule.IsSatisfiedBy(domainEntity));
+            }
+
+            return rulesResult.Any(result => result);
         }
     }
 }

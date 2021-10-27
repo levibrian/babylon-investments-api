@@ -12,7 +12,7 @@ module "transactions_lambda" {
   version = "2.10.0"
 
   function_name    = "${var.service_name}-${local.transactions_lambda_name}"
-  filename         = var.transactions_lambda_packaged_file_name
+  filename         = "Ivas.Transactions.Api.zip"
   description      = "Lambda to store and analyze an investment portfolio."
   handler          = "Ivas.Transactions.Api::Ivas.Transactions.Api.LambdaEntryPoint::FunctionHandlerAsync"
   runtime          = "dotnetcore3.1"
@@ -21,7 +21,7 @@ module "transactions_lambda" {
   lambda_timeout   = 30
   log_retention    = 400
   role_arn         = module.transactions_lambda_iam.lambda_role_arn
-  source_code_hash = filebase64sha256("${var.packages_path}/${var.transactions_lambda_packaged_file_name}")
+  source_code_hash = filebase64sha256("${var.packages_path}/Ivas.Transactions.Api.zip")
 
   vpc_config = {
     subnet_ids         = [aws_subnet.main.id]

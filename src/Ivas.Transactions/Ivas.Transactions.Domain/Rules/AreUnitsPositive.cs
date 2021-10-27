@@ -1,4 +1,6 @@
 ﻿using Ivas.Transactions.Domain.Objects;
+using Ivas.Transactions.Shared.Abstractions.Specifications;
+using Ivas.Transactions.Shared.Abstractions.Specifications.Base;
 using Ivas.Transactions.Shared.Abstractions.Specifications.Interfaces;
 
 namespace Ivas.Transactions.Domain.Rules

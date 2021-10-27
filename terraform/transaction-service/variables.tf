@@ -11,8 +11,3 @@ variable "packages_path" {
   type    = string
   default = "../../artifacts"
 }
-
-variable "transactions_lambda_packaged_file_name" {
-  type    = string
-  default = "Ivas.Transactions.Api.zip"
-}
