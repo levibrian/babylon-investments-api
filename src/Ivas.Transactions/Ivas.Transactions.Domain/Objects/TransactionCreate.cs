@@ -17,7 +17,9 @@ namespace Ivas.Transactions.Domain.Objects
                 throw new ArgumentNullException(nameof(transactionCreateDto));
 
             Ticker = transactionCreateDto.Ticker;
-            Date = Date == new DateTime() ? DateTime.UtcNow : transactionCreateDto.Date;
+            Date = Date == new DateTime() 
+                ? DateTime.UtcNow 
+                : transactionCreateDto.Date;
             Units = transactionCreateDto.Units;
             PricePerUnit = transactionCreateDto.PricePerUnit;
             TransactionType = transactionCreateDto.TransactionType;

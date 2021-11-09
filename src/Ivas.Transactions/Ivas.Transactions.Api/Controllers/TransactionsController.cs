@@ -25,5 +25,11 @@ namespace Ivas.Transactions.Api.Controllers
             
             return Ok();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(new[] {"value 1", "value 2"});
+        }
     }
 }
