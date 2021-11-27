@@ -6,8 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Ivas.Transactions.Domain.Abstractions\Ivas.Transactions.Domain.Abstractions.csproj" />
-      <ProjectReference Include="..\Ivas.Transactions.Persistency\Ivas.Transactions.Persistency.csproj" />
-      <ProjectReference Include="..\Ivas.Transactions.Shared.Abstractions\Ivas.Transactions.Shared.Abstractions.csproj" />
+      <ProjectReference Include="..\Ivas.Transactions.Shared\Ivas.Transactions.Shared.csproj" />
       <ProjectReference Include="..\Ivas.Transactions.Shared\Ivas.Transactions.Shared.csproj" />
     </ItemGroup>
 

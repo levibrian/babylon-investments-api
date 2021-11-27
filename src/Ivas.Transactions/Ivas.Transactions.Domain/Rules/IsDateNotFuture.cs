@@ -1,22 +1,22 @@
 ﻿using System;
+using Ivas.Transactions.Domain.Dtos;
+using Ivas.Transactions.Domain.Enums;
 using Ivas.Transactions.Domain.Objects;
-using Ivas.Transactions.Shared.Abstractions.Specifications.Interfaces;
+using Ivas.Transactions.Shared.Notifications;
+using Ivas.Transactions.Shared.Specifications.Interfaces;
 
 namespace Ivas.Transactions.Domain.Rules
 {
-    public class IsDateNotFuture : ISpecification<TransactionCreate>
+    public class IsDateNotFuture : IResultedSpecification<TransactionCreateDto>
     {
-        public bool IsSatisfiedBy(TransactionCreate entityToEvaluate)
+        public Result IsSatisfiedBy(TransactionCreateDto entityToEvaluate)
         {
             var expression = entityToEvaluate.Date.Date == DateTime.UtcNow.Date || 
                              entityToEvaluate.Date.Date < DateTime.UtcNow.Date;
 
-            if (!expression)
-            {
-                entityToEvaluate.DomainErrors.Add("Date provided is a future Date which is not valid.");
-            }
-            
-            return expression;
+            return !expression 
+                ? Result.Failure(ErrorCodesEnum.DateIsFutureDate) 
+                : Result.Ok();
         }
     }
 }

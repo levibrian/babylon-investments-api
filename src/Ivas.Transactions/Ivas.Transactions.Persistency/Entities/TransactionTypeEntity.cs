@@ -1,8 +1,6 @@
-﻿using Ivas.Transactions.Persistency.Abstractions.Entities;
-
-namespace Ivas.Transactions.Persistency.Entities
+﻿namespace Ivas.Transactions.Persistency.Entities
 {
-    public class TransactionTypeEntity : Entity
+    public class TransactionTypeEntity
 
     {
         public string Description { get; set; }

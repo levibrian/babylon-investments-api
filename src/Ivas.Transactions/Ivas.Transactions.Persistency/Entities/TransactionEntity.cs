@@ -1,10 +1,16 @@
 ﻿using System;
-using Ivas.Transactions.Persistency.Abstractions.Entities;
+using Amazon.DynamoDBv2.DataModel;
 
 namespace Ivas.Transactions.Persistency.Entities
 {
-    public class TransactionEntity : Entity
+    public class TransactionEntity
     {
+        [DynamoDBHashKey]
+        public long UserId { get; set; }
+        
+        [DynamoDBRangeKey] 
+        public string Id { get; set; }
+
         public string Ticker { get; set; }
 
         public DateTime Date { get; set; }
@@ -13,6 +19,6 @@ namespace Ivas.Transactions.Persistency.Entities
 
         public decimal PricePerUnit { get; set; }
         
-        public virtual TransactionTypeEntity TransactionType { get; set; }
+        public string TransactionType { get; set; }
     }
 }

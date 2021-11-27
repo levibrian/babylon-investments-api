@@ -8,4 +8,8 @@
     <None Remove="Polygon\" />
     <None Remove="Polygon\Base\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ivas.Transactions.Shared\Ivas.Transactions.Shared.csproj" />
+  </ItemGroup>
 </Project>

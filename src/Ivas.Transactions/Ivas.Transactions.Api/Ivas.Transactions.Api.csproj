@@ -9,9 +9,11 @@
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="6.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ivas.Transactions.Core.Abstractions\Ivas.Transactions.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\Ivas.Transactions.Domain\Ivas.Transactions.Domain.csproj" />
     <ProjectReference Include="..\Ivas.Transactions.Injection\Ivas.Transactions.Injection.csproj" />
   </ItemGroup>
 </Project>

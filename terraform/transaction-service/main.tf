@@ -11,88 +11,13 @@ module "transactions_lambda_iam" {
   tags               = local.default_tags
 }
 
-resource "aws_iam_role" "rds_ad_auth" {
-  name                  = "ivas-transactions-db-ad-auth"
-  description           = "Role used by RDS for Active Directory authentication and authorization"
-  force_detach_policies = true
-  assume_role_policy    = data.aws_iam_policy_document.rds_assume_role.json
-
-  tags = local.default_tags
-}
-
-resource "aws_iam_role_policy_attachment" "rds_directory_services" {
-  role       = aws_iam_role.rds_ad_auth.id
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSDirectoryServiceAccess"
-}
-
 ################################################################################
 # API Gateway Module
 ################################################################################
 
-#resource "aws_route53_zone" "this" {
-#  name = var.transactions_api_domain_name
-#}
-#
-#module "acm" {
-#  source  = "terraform-aws-modules/acm/aws"
-#  version = "~> 3.0"
-#
-#  domain_name = var.transactions_api_domain_name
-#  zone_id     = aws_route53_zone.this.zone_id
-#
-#  subject_alternative_names = [
-#    "*.${var.transactions_api_domain_name}",
-#    "app.dev.${var.transactions_api_domain_name}",
-#  ] 
-#
-#  validate_certificate = true
-#  wait_for_validation = true
-#
-#  tags = local.default_tags
-#}
-
-#module "api_gateway" {
-#  source = "terraform-aws-modules/apigateway-v2/aws"
-#
-#  name          = local.transactions_api_gateway_name
-#  description   = "IVAS Transactions Service API Gateway"
-#  protocol_type = "HTTP"
-#
-#  cors_configuration = {
-#    allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
-#    allow_methods = ["*"]
-#    allow_origins = ["*"]
-#  }
-#
-#  default_route_settings = {
-#    detailed_metrics_enabled = true
-#    throttling_burst_limit   = 100
-#    throttling_rate_limit    = 100
-#  }
-#  
-#  # Routes and integrations
-#  integrations = {
-#    "POST /api/transactions" = {
-#      lambda_arn             = module.transactions_lambda.lambda_function_arn
-#      payload_format_version = "2.0"
-#      timeout_milliseconds   = 12000
-#    }
-#    "GET /api/transactions" = {
-#      lambda_arn             = module.transactions_lambda.lambda_function_arn
-#      payload_format_version = "2.0"
-#      timeout_milliseconds   = 12000
-#    }
-#    "$default" = {
-#      lambda_arn = module.transactions_lambda.lambda_function_arn
-#    }
-#  }
-#
-#  tags = local.default_tags
-#}
-
 resource "aws_api_gateway_rest_api" "transactions_api" {
 
-  name = "transactions_api"
+  name = local.transactions_api_gateway_name
 
   body = jsonencode({
     openapi = "3.0.1"
@@ -156,7 +81,7 @@ resource "aws_api_gateway_deployment" "transactions_api_deployment" {
 resource "aws_api_gateway_stage" "transactions_api_stage" {
   deployment_id = aws_api_gateway_deployment.transactions_api_deployment.id
   rest_api_id   = aws_api_gateway_rest_api.transactions_api.id
-  stage_name    = "transactions_api_stage"
+  stage_name    = "${local.transactions_api_gateway_name}-stage"
 
   tags = local.default_tags
 }
@@ -165,7 +90,7 @@ resource "aws_api_gateway_method_settings" "transactions_api_settings" {
   rest_api_id = aws_api_gateway_rest_api.transactions_api.id
   stage_name  = aws_api_gateway_stage.transactions_api_stage.stage_name
   method_path = "*/*"
-  
+
   settings {
     metrics_enabled    = false
     data_trace_enabled = false
@@ -195,73 +120,36 @@ module "transactions_lambda" {
 
   tags = local.default_tags
 
+  environment_variables = {
+    TRANSACTIONS_DYNAMO_DB_TABLE = aws_dynamodb_table.transactions_dynamodb_table.name
+  }
+
   depends_on = [
     module.transactions_lambda_iam
   ]
 }
 
 ################################################################################
-# AWS Directory Service (Acitve Directory)
+# Dynamo DB
 ################################################################################
 
-resource "aws_directory_service_directory" "ad_service_directory" {
-  name     = "levitechnologies.ivas.com"
-  password = "SuperSecretPassw0rd"
-  edition  = "Standard"
-  type     = "MicrosoftAD"
+resource "aws_dynamodb_table" "transactions_dynamodb_table" {
+  name           = local.transactions_dynamodb_table_name
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = "UserId"
+  range_key      = "Id"
 
-  vpc_settings {
-    vpc_id = module.vpc.vpc_id
-    # Only 2 subnets, must be in different AZs
-    subnet_ids = slice(tolist(module.vpc.public_subnets), 0, 2)
+  attribute {
+    name = "UserId"
+    type = "N"
   }
 
-  tags = local.default_tags
-}
-
-################################################################################
-# RDS Module
-################################################################################
-
-module "db" {
-  source  = "terraform-aws-modules/rds/aws"
-  version = "~> 3.0"
-
-  identifier = local.transactions_db_name
-
-  engine               = "sqlserver-ex"
-  engine_version       = "14.00.3381.3.v1"
-  family               = "sqlserver-ex-14.0" # DB parameter group
-  major_engine_version = "14.00"             # DB option group
-  instance_class       = "db.t3.small"
-
-  allocated_storage     = 20
-  max_allocated_storage = 40
-  storage_encrypted     = false
-
-  username               = "ivas"
-  create_random_password = true
-  random_password_length = 12
-  port                   = 1433
-
-  domain               = aws_directory_service_directory.ad_service_directory.id
-  domain_iam_role_name = aws_iam_role.rds_ad_auth.name
-
-  multi_az               = false
-  subnet_ids             = module.vpc.private_subnets
-  vpc_security_group_ids = [module.vpc.default_security_group_id]
-
-  maintenance_window = "Mon:00:00-Mon:03:00"
-  backup_window      = "03:00-06:00"
-
-  backup_retention_period = 0
-  skip_final_snapshot     = true
-  deletion_protection     = false
-
-  options                   = []
-  create_db_parameter_group = false
-  timezone                  = "GMT Standard Time"
-  license_model             = "license-included"
+  attribute {
+    name = "Id"
+    type = "S"
+  }
 
   tags = local.default_tags
 }

@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Ivas.Transactions.Core.Abstractions.Services;
-using Ivas.Transactions.Domain.Abstractions.Dtos;
+using Amazon.DynamoDBv2.Model;
+using Ivas.Transactions.Domain.Dtos;
+using Ivas.Transactions.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ivas.Transactions.Api.Controllers
@@ -10,26 +11,37 @@ namespace Ivas.Transactions.Api.Controllers
     [ApiController]
     public class TransactionsController : ControllerBase
     {
-        private readonly ITransactionCreateService _transactionCreateService;
+        private readonly ITransactionService _transactionService;
 
-        public TransactionsController(ITransactionCreateService transactionCreateService)
+        public TransactionsController(ITransactionService transactionService)
         {
-            _transactionCreateService = transactionCreateService ??
-                                        throw new ArgumentNullException(nameof(transactionCreateService));
+            _transactionService = transactionService 
+                                  ?? throw new ArgumentNullException(nameof(transactionService));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TransactionCreateDto createTransactionDto)
         {
-            var operation = await _transactionCreateService.CreateAsync(createTransactionDto);
+            var operation = await _transactionService.CreateAsync(createTransactionDto);
             
-            return Ok();
+            return Ok(operation);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] TransactionDeleteDto transactionDeleteDto)
         {
-            return Ok(new[] {"value 1", "value 2"});
+            var operation = await _transactionService.DeleteAsync(transactionDeleteDto);
+
+            return Ok(operation);
+        }
+
+        [HttpGet("{userId:long}")]
+        public async Task<IActionResult> Get(long userId)
+        {
+            var userPortfolio = await _transactionService
+                .GetPortfolioByUser(userId);
+            
+            return Ok(userPortfolio);
         }
     }
 }

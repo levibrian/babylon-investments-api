@@ -1,22 +1,20 @@
-﻿using Ivas.Transactions.Domain.Objects;
-using Ivas.Transactions.Shared.Abstractions.Specifications;
-using Ivas.Transactions.Shared.Abstractions.Specifications.Base;
-using Ivas.Transactions.Shared.Abstractions.Specifications.Interfaces;
+﻿using Ivas.Transactions.Domain.Dtos;
+using Ivas.Transactions.Domain.Enums;
+using Ivas.Transactions.Domain.Objects;
+using Ivas.Transactions.Shared.Notifications;
+using Ivas.Transactions.Shared.Specifications.Interfaces;
 
 namespace Ivas.Transactions.Domain.Rules
 {
-    public class AreUnitsPositive : ISpecification<TransactionCreate>
+    public class AreUnitsPositive : IResultedSpecification<TransactionCreateDto>
     {
-        public bool IsSatisfiedBy(TransactionCreate entityToEvaluate)
+        public Result IsSatisfiedBy(TransactionCreateDto entityToEvaluate)
         {
             var expression = entityToEvaluate.Units > 0;
 
-            if (!expression)
-            {
-                entityToEvaluate.DomainErrors.Add("Units are not positive. Please enter a valid value.");
-            }
-            
-            return expression;
+            return !expression 
+                ? Result.Failure(ErrorCodesEnum.UnitsNotPositive) 
+                : Result.Ok();
         }
     }
 }
