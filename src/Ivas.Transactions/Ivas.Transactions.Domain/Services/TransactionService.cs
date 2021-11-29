@@ -7,17 +7,20 @@ using Ivas.Transactions.Domain.Abstractions.Services;
 using Ivas.Transactions.Domain.Contracts.Repositories;
 using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Objects;
+using Ivas.Transactions.Domain.Requests;
 using Ivas.Transactions.Domain.Validators;
 using Ivas.Transactions.Shared.Exceptions.Custom;
 using Ivas.Transactions.Shared.Notifications;
 
 namespace Ivas.Transactions.Domain.Services
 {
-    public interface ITransactionService : 
+    public interface ITransactionService :
         ICreatableAsyncService<TransactionCreateDto>, 
         IDeletableAsyncService<TransactionDeleteDto>
     {
-        Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(long userId);
+        Task<IEnumerable<TransactionDto>> GetByUserAsync(long userId);
+
+        Task<TransactionDto> GetSingleAsync(TransactionGetSingleRequest transactionRequest);
     }
     
     public class TransactionService : ITransactionService
@@ -43,25 +46,6 @@ namespace Ivas.Transactions.Domain.Services
                       ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(long userId)
-        {
-            var userTransactions = (await _transactionRepository
-                    .GetByUserAsync(userId))
-                .GroupBy(x => x.Ticker)
-                .ToDictionary(
-                    x => x.Key, 
-                    t => t.Select(t => t));
-
-            var userPortfolio = new List<TransactionSummary>();
-
-            foreach (var grouping in userTransactions)
-            {
-                userPortfolio.Add(new TransactionSummary(grouping.Value));
-            }
-
-            return _mapper.Map<IEnumerable<TransactionSummary>, IEnumerable<TransactionSummaryDto>>(userPortfolio);
-        }
-        
         public async Task<Result> CreateAsync(TransactionCreateDto dto)
         {
             var validationResult = _transactionValidator.Validate(dto);
@@ -75,7 +59,7 @@ namespace Ivas.Transactions.Domain.Services
 
             await _transactionRepository.Insert(domainObject);
             
-            return Result.Ok(domainObject.Id);
+            return Result.Ok(domainObject.TransactionId);
         }
 
         public async Task<Result> DeleteAsync(TransactionDeleteDto entity)
@@ -92,7 +76,7 @@ namespace Ivas.Transactions.Domain.Services
             }
 
             var transactionToDelete =
-                await _transactionRepository.GetByIdAsync(entity.UserId, entity.Id);
+                await _transactionRepository.GetByIdAsync(entity.UserId, entity.TransactionId);
 
             if (transactionToDelete == null)
             {
@@ -101,7 +85,23 @@ namespace Ivas.Transactions.Domain.Services
             
             await _transactionRepository.Delete(transactionToDelete);
 
-            return Result.Ok(transactionToDelete.Id);
+            return Result.Ok(transactionToDelete.TransactionId);
+        }
+
+        public async Task<IEnumerable<TransactionDto>> GetByUserAsync(long userId)
+        {
+            var userTransactions =
+                (await _transactionRepository.GetByUserAsync(userId)).OrderByDescending(x => x.Date);
+
+            return _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionDto>>(userTransactions);
+        }
+
+        public async Task<TransactionDto> GetSingleAsync(TransactionGetSingleRequest transactionRequest)
+        {
+            var transactionToGet =
+                await _transactionRepository.GetByIdAsync(transactionRequest.UserId, transactionRequest.TransactionId);
+
+            return _mapper.Map<Transaction, TransactionDto>(transactionToGet);
         }
     }
 }

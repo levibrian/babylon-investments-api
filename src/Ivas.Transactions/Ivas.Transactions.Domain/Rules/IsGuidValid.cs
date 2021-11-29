@@ -10,7 +10,7 @@ namespace Ivas.Transactions.Domain.Rules
     {
         public Result IsSatisfiedBy(TransactionDto entityToEvaluate)
         {
-            var expression = Guid.TryParse(entityToEvaluate.Id, out var guidOutput);
+            var expression = Guid.TryParse(entityToEvaluate.TransactionId, out var guidOutput);
 
             return !expression
                 ? Result.Failure(ErrorCodesEnum.GuidProvidedNotValid)

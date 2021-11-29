@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.Model;
 using Ivas.Transactions.Domain.Dtos;
+using Ivas.Transactions.Domain.Requests;
 using Ivas.Transactions.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,10 +39,17 @@ namespace Ivas.Transactions.Api.Controllers
         [HttpGet("{userId:long}")]
         public async Task<IActionResult> Get(long userId)
         {
-            var userPortfolio = await _transactionService
-                .GetPortfolioByUser(userId);
-            
-            return Ok(userPortfolio);
+            var transactions = await _transactionService.GetByUserAsync(userId);
+
+            return Ok(transactions);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get([FromBody] TransactionGetSingleRequest transactionRequest)
+        {
+            var transaction = await _transactionService.GetSingleAsync(transactionRequest);
+
+            return Ok(transaction);
         }
     }
 }

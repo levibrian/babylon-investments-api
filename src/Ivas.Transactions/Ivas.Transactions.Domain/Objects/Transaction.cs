@@ -6,7 +6,7 @@ namespace Ivas.Transactions.Domain.Objects
 {
     public class Transaction : Abstractions.Objects.Domain
     {
-        public string Id { get; set; }
+        public string TransactionId { get; set; }
 
         public long UserId { get; set; }
         
@@ -26,7 +26,7 @@ namespace Ivas.Transactions.Domain.Objects
 
         public Transaction(TransactionDto dto)
         {
-            Id = dto.Id;
+            TransactionId = dto.TransactionId;
             UserId = dto.UserId;
         }
     }

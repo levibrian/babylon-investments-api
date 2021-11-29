@@ -9,7 +9,7 @@ namespace Ivas.Transactions.Persistency.Entities
         public long UserId { get; set; }
         
         [DynamoDBRangeKey] 
-        public string Id { get; set; }
+        public string TransactionId { get; set; }
 
         public string Ticker { get; set; }
 

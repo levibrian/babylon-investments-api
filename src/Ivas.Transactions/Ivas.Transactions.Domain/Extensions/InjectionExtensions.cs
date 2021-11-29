@@ -1,4 +1,5 @@
-﻿using Ivas.Transactions.Domain.Services;
+﻿using Ivas.Transactions.Domain.Mappers;
+using Ivas.Transactions.Domain.Services;
 using Ivas.Transactions.Domain.Validators;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,8 +10,24 @@ namespace Ivas.Transactions.Domain.Extensions
         public static IServiceCollection RegisterDomainDependencies(this IServiceCollection serviceCollection)
         {
             return serviceCollection
+                .RegisterServices()
+                .RegisterMappers();
+
+        }
+
+        private static IServiceCollection RegisterServices(this IServiceCollection serviceCollection)
+        {
+            return serviceCollection
                 .AddTransient<ITransactionValidator, TransactionValidator>()
-                .AddTransient<ITransactionService, TransactionService>();
+                .AddTransient<ITransactionService, TransactionService>()
+                .AddTransient<IPortfolioService, PortfolioService>();
+        }
+        
+        private static IServiceCollection RegisterMappers(this IServiceCollection serviceCollection)
+        {
+            return serviceCollection
+                .AddAutoMapper(config => 
+                    config.AddProfile(new TransactionSummaryProfile()));
         }
     }
 }

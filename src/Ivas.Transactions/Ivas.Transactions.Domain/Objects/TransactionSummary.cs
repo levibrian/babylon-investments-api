@@ -1,18 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ivas.Transactions.Domain.Enums;
 
 namespace Ivas.Transactions.Domain.Objects
 {
-    public class TransactionSummary : Transaction
+    public class TransactionSummary
     {
-        public decimal RealizedGainLoss { get; set; }
-        
-        public decimal RealizedDividends { get; set; }
+        public long UserId => _transactions.FirstOrDefault().UserId;
 
-        public decimal TotalInvested { get; set; }
+        public string Ticker => _transactions.FirstOrDefault().Ticker;
         
+        public decimal Shares => 
+            BuyPositions
+                .Sum(x => x.Units);
+
+        public decimal TotalInvested => this.Shares * this.PricePerShare;
+
+        public decimal RealizedDividends => CalculateRealizedDividends();
+
+        public decimal PricePerShare => 
+            BuyPositions
+                .Average(x => x.PricePerUnit);
+
         private readonly IEnumerable<Transaction> _transactions;
+
+        private IEnumerable<Transaction> BuyPositions =>
+            _transactions
+                .Where(x => 
+                    x.TransactionType == TransactionTypeEnum.Buy);
+
+        private IEnumerable<Transaction> DividendPositions =>
+            _transactions
+                .Where(x =>
+                    x.TransactionType == TransactionTypeEnum.Dividend);
 
         public TransactionSummary()
         {
@@ -22,10 +43,13 @@ namespace Ivas.Transactions.Domain.Objects
         {
             _transactions = transactions 
                             ?? throw new ArgumentNullException(nameof(transactions));
+        }
 
-            // PricePerUnit = transactions.Average(x => PricePerUnit);
-            //
-            // Units = transactions
+        private decimal CalculateRealizedDividends()
+        {
+            return DividendPositions
+                .Sum(dividendPosition => 
+                    dividendPosition.Units * dividendPosition.PricePerUnit);
         }
     }
 }

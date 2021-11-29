@@ -27,14 +27,6 @@ resource "aws_api_gateway_rest_api" "transactions_api" {
     }
     paths = {
       "/api/transactions" = {
-        get = {
-          x-amazon-apigateway-integration = {
-            httpMethod           = "GET"
-            payloadFormatVersion = "2.0"
-            type                 = "HTTP_PROXY"
-            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
-          }
-        },
         post = {
           x-amazon-apigateway-integration = {
             httpMethod           = "POST"
@@ -43,14 +35,14 @@ resource "aws_api_gateway_rest_api" "transactions_api" {
             uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
           }
         },
-        put = {
-          x-amazon-apigateway-integration = {
-            httpMethod           = "PUT"
-            payloadFormatVersion = "2.0"
-            type                 = "HTTP_PROXY"
-            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
-          }
-        },
+        #        put = {
+        #          x-amazon-apigateway-integration = {
+        #            httpMethod           = "PUT"
+        #            payloadFormatVersion = "2.0"
+        #            type                 = "HTTP_PROXY"
+        #            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
+        #          }
+        #        },
         delete = {
           x-amazon-apigateway-integration = {
             httpMethod           = "DELETE"
@@ -59,6 +51,16 @@ resource "aws_api_gateway_rest_api" "transactions_api" {
             uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
           }
         },
+      },
+      "/api/portfolio" = {
+        get = {
+          x-amazon-apigateway-integration = {
+            httpMethod           = "GET"
+            payloadFormatVersion = "2.0"
+            type                 = "HTTP_PROXY"
+            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
+          }
+        }
       }
     }
   })
@@ -139,7 +141,7 @@ resource "aws_dynamodb_table" "transactions_dynamodb_table" {
   read_capacity  = 20
   write_capacity = 20
   hash_key       = "UserId"
-  range_key      = "Id"
+  range_key      = "TransactionId"
 
   attribute {
     name = "UserId"
@@ -147,7 +149,7 @@ resource "aws_dynamodb_table" "transactions_dynamodb_table" {
   }
 
   attribute {
-    name = "Id"
+    name = "TransactionId"
     type = "S"
   }
 

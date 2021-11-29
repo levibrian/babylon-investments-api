@@ -3,6 +3,7 @@
     public enum TransactionTypeEnum
     {
         Buy = 1,
-        Sell
+        Sell,
+        Dividend
     }
 }
