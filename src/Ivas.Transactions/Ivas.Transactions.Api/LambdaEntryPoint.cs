@@ -35,7 +35,8 @@ namespace Ivas.Transactions.Api
         protected override void Init(IWebHostBuilder builder)
         {
             builder
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .UseLambdaServer();
         }
 
         /// <summary>

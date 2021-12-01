@@ -6,23 +6,23 @@ namespace Ivas.Transactions.Domain.Objects
 {
     public class TransactionCreate : Transaction
     {
-        public new string TransactionId => string.IsNullOrEmpty(_transactionRequest.TransactionId)
+        public override string TransactionId => string.IsNullOrEmpty(_transactionRequest.TransactionId)
             ? Guid.NewGuid().ToString()
             : _transactionRequest.TransactionId;
 
-        public new long UserId => _transactionRequest.UserId;
+        public override long UserId => _transactionRequest.UserId;
 
-        public new string Ticker => _transactionRequest.Ticker;
+        public override string Ticker => _transactionRequest.Ticker.ToUpperInvariant();
 
-        public new DateTime Date => _transactionRequest.Date == new DateTime()
+        public override DateTime Date => _transactionRequest.Date == new DateTime()
             ? DateTime.Now
             : _transactionRequest.Date;
 
-        public new decimal Units => _transactionRequest.Units;
+        public override decimal Units => _transactionRequest.Units;
 
-        public new decimal PricePerUnit => _transactionRequest.PricePerUnit;
+        public override decimal PricePerUnit => _transactionRequest.PricePerUnit;
 
-        public new TransactionTypeEnum TransactionType => _transactionRequest.TransactionType;
+        public override TransactionTypeEnum TransactionType => _transactionRequest.TransactionType;
         
         private readonly TransactionCreateDto _transactionRequest;
         

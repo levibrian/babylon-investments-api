@@ -34,17 +34,17 @@ namespace Ivas.Transactions.Api
                     Version = "v1",
                     Title = "Ivas Transactions API",
                     Description = "An API to handle investment transactions",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Example Contact",
-                        Url = new Uri("https://example.com/contact")
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Example License",
-                        Url = new Uri("https://example.com/license")
-                    }
+                    // TermsOfService = new Uri("https://example.com/terms"),
+                    // Contact = new OpenApiContact
+                    // {
+                    //     Name = "Example Contact",
+                    //     Url = new Uri("https://example.com/contact")
+                    // },
+                    // License = new OpenApiLicense
+                    // {
+                    //     Name = "Example License",
+                    //     Url = new Uri("https://example.com/license")
+                    // }
                 });
             });
         }

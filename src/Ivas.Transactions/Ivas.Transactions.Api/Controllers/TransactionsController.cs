@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Amazon.DynamoDBv2.Model;
+using AutoMapper;
 using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Requests;
 using Ivas.Transactions.Domain.Services;
@@ -14,10 +14,9 @@ namespace Ivas.Transactions.Api.Controllers
     {
         private readonly ITransactionService _transactionService;
 
-        public TransactionsController(ITransactionService transactionService)
+        public TransactionsController(ITransactionService transactionService, IMapper mapper)
         {
-            _transactionService = transactionService 
-                                  ?? throw new ArgumentNullException(nameof(transactionService));
+            _transactionService = transactionService ?? throw new ArgumentNullException(nameof(transactionService));
         }
 
         [HttpPost]
@@ -28,10 +27,14 @@ namespace Ivas.Transactions.Api.Controllers
             return Ok(operation);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] TransactionDeleteDto transactionDeleteDto)
+        [HttpDelete("{userId:long}/{transactionId}")]
+        public async Task<IActionResult> Delete(long userId, string transactionId)
         {
-            var operation = await _transactionService.DeleteAsync(transactionDeleteDto);
+            var operation = await _transactionService.DeleteAsync(new TransactionDeleteDto()
+            {
+                UserId = userId,
+                TransactionId = transactionId
+            });
 
             return Ok(operation);
         }
@@ -44,10 +47,14 @@ namespace Ivas.Transactions.Api.Controllers
             return Ok(transactions);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get([FromBody] TransactionGetSingleRequest transactionRequest)
+        [HttpGet("{userId:long}/{transactionId}")]
+        public async Task<IActionResult> Get(long userId, string transactionId)
         {
-            var transaction = await _transactionService.GetSingleAsync(transactionRequest);
+            var transaction = await _transactionService.GetSingleAsync(new TransactionBaseRequest()
+            {
+                UserId = userId,
+                TransactionId = transactionId
+            });
 
             return Ok(transaction);
         }

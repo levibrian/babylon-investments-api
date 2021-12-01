@@ -1,4 +1,6 @@
-﻿using Ivas.Transactions.Domain.Mappers;
+﻿using System.Collections.Generic;
+using AutoMapper;
+using Ivas.Transactions.Domain.Mappers;
 using Ivas.Transactions.Domain.Services;
 using Ivas.Transactions.Domain.Validators;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +29,11 @@ namespace Ivas.Transactions.Domain.Extensions
         {
             return serviceCollection
                 .AddAutoMapper(config => 
-                    config.AddProfile(new TransactionSummaryProfile()));
+                    config.AddProfiles(new List<Profile>()
+                    {
+                        new TransactionProfile(),
+                        new TransactionSummaryProfile()
+                    }));
         }
     }
 }

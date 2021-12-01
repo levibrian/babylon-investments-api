@@ -20,7 +20,7 @@ namespace Ivas.Transactions.Domain.Services
     {
         Task<IEnumerable<TransactionDto>> GetByUserAsync(long userId);
 
-        Task<TransactionDto> GetSingleAsync(TransactionGetSingleRequest transactionRequest);
+        Task<TransactionDto> GetSingleAsync(TransactionBaseRequest transactionRequest);
     }
     
     public class TransactionService : ITransactionService
@@ -96,7 +96,7 @@ namespace Ivas.Transactions.Domain.Services
             return _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionDto>>(userTransactions);
         }
 
-        public async Task<TransactionDto> GetSingleAsync(TransactionGetSingleRequest transactionRequest)
+        public async Task<TransactionDto> GetSingleAsync(TransactionBaseRequest transactionRequest)
         {
             var transactionToGet =
                 await _transactionRepository.GetByIdAsync(transactionRequest.UserId, transactionRequest.TransactionId);

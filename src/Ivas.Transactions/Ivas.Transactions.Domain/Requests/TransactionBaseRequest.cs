@@ -2,7 +2,7 @@
 
 namespace Ivas.Transactions.Domain.Requests
 {
-    public class TransactionGetSingleRequest : Request
+    public class TransactionBaseRequest : Request
     {
         public long UserId { get; set; }
         

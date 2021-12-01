@@ -1,5 +1,6 @@
 variable "account_id" {
-  type = map(any)
+  type    = string
+  default = "480481321925"
 }
 
 variable "region" {
@@ -22,8 +23,6 @@ variable "service_name" {
   default = "ivas-transactions-service"
 }
 
-variable "account_ids_default" { default = "480481321925" }
-
 variable "packages_path" {
   type    = string
   default = "../../artifacts"
@@ -32,9 +31,4 @@ variable "packages_path" {
 variable "package_file_name" {
   type    = string
   default = "Ivas.Transactions.Api.zip"
-}
-
-variable "transactions_api_domain_name" {
-  type    = string
-  default = "ivas.transactions.levitechnologies.com"
 }

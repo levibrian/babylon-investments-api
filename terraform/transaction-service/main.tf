@@ -1,102 +1,167 @@
 ################################################################################
-# IAM Role for Windows Authentication
+# IAM Role
 ################################################################################
 
-module "transactions_lambda_iam" {
-  source = "../modules/ivas-iam"
-
-  create_lambda_role = true
-  service_name       = var.service_name
-  lambda_name        = local.transactions_lambda_name
+resource "aws_iam_role" "lambda_role" {
+  count              = 1
+  name               = "${local.transactions_lambda_name}-iam"
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "lambda.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": ""
+      }
+    ]
+}
+  EOF
   tags               = local.default_tags
+}
+
+resource "aws_iam_role_policy" "lambda_policy" {
+  count  = 1
+  name   = "${local.transactions_lambda_name}-policy"
+  role   = aws_iam_role.lambda_role[0].name
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:*",
+      "Effect": "Allow"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:*" 
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:*" 
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action":[
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:GetRole",
+        "iam:GetRolePolicy",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListRolePolicies",
+        "iam:ListRoles",
+        "iam:PassRole" 
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_lambda_permission" "lambda_apigateway_trigger" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = module.transactions_lambda.lambda_function_arn
+  principal     = "apigateway.amazonaws.com"
+
+  #--------------------------------------------------------------------------------
+  # Per deployment
+  #--------------------------------------------------------------------------------
+  # The /*/*  grants access from any method on any resource within the deployment.
+  source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
+
+  #--------------------------------------------------------------------------------
+  # Per API
+  #--------------------------------------------------------------------------------
+  # The /*/*/* part allows invocation from any stage, method and resource path
+  # within API Gateway REST API.
+  #source_arn    = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*/*"
 }
 
 ################################################################################
 # API Gateway Module
 ################################################################################
 
-resource "aws_api_gateway_rest_api" "transactions_api" {
+module "api_gateway" {
+  source = "terraform-aws-modules/apigateway-v2/aws"
 
-  name = local.transactions_api_gateway_name
+  name          = local.transactions_api_gateway_name
+  description   = "IVAS Api Gateway."
+  protocol_type = "HTTP"
 
-  body = jsonencode({
-    openapi = "3.0.1"
-    info = {
-      title   = "transactions_api"
-      version = "1.0"
+  cors_configuration = {
+    allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
+    allow_methods = ["*"]
+    allow_origins = ["*"]
+  }
+
+  create_api_domain_name = false # to control creation of API Gateway Domain Name
+
+  default_route_settings = {
+    detailed_metrics_enabled = false
+    throttling_burst_limit   = 100
+    throttling_rate_limit    = 100
+  }
+
+  create_routes_and_integrations = true
+
+  integrations = {
+    
+    "GET /ivas/api/transactions" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
     }
-    paths = {
-      "/api/transactions" = {
-        post = {
-          x-amazon-apigateway-integration = {
-            httpMethod           = "POST"
-            payloadFormatVersion = "2.0"
-            type                 = "HTTP_PROXY"
-            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
-          }
-        },
-        #        put = {
-        #          x-amazon-apigateway-integration = {
-        #            httpMethod           = "PUT"
-        #            payloadFormatVersion = "2.0"
-        #            type                 = "HTTP_PROXY"
-        #            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
-        #          }
-        #        },
-        delete = {
-          x-amazon-apigateway-integration = {
-            httpMethod           = "DELETE"
-            payloadFormatVersion = "2.0"
-            type                 = "HTTP_PROXY"
-            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
-          }
-        },
-      },
-      "/api/portfolio" = {
-        get = {
-          x-amazon-apigateway-integration = {
-            httpMethod           = "GET"
-            payloadFormatVersion = "2.0"
-            type                 = "HTTP_PROXY"
-            uri                  = "https://ip-ranges.amazonaws.com/ip-ranges.json"
-          }
-        }
-      }
+    "POST /ivas/api/transactions" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
+      timeout_milliseconds   = 12000
     }
-  })
-
-  tags = local.default_tags
-}
-
-resource "aws_api_gateway_deployment" "transactions_api_deployment" {
-  rest_api_id = aws_api_gateway_rest_api.transactions_api.id
-
-  triggers = {
-    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.transactions_api.body))
+    "DELETE /ivas/api/transactions" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
+      timeout_milliseconds   = 12000
+    }
+    "GET /ivas/api/portfolios" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
+      timeout_milliseconds   = 12000
+    }
   }
 
-  lifecycle {
-    create_before_destroy = true
+  vpc_links = {
+    ivas-dev-vpc = {
+      name               = "${local.transactions_resource_base_name}-api-gateway-vpc-links"
+      security_group_ids = [module.api_gateway_security_group.security_group_id]
+      subnet_ids         = module.vpc.public_subnets
+    }
   }
-}
 
-resource "aws_api_gateway_stage" "transactions_api_stage" {
-  deployment_id = aws_api_gateway_deployment.transactions_api_deployment.id
-  rest_api_id   = aws_api_gateway_rest_api.transactions_api.id
-  stage_name    = "${local.transactions_api_gateway_name}-stage"
-
-  tags = local.default_tags
-}
-
-resource "aws_api_gateway_method_settings" "transactions_api_settings" {
-  rest_api_id = aws_api_gateway_rest_api.transactions_api.id
-  stage_name  = aws_api_gateway_stage.transactions_api_stage.stage_name
-  method_path = "*/*"
-
-  settings {
-    metrics_enabled    = false
-    data_trace_enabled = false
-  }
+  default_stage_tags = local.default_tags
+  vpc_link_tags      = local.default_tags
+  tags               = local.default_tags
 }
 
 ################################################################################
@@ -117,18 +182,18 @@ module "transactions_lambda" {
   local_existing_package = local.transactions_lambda_file_path
 
   vpc_subnet_ids         = module.vpc.private_subnets
-  vpc_security_group_ids = [module.vpc.default_security_group_id]
-  attach_network_policy  = true
+  vpc_security_group_ids = [module.lambda_security_group.security_group_id]
+
+  attach_policy_json = true
+  policy_json        = aws_iam_role_policy.lambda_policy[0].policy
+
+  lambda_role = aws_iam_role.lambda_role[0].arn
 
   tags = local.default_tags
 
   environment_variables = {
     TRANSACTIONS_DYNAMO_DB_TABLE = aws_dynamodb_table.transactions_dynamodb_table.name
   }
-
-  depends_on = [
-    module.transactions_lambda_iam
-  ]
 }
 
 ################################################################################
@@ -165,37 +230,49 @@ module "vpc" {
   version = "~> 2"
 
   name = local.transactions_resource_base_name
-  cidr = "10.99.0.0/18"
+  cidr = "10.79.0.0/16"
 
   azs             = ["${var.region}a", "${var.region}b"]
-  public_subnets  = ["10.99.0.0/24", "10.99.1.0/24"]
-  private_subnets = ["10.99.3.0/24", "10.99.4.0/24"]
+  public_subnets  = ["10.79.1.0/24", "10.79.2.0/24"]
+  private_subnets = ["10.79.3.0/24", "10.79.4.0/24"]
 
   create_database_subnet_group = false
 
   tags = local.default_tags
 }
 
-module "security_group" {
+module "api_gateway_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4"
+  version = "~> 4.0"
 
-  name        = "${local.transactions_resource_base_name}-db-security-group"
-  description = "Complete SqlServer example security group"
+  name        = "${local.transactions_resource_base_name}-apg-security-group"
+  description = "Security group for exposing the IVAS Api Gateway."
   vpc_id      = module.vpc.vpc_id
 
-  # ingress
-  ingress_with_cidr_blocks = [
+  ingress_cidr_blocks = ["0.0.0.0/0"]
+  ingress_rules       = ["http-80-tcp"]
+
+  egress_rules = ["all-all"]
+}
+
+module "lambda_security_group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 4.0"
+
+  name        = "${local.transactions_resource_base_name}-lambda-security-group"
+  description = "Lambda security group for IVAS Transactions Lambda"
+  vpc_id      = module.vpc.vpc_id
+
+  computed_ingress_with_source_security_group_id = [
     {
-      from_port   = 1433
-      to_port     = 1433
-      protocol    = "tcp"
-      description = "SqlServer access from within VPC"
-      cidr_blocks = module.vpc.vpc_cidr_block
-    },
+      rule                     = "http-80-tcp"
+      source_security_group_id = module.api_gateway_security_group.security_group_id
+    }
   ]
 
-  tags = local.default_tags
+  number_of_computed_ingress_with_source_security_group_id = 1
+
+  egress_rules = ["all-all"]
 }
 
 ################################################################################
