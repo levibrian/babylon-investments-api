@@ -1,10 +1,13 @@
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Requests;
 using Ivas.Transactions.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+// ReSharper disable All
 
 namespace Ivas.Transactions.Api.Controllers
 {
@@ -14,14 +17,21 @@ namespace Ivas.Transactions.Api.Controllers
     {
         private readonly ITransactionService _transactionService;
 
-        public TransactionsController(ITransactionService transactionService, IMapper mapper)
+        private readonly ILogger<TransactionsController> _logger;
+
+        public TransactionsController(
+            ITransactionService transactionService, 
+            ILogger<TransactionsController> logger)
         {
             _transactionService = transactionService ?? throw new ArgumentNullException(nameof(transactionService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TransactionCreateDto createTransactionDto)
         {
+            _logger.LogInformation($"TransactionsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionDto) }");
+            
             var operation = await _transactionService.CreateAsync(createTransactionDto);
             
             return Ok(operation);
@@ -30,6 +40,9 @@ namespace Ivas.Transactions.Api.Controllers
         [HttpDelete("{userId:long}/{transactionId}")]
         public async Task<IActionResult> Delete(long userId, string transactionId)
         {
+            _logger.LogInformation(
+                $"TransactionsController - Requested Delete Transaction with parameters: UserId: {userId} TransactionId: {transactionId} ");
+            
             var operation = await _transactionService.DeleteAsync(new TransactionDeleteDto()
             {
                 UserId = userId,
@@ -42,6 +55,9 @@ namespace Ivas.Transactions.Api.Controllers
         [HttpGet("{userId:long}")]
         public async Task<IActionResult> Get(long userId)
         {
+            _logger.LogInformation(
+                $"TransactionsController - Requested Delete Transaction with parameters: UserId: { userId } ");
+            
             var transactions = await _transactionService.GetByUserAsync(userId);
 
             return Ok(transactions);

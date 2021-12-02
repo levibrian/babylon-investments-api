@@ -7,12 +7,12 @@
     <ItemGroup>
       <ProjectReference Include="..\Ivas.Transactions.Domain.Abstractions\Ivas.Transactions.Domain.Abstractions.csproj" />
       <ProjectReference Include="..\Ivas.Transactions.Shared\Ivas.Transactions.Shared.csproj" />
-      <ProjectReference Include="..\Ivas.Transactions.Shared\Ivas.Transactions.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     </ItemGroup>
 
 </Project>

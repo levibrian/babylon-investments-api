@@ -1,4 +1,5 @@
 using System;
+using Ivas.Transactions.Api.Logging;
 using Ivas.Transactions.Injection.Injector;
 using Ivas.Transactions.Shared.Exceptions.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -7,7 +8,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
 
 namespace Ivas.Transactions.Api
 {
@@ -23,28 +27,21 @@ namespace Ivas.Transactions.Api
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine($"Starting to configure dependency injection for IVAS Transactions API");
+            
             ServiceInjector.Configure(services, Configuration);
             
             services.AddControllers();
 
+            services.AddLogging(logBuilder => logBuilder.AddDebug().AddSerilog(LoggerBuilder.Configure()));
+            
             services.AddSwaggerGen(gen =>
             {
                 gen.SwaggerDoc("v1", new OpenApiInfo()
                 {
                     Version = "v1",
                     Title = "Ivas Transactions API",
-                    Description = "An API to handle investment transactions",
-                    // TermsOfService = new Uri("https://example.com/terms"),
-                    // Contact = new OpenApiContact
-                    // {
-                    //     Name = "Example Contact",
-                    //     Url = new Uri("https://example.com/contact")
-                    // },
-                    // License = new OpenApiLicense
-                    // {
-                    //     Name = "Example License",
-                    //     Url = new Uri("https://example.com/license")
-                    // }
+                    Description = "IVAS Transactions API to handle investment transactions and portfolios",
                 });
             });
         }
