@@ -2,8 +2,7 @@
 # IAM Role
 ################################################################################
 
-resource "aws_iam_role" "lambda_role" {
-  count              = 1
+resource "aws_iam_role" "transactions_lambda_role" {
   name               = "${local.transactions_lambda_name}-iam"
   assume_role_policy = <<EOF
 {
@@ -23,10 +22,9 @@ resource "aws_iam_role" "lambda_role" {
   tags               = local.default_tags
 }
 
-resource "aws_iam_role_policy" "lambda_policy" {
-  count  = 1
+resource "aws_iam_role_policy" "transactions_lambda_policy" {
   name   = "${local.transactions_lambda_name}-policy"
-  role   = aws_iam_role.lambda_role[0].name
+  role   = aws_iam_role.transactions_lambda_role.name
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -41,18 +39,22 @@ resource "aws_iam_role_policy" "lambda_policy" {
       "Effect": "Allow"
     },
     {
-      "Effect": "Allow",
-      "Action": [
-        "dynamodb:*" 
-      ],
-      "Resource": "*"
+        "Effect": "Allow",
+        "Action": [
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:CreateNetworkInterface",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DescribeInstances",
+        "ec2:AttachNetworkInterface"
+        ],
+        "Resource": "*"
     },
     {
       "Effect": "Allow",
       "Action": [
-        "ec2:*" 
+        "dynamodb:*" 
       ],
-      "Resource": "*"
+      "Resource": "${aws_dynamodb_table.transactions_dynamodb_table.arn}"
     },
     {
       "Effect": "Allow",
@@ -121,7 +123,7 @@ module "api_gateway" {
   create_routes_and_integrations = true
 
   integrations = {
-    
+
     "GET /ivas/api/transactions" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
@@ -185,9 +187,9 @@ module "transactions_lambda" {
   vpc_security_group_ids = [module.lambda_security_group.security_group_id]
 
   attach_policy_json = true
-  policy_json        = aws_iam_role_policy.lambda_policy[0].policy
+  policy_json        = aws_iam_role_policy.transactions_lambda_policy.policy
 
-  lambda_role = aws_iam_role.lambda_role[0].arn
+  lambda_role = aws_iam_role.transactions_lambda_role.arn
 
   tags = local.default_tags
 
@@ -279,7 +281,7 @@ module "lambda_security_group" {
 # Application Manager
 ################################################################################
 
-resource "aws_resourcegroups_group" "main" {
+resource "aws_resourcegroups_group" "ivas_app_resource_group" {
   name = "${local.transactions_resource_base_name}-resource-group"
 
   resource_query {
