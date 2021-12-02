@@ -56,7 +56,7 @@ namespace Ivas.Transactions.Api.Controllers
         public async Task<IActionResult> Get(long userId)
         {
             _logger.LogInformation(
-                $"TransactionsController - Requested Delete Transaction with parameters: UserId: { userId } ");
+                $"TransactionsController - Requested Get Many Transactions with parameters: UserId: { userId } ");
             
             var transactions = await _transactionService.GetByUserAsync(userId);
 
@@ -66,6 +66,9 @@ namespace Ivas.Transactions.Api.Controllers
         [HttpGet("{userId:long}/{transactionId}")]
         public async Task<IActionResult> Get(long userId, string transactionId)
         {
+            _logger.LogInformation(
+                $"TransactionsController - Requested Get Single Transaction with parameters: UserId: {userId} TransactionId: {transactionId} ");
+            
             var transaction = await _transactionService.GetSingleAsync(new TransactionBaseRequest()
             {
                 UserId = userId,
