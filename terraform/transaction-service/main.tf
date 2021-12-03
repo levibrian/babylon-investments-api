@@ -54,7 +54,7 @@ resource "aws_iam_role_policy" "transactions_lambda_policy" {
       "Action": [
         "dynamodb:*" 
       ],
-      "Resource": "${aws_dynamodb_table.transactions_dynamodb_table.arn}"
+      "Resource": "${module.dynamodb_table.dynamodb_table_arn}"
     },
     {
       "Effect": "Allow",
@@ -123,33 +123,33 @@ module "api_gateway" {
   create_routes_and_integrations = true
 
   integrations = {
-
     "GET /ivas/api/transactions" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
+      timeout_milliseconds   = 30000
     }
     "POST /ivas/api/transactions" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
-      timeout_milliseconds   = 12000
+      timeout_milliseconds   = 30000
     }
     "DELETE /ivas/api/transactions" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
-      timeout_milliseconds   = 12000
+      timeout_milliseconds   = 30000
     }
     "GET /ivas/api/portfolios" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
-      timeout_milliseconds   = 12000
+      timeout_milliseconds   = 30000
     }
   }
 
@@ -164,6 +164,8 @@ module "api_gateway" {
   default_stage_tags = local.default_tags
   vpc_link_tags      = local.default_tags
   tags               = local.default_tags
+
+  depends_on = [module.transactions_lambda]
 }
 
 ################################################################################
@@ -178,7 +180,8 @@ module "transactions_lambda" {
   description   = "Lambda to store and analyze an investment portfolio."
   handler       = "Ivas.Transactions.Api::Ivas.Transactions.Api.LambdaEntryPoint::FunctionHandlerAsync"
   runtime       = "dotnetcore3.1"
-  memory_size   = 256
+  memory_size   = 512
+  timeout       = 60
 
   create_package         = false
   local_existing_package = local.transactions_lambda_file_path
@@ -194,31 +197,34 @@ module "transactions_lambda" {
   tags = local.default_tags
 
   environment_variables = {
-    TRANSACTIONS_DYNAMO_DB_TABLE = aws_dynamodb_table.transactions_dynamodb_table.name
+    TRANSACTIONS_DYNAMO_DB_TABLE = module.dynamodb_table.dynamodb_table_id
+    USE_DEV_ENVIRONMENT          = false
   }
+
+  depends_on = [module.dynamodb_table]
 }
 
 ################################################################################
 # Dynamo DB
 ################################################################################
 
-resource "aws_dynamodb_table" "transactions_dynamodb_table" {
-  name           = local.transactions_dynamodb_table_name
-  billing_mode   = "PROVISIONED"
-  read_capacity  = 20
-  write_capacity = 20
-  hash_key       = "UserId"
-  range_key      = "TransactionId"
+module "dynamodb_table" {
+  source = "terraform-aws-modules/dynamodb-table/aws"
 
-  attribute {
-    name = "UserId"
-    type = "N"
-  }
+  name      = local.transactions_dynamodb_table_name
+  hash_key  = "UserId"
+  range_key = "TransactionId"
 
-  attribute {
-    name = "TransactionId"
-    type = "S"
-  }
+  attributes = [
+    {
+      name = "UserId"
+      type = "N"
+    },
+    {
+      name = "TransactionId"
+      type = "S"
+    }
+  ]
 
   tags = local.default_tags
 }
@@ -238,6 +244,7 @@ module "vpc" {
   public_subnets  = ["10.79.1.0/24", "10.79.2.0/24"]
   private_subnets = ["10.79.3.0/24", "10.79.4.0/24"]
 
+  enable_nat_gateway           = true
   create_database_subnet_group = false
 
   tags = local.default_tags

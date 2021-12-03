@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ivas.Transactions.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/ivas/api/[controller]")]
     [ApiController]
     public class TransactionsController : ControllerBase
     {
@@ -37,7 +37,7 @@ namespace Ivas.Transactions.Api.Controllers
             return Ok(operation);
         }
 
-        [HttpDelete("{userId:long}/{transactionId}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(long userId, string transactionId)
         {
             _logger.LogInformation(
@@ -63,7 +63,7 @@ namespace Ivas.Transactions.Api.Controllers
             return Ok(transactions);
         }
 
-        [HttpGet("{userId:long}/{transactionId}")]
+        [HttpGet]
         public async Task<IActionResult> Get(long userId, string transactionId)
         {
             _logger.LogInformation(

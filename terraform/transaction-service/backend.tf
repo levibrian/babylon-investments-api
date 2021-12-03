@@ -1,6 +1,4 @@
 terraform {
-  required_version = "~>0.15"
-
   backend "s3" {
     bucket  = "ivas-terraform-states"
     region  = "eu-west-1"

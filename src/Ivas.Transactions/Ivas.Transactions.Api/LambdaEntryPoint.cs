@@ -1,8 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.Lambda.APIGatewayEvents;
+using Amazon.Lambda.AspNetCoreServer.Internal;
+using Amazon.Lambda.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog.Context;
 
 namespace Ivas.Transactions.Api
 {
@@ -35,8 +39,7 @@ namespace Ivas.Transactions.Api
         protected override void Init(IWebHostBuilder builder)
         {
             builder
-                .UseStartup<Startup>()
-                .UseLambdaServer();
+                .UseStartup<Startup>();
         }
 
         /// <summary>
@@ -48,6 +51,14 @@ namespace Ivas.Transactions.Api
         /// <param name="builder"></param>
         protected override void Init(IHostBuilder builder)
         {
+        }
+        
+        protected override void MarshallRequest(InvokeFeatures features, APIGatewayHttpApiV2ProxyRequest apiGatewayRequest, ILambdaContext lambdaContext)
+        {
+            using (LogContext.PushProperty(nameof(lambdaContext.AwsRequestId), lambdaContext.AwsRequestId))
+            {
+                base.MarshallRequest(features, apiGatewayRequest, lambdaContext);
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ using Ivas.Transactions.Persistency.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace Ivas.Transactions.Persistency.Extensions
 {
@@ -38,7 +39,8 @@ namespace Ivas.Transactions.Persistency.Extensions
                     new TransactionRepository(
                         transactionsTableName,
                         s.GetRequiredService<IDynamoDBContext>(),
-                        s.GetRequiredService<IMapper>()));
+                        s.GetRequiredService<IMapper>(),
+                        s.GetRequiredService<ILogger<TransactionRepository>>()));
         }
         
         private static IServiceCollection RegisterMappers(this IServiceCollection serviceCollection)

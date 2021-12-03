@@ -7,26 +7,44 @@ using Ivas.Transactions.Domain.Contracts.Repositories;
 using Ivas.Transactions.Domain.Objects;
 using Ivas.Transactions.Persistency.Entities;
 using Ivas.Transactions.Persistency.Repositories.Base;
+using Microsoft.Extensions.Logging;
 
 namespace Ivas.Transactions.Persistency.Repositories
 {
     public class TransactionRepository : DynamoRepository<TransactionEntity>, ITransactionRepository
     {
         private readonly IMapper _mapper;
+
+        private readonly ILogger<TransactionRepository> _logger;
         
         public TransactionRepository(
             string tableName, 
             IDynamoDBContext dynamoDbContext,
-            IMapper mapper) : base(tableName, dynamoDbContext)
+            IMapper mapper,
+            ILogger<TransactionRepository> logger) : base(tableName, dynamoDbContext)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task Insert(Transaction transaction)
         {
-            var transactionEntity = _mapper.Map<Transaction, TransactionEntity>(transaction);
+            _logger.LogInformation($"Saving Transaction into DynamoDB Table: { _tableName }");
 
-            await SaveAsync(transactionEntity);
+            try
+            {
+                var transactionEntity = _mapper.Map<Transaction, TransactionEntity>(transaction);
+
+                await SaveAsync(transactionEntity);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error during saving transaction into dynamo db", e);
+                
+                throw;
+            }
+            
+            _logger.LogInformation("Successfully saved transaction into DynamoDB..");
         }
 
         public async Task Delete(Transaction transaction)

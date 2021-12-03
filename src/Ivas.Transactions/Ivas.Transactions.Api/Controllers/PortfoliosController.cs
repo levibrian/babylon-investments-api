@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ivas.Transactions.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/ivas/api/[controller]")]
     [ApiController]
     public class PortfoliosController : ControllerBase
     {

@@ -1,5 +1,6 @@
 using System;
 using Ivas.Transactions.Api.Logging;
+using Ivas.Transactions.Domain.Constants;
 using Ivas.Transactions.Injection.Injector;
 using Ivas.Transactions.Shared.Exceptions.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +18,19 @@ namespace Ivas.Transactions.Api
 {
     public class Startup
     {
+        private static bool IsDevEnvironment
+        {
+            get
+            {
+                var useDevEnvironment = Configuration.GetValue<string>(EnvironmentVariables.UseDevelopmentEnvironment)
+                                        ?? Environment.GetEnvironmentVariable(EnvironmentVariables.UseDevelopmentEnvironment);
+
+                return StringComparer.InvariantCultureIgnoreCase.Equals(
+                    useDevEnvironment,
+                    bool.TrueString);
+            }
+        }
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,23 +41,28 @@ namespace Ivas.Transactions.Api
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine($"Starting to configure dependency injection for IVAS Transactions API");
+            Console.WriteLine($"Starting to configure services for IVAS Transactions API");
             
             ServiceInjector.Configure(services, Configuration);
             
             services.AddControllers();
 
             services.AddLogging(logBuilder => logBuilder.AddDebug().AddSerilog(LoggerBuilder.Configure()));
-            
-            services.AddSwaggerGen(gen =>
+
+            if (IsDevEnvironment)
             {
-                gen.SwaggerDoc("v1", new OpenApiInfo()
+                services.AddSwaggerGen(gen =>
                 {
-                    Version = "v1",
-                    Title = "Ivas Transactions API",
-                    Description = "IVAS Transactions API to handle investment transactions and portfolios",
-                });
-            });
+                    gen.SwaggerDoc("v1", new OpenApiInfo()
+                    {
+                        Version = "v1",
+                        Title = "Ivas Transactions API",
+                        Description = "IVAS Transactions API to handle investment transactions and portfolios",
+                    });
+                });   
+            }
+
+            Console.WriteLine("Finished configuring services for IVAS Transactions API");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

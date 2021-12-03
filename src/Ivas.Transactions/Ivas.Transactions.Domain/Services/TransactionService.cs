@@ -67,8 +67,6 @@ namespace Ivas.Transactions.Domain.Services
             
             var domainObject = new TransactionCreate(dto);
 
-            _logger.LogInformation("Saving Transaction into DynamoDB..");
-            
             await _transactionRepository.Insert(domainObject);
             
             return Result.Ok(domainObject.TransactionId);

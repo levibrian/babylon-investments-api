@@ -6,9 +6,7 @@ namespace Ivas.Transactions.Domain.Objects
 {
     public class TransactionCreate : Transaction
     {
-        public override string TransactionId => string.IsNullOrEmpty(_transactionRequest.TransactionId)
-            ? Guid.NewGuid().ToString()
-            : _transactionRequest.TransactionId;
+        public override string TransactionId => _transactionRequest.TransactionId;
 
         public override long UserId => _transactionRequest.UserId;
 
@@ -29,6 +27,9 @@ namespace Ivas.Transactions.Domain.Objects
         public TransactionCreate(TransactionCreateDto transactionCreateDto)
         {
             _transactionRequest = transactionCreateDto ?? throw new ArgumentNullException(nameof(transactionCreateDto));
+
+            if (string.IsNullOrEmpty(_transactionRequest.TransactionId))
+                _transactionRequest.TransactionId = Guid.NewGuid().ToString();
         }
     }
 }

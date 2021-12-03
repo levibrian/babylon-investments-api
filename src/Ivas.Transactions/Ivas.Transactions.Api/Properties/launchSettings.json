@@ -20,7 +20,8 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "TRANSACTIONS_DYNAMO_DB_TABLE": "ivas-dev-transactions-table"
+        "TRANSACTIONS_DYNAMO_DB_TABLE": "ivas-dev-transactions-table",
+        "USE_DEV_ENVIRONMENT": "true"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
