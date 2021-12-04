@@ -230,7 +230,7 @@ module "dynamodb_table" {
 }
 
 ################################################################################
-# Supporting Resources
+# Network
 ################################################################################
 
 module "vpc" {
@@ -244,7 +244,6 @@ module "vpc" {
   public_subnets  = ["10.79.1.0/24", "10.79.2.0/24"]
   private_subnets = ["10.79.3.0/24", "10.79.4.0/24"]
 
-  enable_nat_gateway           = true
   create_database_subnet_group = false
 
   tags = local.default_tags
@@ -282,6 +281,25 @@ module "lambda_security_group" {
   number_of_computed_ingress_with_source_security_group_id = 1
 
   egress_rules = ["all-all"]
+}
+
+module "endpoints" {
+  source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+
+  vpc_id             = module.vpc.vpc_id
+  security_group_ids = [module.lambda_security_group.security_group_id]
+
+  endpoints = {
+    dynamodb = {
+      service         = "dynamodb"
+      service_type    = "Gateway"
+      route_table_ids = flatten([module.vpc.private_route_table_ids, module.vpc.public_route_table_ids])
+      policy          = data.aws_iam_policy_document.dynamodb_endpoint_policy.json
+      tags            = { Name = "dynamodb-vpc-endpoint" }
+    }
+  }
+
+  tags = local.default_tags
 }
 
 ################################################################################
