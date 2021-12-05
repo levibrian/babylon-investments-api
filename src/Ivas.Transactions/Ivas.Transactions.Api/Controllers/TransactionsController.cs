@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -36,7 +37,7 @@ namespace Ivas.Transactions.Api.Controllers
             
             return Ok(operation);
         }
-
+        
         [HttpDelete]
         public async Task<IActionResult> Delete(long userId, string transactionId)
         {

@@ -4,7 +4,7 @@ using Ivas.Transactions.Shared.Notifications;
 
 namespace Ivas.Transactions.Domain.Abstractions.Services
 {
-    public interface ICreatableAsyncService<in TDto> where TDto : Dto
+    public interface ICreatableAsyncService<in TDto>
     {
         /// <summary>
         /// Creates and persists a given entity in the database.

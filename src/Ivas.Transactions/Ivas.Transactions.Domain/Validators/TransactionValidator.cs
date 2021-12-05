@@ -1,4 +1,6 @@
-﻿using Ivas.Transactions.Domain.Dtos;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Objects;
 using Ivas.Transactions.Domain.Rules;
 using Ivas.Transactions.Shared.Notifications;
@@ -10,6 +12,8 @@ namespace Ivas.Transactions.Domain.Validators
     public interface ITransactionValidator : IValidator<TransactionDto>
     {
         Result Validate(TransactionCreateDto objectToValidate);
+
+        IEnumerable<Result> Validate(IEnumerable<TransactionCreateDto> objectsToValidate);
     }
 
     public class TransactionValidator : ITransactionValidator
@@ -26,6 +30,8 @@ namespace Ivas.Transactions.Domain.Validators
 
             return transactionRules.IsSatisfiedBy(objectToValidate);
         }
+
+        public IEnumerable<Result> Validate(IEnumerable<TransactionCreateDto> objectsToValidate) => objectsToValidate.Select(Validate);
 
         public Result Validate(TransactionDto objectToValidate)
         {
