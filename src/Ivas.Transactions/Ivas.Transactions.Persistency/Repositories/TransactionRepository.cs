@@ -47,25 +47,48 @@ namespace Ivas.Transactions.Persistency.Repositories
             _logger.LogInformation("Successfully saved transaction into DynamoDB..");
         }
 
+        public async Task InsertInBulk(IEnumerable<Transaction> transactionsToInsert)
+        {
+            _logger.LogInformation($"Saving Transaction into DynamoDB Table: { _tableName }");
+
+            var transactionEntities = _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionEntity>>(transactionsToInsert);
+
+            await SaveAsync(transactionEntities);
+            
+            _logger.LogInformation("Successfully saved transaction into DynamoDB..");
+        }
+        
         public async Task Delete(Transaction transaction)
         {
+            _logger.LogInformation($"Deleting Transaction with TransactionId: {transaction.TransactionId} from DynamoDB Table: { _tableName }");
+            
             var transactionEntity = _mapper.Map<Transaction, TransactionEntity>(transaction);
 
             await DeleteAsync(transactionEntity);
+            
+            _logger.LogInformation("Successfully deleted transaction from DynamoDB..");
         }
 
         public async Task<IEnumerable<Transaction>> GetByUserAsync(long userId)
         {
+            _logger.LogInformation($"Getting all transactions from user: {userId}");
+            
             var userTransactions = await QueryAsync(userId);
 
+            _logger.LogInformation($"Successfully fetched all transactions of user {userId}");
+            
             return _mapper
                 .Map<IEnumerable<TransactionEntity>, IEnumerable<Transaction>>(userTransactions);
         }
 
         public async Task<Transaction> GetByIdAsync(long userId, string transactionId)
         {
+            _logger.LogInformation($"Getting single transaction for: {userId} with TransactionId: {transactionId}");
+            
             var transaction = await QuerySingleAsync(userId, transactionId);
 
+            _logger.LogInformation($"Successfully fetched transaction {transactionId}..");
+            
             return _mapper
                 .Map<TransactionEntity, Transaction>(transaction);
         }

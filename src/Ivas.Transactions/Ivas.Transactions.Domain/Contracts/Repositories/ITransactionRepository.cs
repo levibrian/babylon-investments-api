@@ -13,6 +13,8 @@ namespace Ivas.Transactions.Domain.Contracts.Repositories
         
         Task Insert(Transaction transaction);
 
+        Task InsertInBulk(IEnumerable<Transaction> transactionsToInsert);
+
         Task Delete(Transaction transaction);
     }
 }

@@ -7,17 +7,19 @@ namespace Ivas.Transactions.Domain.Objects
 {
     public class TransactionSummary
     {
-        public long UserId => _transactions.FirstOrDefault().UserId;
+        public long UserId => _transactions?.FirstOrDefault()?.UserId ?? default;
 
-        public string Ticker => _transactions.FirstOrDefault().Ticker;
-        
-        public decimal Shares => 
-            BuyPositions
-                .Sum(x => x.Units);
+        public string Ticker => _transactions?.FirstOrDefault()?.Ticker;
+
+        public decimal Shares =>
+            BuyPositions.Sum(x => x.Units) - 
+            SellPositions.Sum(x => x.Units);
 
         public decimal TotalInvested => this.Shares * this.PricePerShare;
 
         public decimal RealizedDividends => CalculateRealizedDividends();
+
+        public decimal RealizedGains => CalculateRealizedGains();
 
         public decimal PricePerShare => 
             BuyPositions
@@ -30,6 +32,11 @@ namespace Ivas.Transactions.Domain.Objects
                 .Where(x => 
                     x.TransactionType == TransactionTypeEnum.Buy);
 
+        private IEnumerable<Transaction> SellPositions =>
+            _transactions
+                .Where(x =>
+                    x.TransactionType == TransactionTypeEnum.Sell);
+        
         private IEnumerable<Transaction> DividendPositions =>
             _transactions
                 .Where(x =>
@@ -50,6 +57,11 @@ namespace Ivas.Transactions.Domain.Objects
             return DividendPositions
                 .Sum(dividendPosition => 
                     dividendPosition.Units * dividendPosition.PricePerUnit);
+        }
+        
+        private decimal CalculateRealizedGains()
+        {
+            return 0;
         }
     }
 }
