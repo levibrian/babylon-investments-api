@@ -8,7 +8,7 @@ namespace Ivas.Transactions.Domain.Objects
     {
         public virtual string TransactionId { get; set; }
 
-        public virtual long UserId { get; set; }
+        public virtual string UserId { get; set; }
         
         public virtual string Ticker { get; set; }
 

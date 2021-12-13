@@ -7,7 +7,7 @@ namespace Ivas.Transactions.Domain.Objects
 {
     public class TransactionSummary
     {
-        public long UserId => _transactions?.FirstOrDefault()?.UserId ?? default;
+        public string UserId => _transactions?.FirstOrDefault()?.UserId ?? default;
 
         public string Ticker => _transactions?.FirstOrDefault()?.Ticker;
 

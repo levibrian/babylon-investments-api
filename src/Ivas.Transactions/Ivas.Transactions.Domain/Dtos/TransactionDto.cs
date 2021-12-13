@@ -7,8 +7,10 @@ namespace Ivas.Transactions.Domain.Dtos
     public class TransactionDto : Dto
     {
         public string TransactionId { get; set; }
+
+        public string ClientIdentifier { get; set; }
         
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         
         public string Ticker { get; set; }
         

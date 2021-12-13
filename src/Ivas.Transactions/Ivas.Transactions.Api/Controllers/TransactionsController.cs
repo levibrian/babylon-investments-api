@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using Ivas.Transactions.Api.Constants;
+using Ivas.Transactions.Api.Controllers.Base;
+using Ivas.Transactions.Api.Filters;
+using Ivas.Transactions.Domain.Cryptography;
 using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Requests;
 using Ivas.Transactions.Domain.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 // ReSharper disable All
@@ -14,15 +19,17 @@ namespace Ivas.Transactions.Api.Controllers
 {
     [Route("/ivas/api/[controller]")]
     [ApiController]
-    public class TransactionsController : ControllerBase
+    [IvasAuthorize]
+    public class TransactionsController : IvasController
     {
         private readonly ITransactionService _transactionService;
 
         private readonly ILogger<TransactionsController> _logger;
 
         public TransactionsController(
-            ITransactionService transactionService, 
-            ILogger<TransactionsController> logger)
+            ITransactionService transactionService,
+            IAesCipher aesCipher,
+            ILogger<TransactionsController> logger) : base (aesCipher)
         {
             _transactionService = transactionService ?? throw new ArgumentNullException(nameof(transactionService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -32,14 +39,14 @@ namespace Ivas.Transactions.Api.Controllers
         public async Task<IActionResult> Create([FromBody] TransactionCreateDto createTransactionDto)
         {
             _logger.LogInformation($"TransactionsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionDto) }");
-            
+
             var operation = await _transactionService.CreateAsync(createTransactionDto);
             
             return Ok(operation);
         }
         
         [HttpDelete]
-        public async Task<IActionResult> Delete(long userId, string transactionId)
+        public async Task<IActionResult> Delete(string userId, string transactionId)
         {
             _logger.LogInformation(
                 $"TransactionsController - Requested Delete Transaction with parameters: UserId: {userId} TransactionId: {transactionId} ");
@@ -53,8 +60,8 @@ namespace Ivas.Transactions.Api.Controllers
             return Ok(operation);
         }
 
-        [HttpGet("{userId:long}")]
-        public async Task<IActionResult> Get(long userId)
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> Get(string userId)
         {
             _logger.LogInformation(
                 $"TransactionsController - Requested Get Many Transactions with parameters: UserId: { userId } ");
@@ -65,7 +72,7 @@ namespace Ivas.Transactions.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(long userId, string transactionId)
+        public async Task<IActionResult> Get(string userId, string transactionId)
         {
             _logger.LogInformation(
                 $"TransactionsController - Requested Get Single Transaction with parameters: UserId: {userId} TransactionId: {transactionId} ");

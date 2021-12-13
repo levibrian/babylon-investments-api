@@ -20,7 +20,7 @@ namespace Ivas.Transactions.Domain.Services
         ICreatableAsyncService<TransactionCreateDto>, 
         IDeletableAsyncService<TransactionDeleteDto>
     {
-        Task<IEnumerable<TransactionDto>> GetByUserAsync(long userId);
+        Task<IEnumerable<TransactionDto>> GetByUserAsync(string userId);
 
         Task<TransactionDto> GetSingleAsync(TransactionBaseRequest transactionRequest);
     }
@@ -106,7 +106,7 @@ namespace Ivas.Transactions.Domain.Services
             return Result.Ok(transactionToDelete.TransactionId);
         }
 
-        public async Task<IEnumerable<TransactionDto>> GetByUserAsync(long userId)
+        public async Task<IEnumerable<TransactionDto>> GetByUserAsync(string userId)
         {
             var userTransactions =
                 (await _transactionRepository.GetByUserAsync(userId)).OrderByDescending(x => x.Date);

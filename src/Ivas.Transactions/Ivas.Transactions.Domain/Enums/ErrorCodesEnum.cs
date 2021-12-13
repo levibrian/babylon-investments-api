@@ -7,8 +7,8 @@ namespace Ivas.Transactions.Domain.Enums
         [Description("Ticker is not provided.")]
         TickerNotProvided = -100001,
         
-        [Description("UserId is not provided. Please enter a valid value.")]
-        UserIdNotPositive,
+        [Description("The User Id provided is not valid. Please provide a valid GUID.")]
+        UserIdProvidedNotValid,
         
         [Description("Ticker provided is not valid.")]
         TickerNotValid,
@@ -22,7 +22,7 @@ namespace Ivas.Transactions.Domain.Enums
         [Description("Price is not positive. Please enter a valid price.")]
         PriceNotPositive,
         
-        [Description("The GUID provided is not valid. Please provide a valid GUID.")]
-        GuidProvidedNotValid
+        [Description("The Transaction Id provided is not valid. Please provide a valid GUID.")]
+        TransactionIdProvidedNotValid
     }
 }

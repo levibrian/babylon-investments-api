@@ -16,8 +16,8 @@ namespace Ivas.Transactions.Api.Controllers
             _portfolioService = portfolioService ?? throw new ArgumentNullException(nameof(portfolioService));
         }
         
-        [HttpGet("{userId:long}")]
-        public async Task<IActionResult> Get(long userId)
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> Get(string userId)
         {
             var userPortfolio = await _portfolioService
                 .GetPortfolioByUser(userId);

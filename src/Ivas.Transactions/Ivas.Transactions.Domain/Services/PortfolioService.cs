@@ -11,7 +11,7 @@ namespace Ivas.Transactions.Domain.Services
 {
     public interface IPortfolioService
     {
-        Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(long userId);
+        Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(string userId);
     }
     
     public class PortfolioService : IPortfolioService
@@ -28,7 +28,7 @@ namespace Ivas.Transactions.Domain.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         
-        public async Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(long userId)
+        public async Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(string userId)
         {
             var userTransactions = (await _transactionRepository
                     .GetByUserAsync(userId))

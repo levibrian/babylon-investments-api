@@ -80,19 +80,7 @@ resource "aws_lambda_permission" "lambda_apigateway_trigger" {
   action        = "lambda:InvokeFunction"
   function_name = module.transactions_lambda.lambda_function_arn
   principal     = "apigateway.amazonaws.com"
-
-  #--------------------------------------------------------------------------------
-  # Per deployment
-  #--------------------------------------------------------------------------------
-  # The /*/*  grants access from any method on any resource within the deployment.
   source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-
-  #--------------------------------------------------------------------------------
-  # Per API
-  #--------------------------------------------------------------------------------
-  # The /*/*/* part allows invocation from any stage, method and resource path
-  # within API Gateway REST API.
-  #source_arn    = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*/*"
 }
 
 ################################################################################
@@ -105,7 +93,7 @@ module "api_gateway" {
   name          = local.transactions_api_gateway_name
   description   = "IVAS Api Gateway."
   protocol_type = "HTTP"
-
+  
   cors_configuration = {
     allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
     allow_methods = ["*"]

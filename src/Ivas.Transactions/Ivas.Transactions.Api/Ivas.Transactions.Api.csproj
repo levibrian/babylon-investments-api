@@ -20,4 +20,7 @@
     <ProjectReference Include="..\Ivas.Transactions.Domain\Ivas.Transactions.Domain.csproj" />
     <ProjectReference Include="..\Ivas.Transactions.Injection\Ivas.Transactions.Injection.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\Base" />
+  </ItemGroup>
 </Project>

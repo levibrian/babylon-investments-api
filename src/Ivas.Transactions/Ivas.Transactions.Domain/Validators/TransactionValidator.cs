@@ -23,7 +23,6 @@ namespace Ivas.Transactions.Domain.Validators
             var transactionRules = 
                 new IsTickerProvided()
                 .And(new IsTickerValid())
-                .And(new IsUserIdPositive())
                 .And(new IsDateNotFuture())
                 .And(new AreUnitsPositive())
                 .And(new IsPricePositive());
@@ -36,8 +35,8 @@ namespace Ivas.Transactions.Domain.Validators
         public Result Validate(TransactionDto objectToValidate)
         {
             var validationRules =
-                new IsGuidValid()
-                .And(new IsUserIdPositive());
+                new IsTransactionIdValid()
+                .And(new IsUserIdValid());
 
             return validationRules.IsSatisfiedBy(objectToValidate);
         }

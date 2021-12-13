@@ -8,7 +8,7 @@ namespace Ivas.Transactions.Domain.Objects
     {
         public override string TransactionId => _transactionRequest.TransactionId;
 
-        public override long UserId => _transactionRequest.UserId;
+        public override string UserId => _transactionRequest.UserId;
 
         public override string Ticker => _transactionRequest.Ticker.ToUpperInvariant();
 
@@ -28,8 +28,7 @@ namespace Ivas.Transactions.Domain.Objects
         {
             _transactionRequest = transactionCreateDto ?? throw new ArgumentNullException(nameof(transactionCreateDto));
 
-            if (string.IsNullOrEmpty(_transactionRequest.TransactionId))
-                _transactionRequest.TransactionId = Guid.NewGuid().ToString();
+            if (string.IsNullOrEmpty(_transactionRequest.TransactionId)) _transactionRequest.TransactionId = Guid.NewGuid().ToString();
         }
     }
 }

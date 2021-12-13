@@ -69,7 +69,7 @@ namespace Ivas.Transactions.Persistency.Repositories
             _logger.LogInformation("Successfully deleted transaction from DynamoDB..");
         }
 
-        public async Task<IEnumerable<Transaction>> GetByUserAsync(long userId)
+        public async Task<IEnumerable<Transaction>> GetByUserAsync(string userId)
         {
             _logger.LogInformation($"Getting all transactions from user: {userId}");
             
@@ -81,7 +81,7 @@ namespace Ivas.Transactions.Persistency.Repositories
                 .Map<IEnumerable<TransactionEntity>, IEnumerable<Transaction>>(userTransactions);
         }
 
-        public async Task<Transaction> GetByIdAsync(long userId, string transactionId)
+        public async Task<Transaction> GetByIdAsync(string userId, string transactionId)
         {
             _logger.LogInformation($"Getting single transaction for: {userId} with TransactionId: {transactionId}");
             
