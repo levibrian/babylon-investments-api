@@ -8,14 +8,32 @@ namespace Ivas.Transactions.Domain.Cryptography
 {
     public interface IAesCipher
     {
-        byte[] EncryptStringToBytes(string plainText, byte[] iv);
+        string Encrypt(string textToEncrypt, byte[] iv);
 
-        string DecryptStringFromBytes(byte[] cipherText, byte[] iv);
+        string Decrypt(string encryptedText, byte[] iv);
     }
-    
-    public class AesCipher
+
+    public class AesCipher : IAesCipher
     {
-        public byte[] EncryptStringToBytes(string plainText, byte[] iv)
+        public string Encrypt(string textToEncrypt, byte[] iv)
+        {
+            var encryptedHash = EncryptStringToBytes(textToEncrypt, iv);
+
+            var encryptedText = Convert.ToBase64String(encryptedHash);
+
+            return encryptedText;
+        }
+
+        public string Decrypt(string encryptedText, byte[] iv)
+        {
+            var encryptedHash = Convert.FromBase64String(encryptedText);
+
+            var decryptedText = DecryptStringFromBytes(encryptedHash, iv);
+
+            return decryptedText;
+        }
+        
+        private byte[] EncryptStringToBytes(string plainText, byte[] iv)
         {
             // Check arguments.
             if (plainText == null || plainText.Length <= 0)
@@ -26,8 +44,8 @@ namespace Ivas.Transactions.Domain.Cryptography
             // Create an AesManaged object
             // with the specified key and IV.
             using var aesAlg = new AesManaged();
-            
-            aesAlg.Key = CipherVariables.Key.FromStringToByteArray();
+
+            aesAlg.Key = Convert.FromBase64String(CipherVariables.Key);
             aesAlg.IV = iv;
 
             // Create an encryptor to perform the stream transform.
@@ -37,20 +55,20 @@ namespace Ivas.Transactions.Domain.Cryptography
             using var msEncrypt = new MemoryStream();
 
             using var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-            
+
             using (var swEncrypt = new StreamWriter(csEncrypt))
             {
                 //Write all data to the stream.
                 swEncrypt.Write(plainText);
             }
-            
+
             var encrypted = msEncrypt.ToArray();
 
             // Return the encrypted bytes from the memory stream.
             return encrypted;
         }
 
-        public string DecryptStringFromBytes(byte[] cipherText, byte[] iv)
+        private string DecryptStringFromBytes(byte[] cipherText, byte[] iv)
         {
             // Check arguments.
             if (cipherText == null || cipherText.Length <= 0)
@@ -65,7 +83,7 @@ namespace Ivas.Transactions.Domain.Cryptography
             // Create an AesManaged object
             // with the specified key and IV.
             using var aesAlg = new AesManaged();
-            
+
             aesAlg.Key = CipherVariables.Key.FromStringToByteArray();
             aesAlg.IV = iv;
 
@@ -76,7 +94,7 @@ namespace Ivas.Transactions.Domain.Cryptography
             using var msDecrypt = new MemoryStream(cipherText);
             using var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
             using var srDecrypt = new StreamReader(csDecrypt);
-            
+
             // Read the decrypted bytes from the decrypting stream
             // and place them in a string.
             plaintext = srDecrypt.ReadToEnd();

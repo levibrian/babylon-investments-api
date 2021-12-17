@@ -17,10 +17,10 @@ using Microsoft.Extensions.Logging;
 namespace Ivas.Transactions.Domain.Services
 {
     public interface ITransactionService :
-        ICreatableAsyncService<TransactionCreateDto>, 
-        IDeletableAsyncService<TransactionDeleteDto>
+        ICreatableAsyncService<TransactionSubmitDto>, 
+        IDeletableAsyncService<TransactionSubmitDto>
     {
-        Task<IEnumerable<TransactionDto>> GetByUserAsync(string userId);
+        Task<IEnumerable<TransactionDto>> GetByClientAndUserAsync(string clientIdentifier, string userId);
 
         Task<TransactionDto> GetSingleAsync(TransactionBaseRequest transactionRequest);
     }
@@ -52,7 +52,7 @@ namespace Ivas.Transactions.Domain.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<Result> CreateAsync(TransactionCreateDto dto)
+        public async Task<Result> CreateAsync(TransactionSubmitDto dto)
         {
             _logger.LogInformation("TransactionService - Called method CreateAsync");
             
@@ -72,11 +72,11 @@ namespace Ivas.Transactions.Domain.Services
             return Result.Ok(domainObject.TransactionId);
         }
 
-        public async Task<Result> DeleteAsync(TransactionDeleteDto entity)
+        public async Task<Result> DeleteAsync(TransactionSubmitDto entity)
         {
             _logger.LogInformation("TransactionService - Called method DeleteAsync");
             
-            var isEntityValid = _transactionValidator.Validate(entity);
+            var isEntityValid = _transactionValidator.ValidateDelete(entity);
             
             _logger.LogInformation($"Validation Result: { JsonSerializer.Serialize(isEntityValid) }");
             
@@ -90,7 +90,7 @@ namespace Ivas.Transactions.Domain.Services
             }
 
             var transactionToDelete =
-                await _transactionRepository.GetByIdAsync(entity.UserId, entity.TransactionId);
+                await _transactionRepository.GetByIdAsync(entity.ClientIdentifier, entity.TransactionId);
 
             _logger.LogInformation($"Transaction to delete: { JsonSerializer.Serialize(transactionToDelete) }");
             
@@ -106,18 +106,20 @@ namespace Ivas.Transactions.Domain.Services
             return Result.Ok(transactionToDelete.TransactionId);
         }
 
-        public async Task<IEnumerable<TransactionDto>> GetByUserAsync(string userId)
+        public async Task<IEnumerable<TransactionDto>> GetByClientAndUserAsync(string clientIdentifier, string userId)
         {
-            var userTransactions =
-                (await _transactionRepository.GetByUserAsync(userId)).OrderByDescending(x => x.Date);
+            var clientTransactions =
+                (await _transactionRepository.GetByClientAsync(clientIdentifier)).OrderByDescending(x => x.Date);
 
+            var userTransactions = clientTransactions.Where(x => x.UserId.Equals(userId));
+            
             return _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionDto>>(userTransactions);
         }
 
         public async Task<TransactionDto> GetSingleAsync(TransactionBaseRequest transactionRequest)
         {
             var transactionToGet =
-                await _transactionRepository.GetByIdAsync(transactionRequest.UserId, transactionRequest.TransactionId);
+                await _transactionRepository.GetByIdAsync(transactionRequest.ClientIdentifier, transactionRequest.TransactionId);
 
             return _mapper.Map<Transaction, TransactionDto>(transactionToGet);
         }

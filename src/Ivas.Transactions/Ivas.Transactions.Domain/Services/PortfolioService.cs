@@ -31,7 +31,7 @@ namespace Ivas.Transactions.Domain.Services
         public async Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(string userId)
         {
             var userTransactions = (await _transactionRepository
-                    .GetByUserAsync(userId))
+                    .GetByClientAsync(userId))
                 .GroupBy(x => x.Ticker)
                 .ToDictionary(
                     x => x.Key, 

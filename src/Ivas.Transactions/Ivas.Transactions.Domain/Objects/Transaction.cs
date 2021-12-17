@@ -8,6 +8,10 @@ namespace Ivas.Transactions.Domain.Objects
     {
         public virtual string TransactionId { get; set; }
 
+        public virtual string ClientIdentifier { get; set; }
+
+        public string ClientIdentifierIv { get; set; }
+        
         public virtual string UserId { get; set; }
         
         public virtual string Ticker { get; set; }

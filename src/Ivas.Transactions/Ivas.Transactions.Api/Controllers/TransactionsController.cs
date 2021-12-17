@@ -36,9 +36,11 @@ namespace Ivas.Transactions.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TransactionCreateDto createTransactionDto)
+        public async Task<IActionResult> Create([FromBody] TransactionSubmitDto createTransactionDto)
         {
             _logger.LogInformation($"TransactionsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionDto) }");
+
+            createTransactionDto.ClientIdentifier = ClientIdentifier;
 
             var operation = await _transactionService.CreateAsync(createTransactionDto);
             
@@ -51,9 +53,10 @@ namespace Ivas.Transactions.Api.Controllers
             _logger.LogInformation(
                 $"TransactionsController - Requested Delete Transaction with parameters: UserId: {userId} TransactionId: {transactionId} ");
             
-            var operation = await _transactionService.DeleteAsync(new TransactionDeleteDto()
+            var operation = await _transactionService.DeleteAsync(new TransactionSubmitDto()
             {
                 UserId = userId,
+                ClientIdentifier = ClientIdentifier,
                 TransactionId = transactionId
             });
 
@@ -66,21 +69,21 @@ namespace Ivas.Transactions.Api.Controllers
             _logger.LogInformation(
                 $"TransactionsController - Requested Get Many Transactions with parameters: UserId: { userId } ");
             
-            var transactions = await _transactionService.GetByUserAsync(userId);
+            var transactions = await _transactionService.GetByClientAndUserAsync(ClientIdentifier, userId);
 
             return Ok(transactions);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(string userId, string transactionId)
+        [HttpGet("{transactionId}")]
+        public async Task<IActionResult> Get(Guid transactionId)
         {
             _logger.LogInformation(
-                $"TransactionsController - Requested Get Single Transaction with parameters: UserId: {userId} TransactionId: {transactionId} ");
+                $"TransactionsController - Requested Get Single Transaction with parameters: TransactionId: {transactionId} ");
             
             var transaction = await _transactionService.GetSingleAsync(new TransactionBaseRequest()
             {
-                UserId = userId,
-                TransactionId = transactionId
+                ClientIdentifier = ClientIdentifier,
+                TransactionId = transactionId.ToString()
             });
 
             return Ok(transaction);

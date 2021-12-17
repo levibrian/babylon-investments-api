@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Ivas.Transactions.Domain.Cryptography;
 using Ivas.Transactions.Domain.Mappers;
 using Ivas.Transactions.Domain.Services;
 using Ivas.Transactions.Domain.Validators;
@@ -13,6 +14,7 @@ namespace Ivas.Transactions.Domain.Extensions
         {
             return serviceCollection
                 .RegisterServices()
+                .RegisterOther()
                 .RegisterMappers();
 
         }
@@ -23,6 +25,12 @@ namespace Ivas.Transactions.Domain.Extensions
                 .AddTransient<ITransactionValidator, TransactionValidator>()
                 .AddTransient<ITransactionService, TransactionService>()
                 .AddTransient<IPortfolioService, PortfolioService>();
+        }
+
+        private static IServiceCollection RegisterOther(this IServiceCollection serviceCollection)
+        {
+            return serviceCollection
+                .AddTransient<IAesCipher, AesCipher>();
         }
         
         private static IServiceCollection RegisterMappers(this IServiceCollection serviceCollection)

@@ -7,9 +7,9 @@ using Ivas.Transactions.Shared.Specifications.Interfaces;
 
 namespace Ivas.Transactions.Domain.Rules
 {
-    public class IsDateNotFuture : IResultedSpecification<TransactionCreateDto>
+    public class IsDateNotFuture : IResultedSpecification<TransactionSubmitDto>
     {
-        public Result IsSatisfiedBy(TransactionCreateDto entityToEvaluate)
+        public Result IsSatisfiedBy(TransactionSubmitDto entityToEvaluate)
         {
             var expression = entityToEvaluate.Date.Date == DateTime.UtcNow.Date || 
                              entityToEvaluate.Date.Date < DateTime.UtcNow.Date;

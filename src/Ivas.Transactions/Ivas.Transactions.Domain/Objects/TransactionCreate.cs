@@ -8,6 +8,8 @@ namespace Ivas.Transactions.Domain.Objects
     {
         public override string TransactionId => _transactionRequest.TransactionId;
 
+        public override string ClientIdentifier => _transactionRequest.ClientIdentifier;
+
         public override string UserId => _transactionRequest.UserId;
 
         public override string Ticker => _transactionRequest.Ticker.ToUpperInvariant();
@@ -22,9 +24,14 @@ namespace Ivas.Transactions.Domain.Objects
 
         public override TransactionTypeEnum TransactionType => _transactionRequest.TransactionType;
         
-        private readonly TransactionCreateDto _transactionRequest;
         
-        public TransactionCreate(TransactionCreateDto transactionCreateDto)
+        private readonly TransactionSubmitDto _transactionRequest;
+
+        public TransactionCreate()
+        {
+        }
+        
+        public TransactionCreate(TransactionSubmitDto transactionCreateDto)
         {
             _transactionRequest = transactionCreateDto ?? throw new ArgumentNullException(nameof(transactionCreateDto));
 

@@ -2,7 +2,10 @@
 {
     public static class CipherVariables
     {
-        public const string Key = "";
-        public const string Iv = "";
+        /// <summary>
+        /// TODO: Move this key to an S3 bucket and store it there.
+        /// </summary>
+        public const string Key = "GAabKUziTp/+QY/YkID1IG9ZDxasRZsCxnnNjVfugDQ=";
+        public const string Iv = "GEEZjVgyrXdESbtlMNCAQQ==";
     }
 }

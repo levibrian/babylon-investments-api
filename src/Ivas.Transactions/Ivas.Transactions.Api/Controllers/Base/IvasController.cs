@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Ivas.Transactions.Api.Constants;
+using Ivas.Transactions.Domain.Constants;
 using Ivas.Transactions.Domain.Cryptography;
-using Ivas.Transactions.Shared.Extensions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ivas.Transactions.Api.Controllers.Base
@@ -14,17 +9,17 @@ namespace Ivas.Transactions.Api.Controllers.Base
     [Controller]
     public class IvasController : ControllerBase
     {
-        protected string RapidApiUser => GetRapidApiUserFromHeaders();
-
-        protected string RapidApiKey => GetRapidApiKeyFromHeaders();
-        
         protected string ClientIdentifier => HashClientIdentifier();
 
-        protected readonly IAesCipher AesCipher;
+        private string RapidApiUser => GetRapidApiUserFromHeaders();
+     
+        private string RapidApiKey => GetRapidApiKeyFromHeaders();
+        
+        private readonly IAesCipher _aesCipher;
         
         public IvasController(IAesCipher aesCipher)
         {
-            AesCipher = aesCipher ?? throw new ArgumentNullException(nameof(aesCipher));
+            _aesCipher = aesCipher ?? throw new ArgumentNullException(nameof(aesCipher));
         }
         
         private string GetRapidApiUserFromHeaders()
@@ -45,13 +40,10 @@ namespace Ivas.Transactions.Api.Controllers.Base
         {
             var unhashedClientIdentifier = $"{RapidApiUser}-{RapidApiKey}";
 
-            using var aesManaged = new AesManaged();
+            var ivArray = Convert.FromBase64String(CipherVariables.Iv);
             
-            aesManaged.GenerateIV();
-            
-            var hashedClientIdentifier = AesCipher
-                .EncryptStringToBytes(unhashedClientIdentifier, aesManaged.IV)
-                .FromByteArrayToString();
+            var hashedClientIdentifier = _aesCipher
+                .Encrypt(unhashedClientIdentifier, ivArray);
             
             return hashedClientIdentifier;
         }

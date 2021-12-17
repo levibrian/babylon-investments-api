@@ -6,9 +6,9 @@ using Ivas.Transactions.Shared.Specifications.Interfaces;
 
 namespace Ivas.Transactions.Domain.Rules
 {
-    public class AreUnitsPositive : IResultedSpecification<TransactionCreateDto>
+    public class AreUnitsPositive : IResultedSpecification<TransactionSubmitDto>
     {
-        public Result IsSatisfiedBy(TransactionCreateDto entityToEvaluate)
+        public Result IsSatisfiedBy(TransactionSubmitDto entityToEvaluate)
         {
             var expression = entityToEvaluate.Units > 0;
 

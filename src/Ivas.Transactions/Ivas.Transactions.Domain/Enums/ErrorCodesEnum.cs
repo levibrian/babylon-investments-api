@@ -7,12 +7,15 @@ namespace Ivas.Transactions.Domain.Enums
         [Description("Ticker is not provided.")]
         TickerNotProvided = -100001,
         
-        [Description("The User Id provided is not valid. Please provide a valid GUID.")]
-        UserIdProvidedNotValid,
-        
         [Description("Ticker provided is not valid.")]
         TickerNotValid,
         
+        [Description("The User Id provided is not valid. Please provide a valid GUID.")]
+        UserIdProvidedNotValid,
+        
+        [Description("The Client Identifier is not provided.")]
+        ClientIdentifierNotProvided,
+
         [Description("Date provided is a future Date which is not valid.")]
         DateIsFutureDate,
         

@@ -13,7 +13,7 @@ using Ivas.Transactions.Shared.Notifications;
 namespace Ivas.Transactions.Domain.Services
 {
     public interface ITransactionsInBulkService : 
-        ICreatableAsyncService<IEnumerable<TransactionCreateDto>>
+        ICreatableAsyncService<IEnumerable<TransactionSubmitDto>>
     {
         
     }
@@ -32,7 +32,7 @@ namespace Ivas.Transactions.Domain.Services
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));
         }
         
-        public async Task<Result> CreateAsync(IEnumerable<TransactionCreateDto> entity)
+        public async Task<Result> CreateAsync(IEnumerable<TransactionSubmitDto> entity)
         {
             var validationResults = _transactionValidator.Validate(entity);
             

@@ -69,23 +69,23 @@ namespace Ivas.Transactions.Persistency.Repositories
             _logger.LogInformation("Successfully deleted transaction from DynamoDB..");
         }
 
-        public async Task<IEnumerable<Transaction>> GetByUserAsync(string userId)
+        public async Task<IEnumerable<Transaction>> GetByClientAsync(string clientIdentifier)
         {
-            _logger.LogInformation($"Getting all transactions from user: {userId}");
+            _logger.LogInformation($"Getting all transactions from user: {clientIdentifier}");
             
-            var userTransactions = await QueryAsync(userId);
+            var userTransactions = await QueryAsync(clientIdentifier);
 
-            _logger.LogInformation($"Successfully fetched all transactions of user {userId}");
+            _logger.LogInformation($"Successfully fetched all transactions of user {clientIdentifier}");
             
             return _mapper
                 .Map<IEnumerable<TransactionEntity>, IEnumerable<Transaction>>(userTransactions);
         }
 
-        public async Task<Transaction> GetByIdAsync(string userId, string transactionId)
+        public async Task<Transaction> GetByIdAsync(string clientIdentifier, string transactionId)
         {
-            _logger.LogInformation($"Getting single transaction for: {userId} with TransactionId: {transactionId}");
+            _logger.LogInformation($"Getting single transaction for: {clientIdentifier} with TransactionId: {transactionId}");
             
-            var transaction = await QuerySingleAsync(userId, transactionId);
+            var transaction = await QuerySingleAsync(clientIdentifier, transactionId);
 
             _logger.LogInformation($"Successfully fetched transaction {transactionId}..");
             

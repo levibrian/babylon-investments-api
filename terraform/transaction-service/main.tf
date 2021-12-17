@@ -80,7 +80,7 @@ resource "aws_lambda_permission" "lambda_apigateway_trigger" {
   action        = "lambda:InvokeFunction"
   function_name = module.transactions_lambda.lambda_function_arn
   principal     = "apigateway.amazonaws.com"
-  source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
+  source_arn    = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
 }
 
 ################################################################################
@@ -93,7 +93,7 @@ module "api_gateway" {
   name          = local.transactions_api_gateway_name
   description   = "IVAS Api Gateway."
   protocol_type = "HTTP"
-  
+
   cors_configuration = {
     allow_headers = ["content-type", "x-amz-date", "authorization", "x-api-key", "x-amz-security-token", "x-amz-user-agent"]
     allow_methods = ["*"]
@@ -200,13 +200,13 @@ module "dynamodb_table" {
   source = "terraform-aws-modules/dynamodb-table/aws"
 
   name      = local.transactions_dynamodb_table_name
-  hash_key  = "UserId"
+  hash_key  = "ClientIdentifier"
   range_key = "TransactionId"
 
   attributes = [
     {
-      name = "UserId"
-      type = "N"
+      name = "ClientIdentifier"
+      type = "S"
     },
     {
       name = "TransactionId"

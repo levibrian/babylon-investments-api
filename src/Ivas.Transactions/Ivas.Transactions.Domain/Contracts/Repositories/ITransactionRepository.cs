@@ -8,9 +8,9 @@ namespace Ivas.Transactions.Domain.Contracts.Repositories
 {
     public interface ITransactionRepository
     {
-        Task<Transaction> GetByIdAsync(string userId, string transactionId);
+        Task<Transaction> GetByIdAsync(string clientIdentifier, string transactionId);
 
-        Task<IEnumerable<Transaction>> GetByUserAsync(string userId);
+        Task<IEnumerable<Transaction>> GetByClientAsync(string clientIdentifier);
         
         Task Insert(Transaction transaction);
 

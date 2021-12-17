@@ -28,7 +28,7 @@ namespace Ivas.Transactions.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] IEnumerable<TransactionCreateDto> transactionsToCreate)
+        public async Task<IActionResult> Post([FromBody] IEnumerable<TransactionSubmitDto> transactionsToCreate)
         {
             _logger.LogInformation("TransactionsInBulkController - Called HttpPost Create Endpoint");
             

@@ -13,7 +13,7 @@
         public static string FromByteArrayToString(this byte[] arrayToStringify)
         {
             // From byte array to string
-            var stringToReturn = System.Text.Encoding.UTF8.GetString(arrayToStringify, 0, arrayToStringify.Length);
+            var stringToReturn = System.Text.Encoding.UTF8.GetString(arrayToStringify);
 
             return stringToReturn;
         }

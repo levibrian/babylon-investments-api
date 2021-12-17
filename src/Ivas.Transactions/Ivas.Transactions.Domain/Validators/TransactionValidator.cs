@@ -9,34 +9,35 @@ using Ivas.Transactions.Shared.Extensions;
 
 namespace Ivas.Transactions.Domain.Validators
 {
-    public interface ITransactionValidator : IValidator<TransactionDto>
+    public interface ITransactionValidator : IValidator<TransactionSubmitDto>
     {
-        Result Validate(TransactionCreateDto objectToValidate);
+        Result ValidateDelete(TransactionSubmitDto objectToValidate);
 
-        IEnumerable<Result> Validate(IEnumerable<TransactionCreateDto> objectsToValidate);
+        IEnumerable<Result> Validate(IEnumerable<TransactionSubmitDto> objectsToValidate);
     }
 
     public class TransactionValidator : ITransactionValidator
     {
-        public Result Validate(TransactionCreateDto objectToValidate)
+        public Result Validate(TransactionSubmitDto objectToValidate)
         {
             var transactionRules = 
                 new IsTickerProvided()
-                .And(new IsTickerValid())
-                .And(new IsDateNotFuture())
-                .And(new AreUnitsPositive())
-                .And(new IsPricePositive());
+                    .And(new IsTickerValid())
+                    .And(new IsUserIdValid())
+                    .And(new IsClientIdentifierProvided())
+                    .And(new IsDateNotFuture())
+                    .And(new AreUnitsPositive())
+                    .And(new IsPricePositive());
 
             return transactionRules.IsSatisfiedBy(objectToValidate);
         }
 
-        public IEnumerable<Result> Validate(IEnumerable<TransactionCreateDto> objectsToValidate) => objectsToValidate.Select(Validate);
+        public IEnumerable<Result> Validate(IEnumerable<TransactionSubmitDto> objectsToValidate) => objectsToValidate.Select(Validate);
 
-        public Result Validate(TransactionDto objectToValidate)
+        public Result ValidateDelete(TransactionSubmitDto objectToValidate)
         {
             var validationRules =
-                new IsTransactionIdValid()
-                .And(new IsUserIdValid());
+                new IsTransactionIdValid().And(new IsClientIdentifierProvided());
 
             return validationRules.IsSatisfiedBy(objectToValidate);
         }
