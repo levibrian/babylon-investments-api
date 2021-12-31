@@ -5,6 +5,7 @@
         // Request Headers
         public const string RapidApiUserKey = "X-RapidAPI-User";
         public const string RapidApiKey = "X-RapidAPI-Key";
+        public const string OverrideApiKey = "X-Babylon-Override-Api-Key";
         public const string AwsApiKey = "X-Api-Key";
         
         // Response Headers

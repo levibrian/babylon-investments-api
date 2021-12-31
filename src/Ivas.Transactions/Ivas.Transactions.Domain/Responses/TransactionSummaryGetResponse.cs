@@ -1,6 +1,6 @@
-﻿namespace Ivas.Transactions.Domain.Dtos
+﻿namespace Ivas.Transactions.Domain.Responses
 {
-    public class TransactionSummaryDto
+    public class TransactionSummaryGetResponse
     {
         public long UserId { get; set; }
 

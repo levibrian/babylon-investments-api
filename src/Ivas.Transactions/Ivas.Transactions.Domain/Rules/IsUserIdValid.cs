@@ -1,23 +1,22 @@
 ﻿using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Enums;
+using Ivas.Transactions.Domain.Rules.Primitives;
 using Ivas.Transactions.Shared.Extensions;
 using Ivas.Transactions.Shared.Notifications;
 using Ivas.Transactions.Shared.Specifications.Interfaces;
 
 namespace Ivas.Transactions.Domain.Rules
 {
-    public class IsUserIdValid : IResultedSpecification<TransactionDto>
+    public class IsUserIdValid : IResultedSpecification<TransactionPostDto>
     {
-        public Result IsSatisfiedBy(TransactionDto entityToEvaluate)
+        public Result IsSatisfiedBy(TransactionPostDto entityToEvaluate)
         {
             var isUserIdValid = 
-                new IsStringNumber()
+                new IsStringNumberValid()
                     .Or(new IsGuidValid())
-                    .IsSatisfiedBy(entityToEvaluate.UserId);
+                    .IsPrimitiveSatisfiedBy(entityToEvaluate.UserId);
 
-            var expression = isUserIdValid.IsSuccess;
-            
-            return !expression 
+            return !isUserIdValid 
                 ? Result.Failure(ErrorCodesEnum.UserIdProvidedNotValid) 
                 : Result.Ok();
         }

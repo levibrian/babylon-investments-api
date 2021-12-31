@@ -10,21 +10,44 @@ namespace Ivas.Transactions.Shared.Specifications
     public class OrSpecification<T> : CompositeSpecification<T>
     {
         public OrSpecification(
+            ISpecification<T> firstSpecification, 
+            ISpecification<T> secondSpecification) : base(firstSpecification, secondSpecification)
+        {
+        }
+        
+        public OrSpecification(
             IResultedSpecification<T> firstSpecification, 
             IResultedSpecification<T> secondSpecification) : base(firstSpecification, secondSpecification)
         {
         }
 
+        public OrSpecification(IEnumerable<ISpecification<T>> rulesToValidate) : base(rulesToValidate)
+        {
+        }
+        
         public OrSpecification(IEnumerable<IResultedSpecification<T>> rulesToValidate) : base(rulesToValidate)
         {
         }
         
-        public override Result IsSatisfiedBy(T domainEntity)
+        public override bool IsPrimitiveSatisfiedBy(T entityToEvaluate)
         {
-            if (!ChildSpecifications.Any()) return Result.Ok();
+            if (!ChildPrimitiveSpecifications.Any()) return true;
             
             var rulesResult = 
-                ChildSpecifications
+                ChildPrimitiveSpecifications
+                    .Select(rule => 
+                        rule.IsPrimitiveSatisfiedBy(entityToEvaluate))
+                    .ToList();
+
+            return rulesResult.Any(expression => expression);
+        }
+        
+        public override Result IsSatisfiedBy(T domainEntity)
+        {
+            if (!ChildResultSpecifications.Any()) return Result.Ok();
+            
+            var rulesResult = 
+                ChildResultSpecifications
                     .Select(rule => 
                         rule.IsSatisfiedBy(domainEntity))
                     .ToList();

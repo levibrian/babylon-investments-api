@@ -22,7 +22,8 @@ namespace Ivas.Transactions.Api.Filters
             var request = context.HttpContext.Request;
 
             if (request.Headers.TryGetValue(IvasApiHeaders.RapidApiUserKey, out var rapidApiUser) &&
-                request.Headers.TryGetValue(IvasApiHeaders.RapidApiKey, out var rapidApiKey)) 
+                request.Headers.TryGetValue(IvasApiHeaders.RapidApiKey, out var rapidApiKey) ||
+                request.Headers.TryGetValue(IvasApiHeaders.OverrideApiKey, out var overrideApiKey)) 
                 return;
             
             var response = context.HttpContext.Response;

@@ -26,6 +26,9 @@ namespace Ivas.Transactions.Domain.Enums
         PriceNotPositive,
         
         [Description("The Transaction Id provided is not valid. Please provide a valid GUID.")]
-        TransactionIdProvidedNotValid
+        TransactionIdProvidedNotValid,
+        
+        [Description("Expected string number..")]
+        StringNumberNotValid
     }
 }

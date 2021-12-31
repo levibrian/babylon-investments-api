@@ -17,5 +17,7 @@ namespace Ivas.Transactions.Domain.Contracts.Repositories
         Task InsertInBulk(IEnumerable<Transaction> transactionsToInsert);
 
         Task Delete(Transaction transaction);
+
+        Task DeleteInBulk(IEnumerable<Transaction> transactionsToDelete);
     }
 }

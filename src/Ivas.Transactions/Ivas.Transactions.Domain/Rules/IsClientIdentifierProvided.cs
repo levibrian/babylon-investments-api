@@ -5,16 +5,16 @@ using Ivas.Transactions.Shared.Specifications.Interfaces;
 
 namespace Ivas.Transactions.Domain.Rules
 {
-    public class IsClientIdentifierProvided : IResultedSpecification<TransactionSubmitDto>
+    public class IsClientIdentifierProvided : IResultedSpecification<TransactionPostDto>
     {
-        public Result IsSatisfiedBy(TransactionSubmitDto entityToEvaluate)
+        public Result IsSatisfiedBy(TransactionPostDto transaction)
         {
             var expression =
-                !string.IsNullOrEmpty(entityToEvaluate.ClientIdentifier);
+                !string.IsNullOrEmpty(transaction.ClientIdentifier);
             
-            return !expression 
-                ? Result.Failure(ErrorCodesEnum.ClientIdentifierNotProvided) 
-                : Result.Ok();
+            return expression 
+                ? Result.Ok() 
+                : Result.Failure(Error.CreateError(ErrorCodesEnum.ClientIdentifierNotProvided));
         }
     }
 }

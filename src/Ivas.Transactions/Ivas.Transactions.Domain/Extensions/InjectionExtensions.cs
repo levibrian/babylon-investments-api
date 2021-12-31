@@ -24,6 +24,7 @@ namespace Ivas.Transactions.Domain.Extensions
             return serviceCollection
                 .AddTransient<ITransactionValidator, TransactionValidator>()
                 .AddTransient<ITransactionService, TransactionService>()
+                .AddTransient<ITransactionsInBulkService, TransactionsInBulkService>()
                 .AddTransient<IPortfolioService, PortfolioService>();
         }
 

@@ -67,9 +67,13 @@ namespace Ivas.Transactions.Persistency.Repositories.Base
             await _dynamoDbContext.DeleteAsync<T>(entity, _dynamoDbOperationConfig);
         }
 
-        public Task DeleteAsync(IEnumerable<T> entities)
+        public async Task DeleteAsync(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            var batchProcess = _dynamoDbContext.CreateBatchWrite<T>(_dynamoDbOperationConfig);
+            
+            batchProcess.AddDeleteItems(entities);
+
+            await batchProcess.ExecuteAsync();
         }
     }
 }

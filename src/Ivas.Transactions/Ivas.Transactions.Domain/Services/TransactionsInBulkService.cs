@@ -9,11 +9,13 @@ using Ivas.Transactions.Domain.Objects;
 using Ivas.Transactions.Domain.Validators;
 using Ivas.Transactions.Shared.Exceptions.Custom;
 using Ivas.Transactions.Shared.Notifications;
+using Microsoft.Extensions.Logging;
 
 namespace Ivas.Transactions.Domain.Services
 {
     public interface ITransactionsInBulkService : 
-        ICreatableAsyncService<IEnumerable<TransactionSubmitDto>>
+        ICreatableAsyncService<IEnumerable<TransactionPostDto>>,
+        IDeletableAsyncService<IEnumerable<TransactionDeleteDto>>
     {
         
     }
@@ -23,16 +25,20 @@ namespace Ivas.Transactions.Domain.Services
         private readonly ITransactionRepository _transactionRepository;
 
         private readonly ITransactionValidator _transactionValidator;
+
+        private readonly ILogger<TransactionsInBulkService> _logger;
         
         public TransactionsInBulkService(
             ITransactionRepository transactionRepository,
-            ITransactionValidator transactionValidator)
+            ITransactionValidator transactionValidator,
+            ILogger<TransactionsInBulkService> logger)
         {
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
-        public async Task<Result> CreateAsync(IEnumerable<TransactionSubmitDto> entity)
+        public async Task<Result> CreateAsync(IEnumerable<TransactionPostDto> entity)
         {
             var validationResults = _transactionValidator.Validate(entity);
             
@@ -50,6 +56,39 @@ namespace Ivas.Transactions.Domain.Services
 
             await _transactionRepository.InsertInBulk(domainEntitiesToInsert);
 
+            return Result.Ok();
+        }
+
+        public async Task<Result> DeleteAsync(IEnumerable<TransactionDeleteDto> transactionsToDelete)
+        {
+            var validationResults =
+                _transactionValidator
+                    .ValidateDelete(transactionsToDelete)
+                    .ToList();
+            
+            if (validationResults.Any(x => x.IsFailure)) 
+                throw new IvasException(
+                    string.Join(
+                        ", ", 
+                        validationResults
+                            .Where(x => x.Errors.Any())
+                            .SelectMany(x => x.Errors.Select(x => x.Message))));
+
+            var entitiesToDelete = new List<Transaction>();
+            
+            foreach (var transaction in transactionsToDelete)
+            {
+                var fetchedTransactionFromDb =
+                    await _transactionRepository.GetByIdAsync(transaction.ClientIdentifier, transaction.TransactionId);
+                
+                if (fetchedTransactionFromDb == null) 
+                    _logger.LogWarning($"TransactionsInBulkService - Delete In Bulk...Transaction with ClientIdentifier: {transaction.ClientIdentifier} and with TransactionId: {transaction.TransactionId} not found..");
+                else 
+                    entitiesToDelete.Add(fetchedTransactionFromDb);
+            }
+
+            await _transactionRepository.DeleteInBulk(entitiesToDelete);
+            
             return Result.Ok();
         }
     }

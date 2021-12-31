@@ -6,12 +6,13 @@ using AutoMapper;
 using Ivas.Transactions.Domain.Contracts.Repositories;
 using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Objects;
+using Ivas.Transactions.Domain.Responses;
 
 namespace Ivas.Transactions.Domain.Services
 {
     public interface IPortfolioService
     {
-        Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(string userId);
+        Task<IEnumerable<TransactionSummaryGetResponse>> GetPortfolioByUser(string userId);
     }
     
     public class PortfolioService : IPortfolioService
@@ -28,7 +29,7 @@ namespace Ivas.Transactions.Domain.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         
-        public async Task<IEnumerable<TransactionSummaryDto>> GetPortfolioByUser(string userId)
+        public async Task<IEnumerable<TransactionSummaryGetResponse>> GetPortfolioByUser(string userId)
         {
             var userTransactions = (await _transactionRepository
                     .GetByClientAsync(userId))
@@ -45,7 +46,7 @@ namespace Ivas.Transactions.Domain.Services
                         x.TotalInvested)
                     .ToList();
 
-            return _mapper.Map<IEnumerable<TransactionSummary>, IEnumerable<TransactionSummaryDto>>(userPortfolio);
+            return _mapper.Map<IEnumerable<TransactionSummary>, IEnumerable<TransactionSummaryGetResponse>>(userPortfolio);
         }
     }
 }

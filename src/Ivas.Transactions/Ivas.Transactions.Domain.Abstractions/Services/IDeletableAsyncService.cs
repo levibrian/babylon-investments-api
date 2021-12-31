@@ -4,7 +4,7 @@ using Ivas.Transactions.Shared.Notifications;
 
 namespace Ivas.Transactions.Domain.Abstractions.Services
 {
-    public interface IDeletableAsyncService<in TDto> where TDto : Dto
+    public interface IDeletableAsyncService<in TDto>
     {
         /// <summary>
         /// Deletes a previously created entity.

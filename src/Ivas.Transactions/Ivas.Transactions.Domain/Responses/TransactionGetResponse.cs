@@ -1,26 +1,22 @@
-﻿using System;
-using Amazon.DynamoDBv2.DataModel;
+using System;
+using Ivas.Transactions.Domain.Enums;
 
-namespace Ivas.Transactions.Persistency.Entities
+namespace Ivas.Transactions.Domain.Responses
 {
-    public class TransactionEntity
+    public class TransactionGetResponse
     {
-        [DynamoDBHashKey]
-        public string ClientIdentifier { get; set; }
-        
-        [DynamoDBRangeKey]
         public string TransactionId { get; set; }
 
         public string UserId { get; set; }
         
         public string Ticker { get; set; }
-
+        
         public DateTime Date { get; set; }
 
         public decimal Units { get; set; }
 
         public decimal PricePerUnit { get; set; }
-
+        
         public decimal Fees { get; set; }
         
         public string AssetType { get; set; }

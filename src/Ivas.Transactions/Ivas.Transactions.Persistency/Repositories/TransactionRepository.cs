@@ -69,6 +69,17 @@ namespace Ivas.Transactions.Persistency.Repositories
             _logger.LogInformation("Successfully deleted transaction from DynamoDB..");
         }
 
+        public async Task DeleteInBulk(IEnumerable<Transaction> transactionsToDelete)
+        {
+            _logger.LogInformation($"Deleting Transactions in Bulk from DynamoDB Table: { _tableName }");
+
+            var transactionEntities = _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionEntity>>(transactionsToDelete);
+
+            await DeleteAsync(transactionEntities);
+            
+            _logger.LogInformation("Successfully deleted in bulk transactions from DynamoDB..");
+        }
+
         public async Task<IEnumerable<Transaction>> GetByClientAsync(string clientIdentifier)
         {
             _logger.LogInformation($"Getting all transactions from user: {clientIdentifier}");

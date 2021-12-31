@@ -10,8 +10,18 @@ namespace Ivas.Transactions.Shared.Specifications
     public class AndSpecification<T> : CompositeSpecification<T>
     {
         public AndSpecification(
+            ISpecification<T> firstSpecification, 
+            ISpecification<T> secondSpecification) : base(firstSpecification, secondSpecification)
+        {
+        }
+        
+        public AndSpecification(
             IResultedSpecification<T> firstSpecification, 
             IResultedSpecification<T> secondSpecification) : base(firstSpecification, secondSpecification)
+        {
+        }
+
+        public AndSpecification(IEnumerable<ISpecification<T>> rulesToValidate) : base(rulesToValidate)
         {
         }
 
@@ -19,20 +29,30 @@ namespace Ivas.Transactions.Shared.Specifications
         {
         }
         
+        public override bool IsPrimitiveSatisfiedBy(T entityToEvaluate)
+        {
+            if (!ChildResultSpecifications.Any()) return true;
+            
+            var rulesResult = 
+                ChildPrimitiveSpecifications
+                    .Select(rule => 
+                        rule.IsPrimitiveSatisfiedBy(entityToEvaluate))
+                    .ToList();
+
+            return rulesResult.Any(expression => expression);
+        }
+        
         public override Result IsSatisfiedBy(T domainEntity)
         {
-            if (!ChildSpecifications.Any()) return Result.Ok();
+            if (!ChildResultSpecifications.Any()) return Result.Ok();
             
-            var rulesResult = new List<Result>();
-            
-            foreach (var rule in ChildSpecifications)
-            {
-                rulesResult.Add(rule.IsSatisfiedBy(domainEntity));
-            }
+            var rulesResult = ChildResultSpecifications
+                .Select(rule => rule.IsSatisfiedBy(domainEntity))
+                .ToList();
 
             return rulesResult.All(result => result.IsSuccess) 
-                ? Result.Ok() : 
-                Result.Failure(rulesResult.SelectMany(x => x.Errors));
+                ? Result.Ok() 
+                : Result.Failure(rulesResult.SelectMany(x => x.Errors));
         }
     }
 }

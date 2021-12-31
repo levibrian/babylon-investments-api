@@ -9,6 +9,7 @@ using Ivas.Transactions.Domain.Contracts.Repositories;
 using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Objects;
 using Ivas.Transactions.Domain.Requests;
+using Ivas.Transactions.Domain.Responses;
 using Ivas.Transactions.Domain.Validators;
 using Ivas.Transactions.Shared.Exceptions.Custom;
 using Ivas.Transactions.Shared.Notifications;
@@ -17,12 +18,12 @@ using Microsoft.Extensions.Logging;
 namespace Ivas.Transactions.Domain.Services
 {
     public interface ITransactionService :
-        ICreatableAsyncService<TransactionSubmitDto>, 
-        IDeletableAsyncService<TransactionSubmitDto>
+        ICreatableAsyncService<TransactionPostDto>, 
+        IDeletableAsyncService<TransactionDeleteDto>
     {
-        Task<IEnumerable<TransactionDto>> GetByClientAndUserAsync(string clientIdentifier, string userId);
+        Task<IEnumerable<TransactionGetResponse>> GetByClientAndUserAsync(string clientIdentifier, string userId);
 
-        Task<TransactionDto> GetSingleAsync(TransactionBaseRequest transactionRequest);
+        Task<TransactionGetResponse> GetSingleAsync(string clientIdentifier, string transactionId);
     }
     
     public class TransactionService : ITransactionService
@@ -52,7 +53,7 @@ namespace Ivas.Transactions.Domain.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<Result> CreateAsync(TransactionSubmitDto dto)
+        public async Task<Result> CreateAsync(TransactionPostDto dto)
         {
             _logger.LogInformation("TransactionService - Called method CreateAsync");
             
@@ -62,7 +63,8 @@ namespace Ivas.Transactions.Domain.Services
             
             if (validationResult.IsFailure)
             {
-                throw new IvasException(string.Join(", ", validationResult.Errors.Select(x => x.Message)));
+                throw new IvasException(
+                    string.Join(", ", validationResult.Errors.Select(x => x.Message)));
             }
             
             var domainObject = new TransactionCreate(dto);
@@ -72,7 +74,7 @@ namespace Ivas.Transactions.Domain.Services
             return Result.Ok(domainObject.TransactionId);
         }
 
-        public async Task<Result> DeleteAsync(TransactionSubmitDto entity)
+        public async Task<Result> DeleteAsync(TransactionDeleteDto entity)
         {
             _logger.LogInformation("TransactionService - Called method DeleteAsync");
             
@@ -106,22 +108,22 @@ namespace Ivas.Transactions.Domain.Services
             return Result.Ok(transactionToDelete.TransactionId);
         }
 
-        public async Task<IEnumerable<TransactionDto>> GetByClientAndUserAsync(string clientIdentifier, string userId)
+        public async Task<IEnumerable<TransactionGetResponse>> GetByClientAndUserAsync(string clientIdentifier, string userId)
         {
             var clientTransactions =
                 (await _transactionRepository.GetByClientAsync(clientIdentifier)).OrderByDescending(x => x.Date);
 
             var userTransactions = clientTransactions.Where(x => x.UserId.Equals(userId));
             
-            return _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionDto>>(userTransactions);
+            return _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionGetResponse>>(userTransactions);
         }
 
-        public async Task<TransactionDto> GetSingleAsync(TransactionBaseRequest transactionRequest)
+        public async Task<TransactionGetResponse> GetSingleAsync(string clientIdentifier, string transactionId)
         {
             var transactionToGet =
-                await _transactionRepository.GetByIdAsync(transactionRequest.ClientIdentifier, transactionRequest.TransactionId);
+                await _transactionRepository.GetByIdAsync(clientIdentifier, transactionId);
 
-            return _mapper.Map<Transaction, TransactionDto>(transactionToGet);
+            return _mapper.Map<Transaction, TransactionGetResponse>(transactionToGet);
         }
     }
 }

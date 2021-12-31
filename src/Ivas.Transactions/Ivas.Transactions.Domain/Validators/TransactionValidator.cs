@@ -1,24 +1,29 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using Ivas.Transactions.Domain.Dtos;
 using Ivas.Transactions.Domain.Objects;
+using Ivas.Transactions.Domain.Requests;
 using Ivas.Transactions.Domain.Rules;
+using Ivas.Transactions.Domain.Rules.Primitives;
 using Ivas.Transactions.Shared.Notifications;
 using Ivas.Transactions.Shared.Validators;
 using Ivas.Transactions.Shared.Extensions;
 
 namespace Ivas.Transactions.Domain.Validators
 {
-    public interface ITransactionValidator : IValidator<TransactionSubmitDto>
+    public interface ITransactionValidator : IValidator<TransactionPostDto>
     {
-        Result ValidateDelete(TransactionSubmitDto objectToValidate);
+        Result ValidateDelete(TransactionDeleteDto objectToValidate);
 
-        IEnumerable<Result> Validate(IEnumerable<TransactionSubmitDto> objectsToValidate);
+        IEnumerable<Result> ValidateDelete(IEnumerable<TransactionDeleteDto> objectToValidate);
+
+        IEnumerable<Result> Validate(IEnumerable<TransactionPostDto> objectsToValidate);
     }
 
     public class TransactionValidator : ITransactionValidator
     {
-        public Result Validate(TransactionSubmitDto objectToValidate)
+        public Result Validate(TransactionPostDto objectToValidate)
         {
             var transactionRules = 
                 new IsTickerProvided()
@@ -32,14 +37,24 @@ namespace Ivas.Transactions.Domain.Validators
             return transactionRules.IsSatisfiedBy(objectToValidate);
         }
 
-        public IEnumerable<Result> Validate(IEnumerable<TransactionSubmitDto> objectsToValidate) => objectsToValidate.Select(Validate);
+        public IEnumerable<Result> ValidateDelete(IEnumerable<TransactionDeleteDto> objectToValidate) =>
+            objectToValidate.Select(ValidateDelete);
 
-        public Result ValidateDelete(TransactionSubmitDto objectToValidate)
+        public IEnumerable<Result> Validate(IEnumerable<TransactionPostDto> objectsToValidate) => objectsToValidate.Select(Validate);
+
+        public Result ValidateDelete(TransactionDeleteDto objectToValidate)
         {
-            var validationRules =
-                new IsTransactionIdValid().And(new IsClientIdentifierProvided());
+            var transactionToValidate = new TransactionPostDto()
+            {
+                ClientIdentifier = objectToValidate.ClientIdentifier,
+                TransactionId = objectToValidate.TransactionId
+            };
+            
+            var transactionIdRules = 
+                new IsClientIdentifierProvided()
+                    .And(new IsTransactionIdValid());
 
-            return validationRules.IsSatisfiedBy(objectToValidate);
+            return transactionIdRules.IsSatisfiedBy(transactionToValidate);
         }
     }
 }

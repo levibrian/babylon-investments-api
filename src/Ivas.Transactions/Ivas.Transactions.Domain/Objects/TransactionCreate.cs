@@ -22,16 +22,20 @@ namespace Ivas.Transactions.Domain.Objects
 
         public override decimal PricePerUnit => _transactionRequest.PricePerUnit;
 
+        public override decimal Fees => _transactionRequest.Fees;
+
+        public override AssetTypeEnum AssetType => _transactionRequest.AssetType;
+        
         public override TransactionTypeEnum TransactionType => _transactionRequest.TransactionType;
         
         
-        private readonly TransactionSubmitDto _transactionRequest;
+        private readonly TransactionPostDto _transactionRequest;
 
         public TransactionCreate()
         {
         }
         
-        public TransactionCreate(TransactionSubmitDto transactionCreateDto)
+        public TransactionCreate(TransactionPostDto transactionCreateDto)
         {
             _transactionRequest = transactionCreateDto ?? throw new ArgumentNullException(nameof(transactionCreateDto));
 
