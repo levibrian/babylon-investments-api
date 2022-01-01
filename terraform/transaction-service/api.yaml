@@ -1,0 +1,157 @@
+openapi: 3.0.1
+info:
+  title: Ivas Transactions API
+  description: IVAS Transactions API to handle investment transactions and portfolios
+  version: v1
+paths:
+  "/ivas/api/portfolios/{userId}":
+    get:
+      tags:
+        - Portfolios
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  "/ivas/api/transactions":
+    post:
+      tags:
+        - Transactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TransactionPostRequest"
+          text/json:
+            schema:
+              "$ref": "#/components/schemas/TransactionPostRequest"
+          application/*+json:
+            schema:
+              "$ref": "#/components/schemas/TransactionPostRequest"
+      responses:
+        '200':
+          description: Success
+  "/ivas/api/transactions/{transactionId}":
+    delete:
+      tags:
+        - Transactions
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+  "/ivas/api/transactions/{userId}":
+    get:
+      tags:
+        - Transactions
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  "/ivas/api/transactions/bulk":
+    post:
+      tags:
+        - TransactionsInBulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/TransactionPostRequest"
+          text/json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/TransactionPostRequest"
+          application/*+json:
+            schema:
+              type: array
+              items:
+                "$ref": "#/components/schemas/TransactionPostRequest"
+      responses:
+        '200':
+          description: Success
+  "/ivas/api/transactions/bulk/delete":
+    post:
+      tags:
+        - TransactionsInBulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+          text/json:
+            schema:
+              type: array
+              items:
+                type: string
+          application/*+json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: Success
+components:
+  schemas:
+    AssetTypeEnum:
+      enum:
+        - 1
+        - 2
+        - 3
+      type: integer
+      format: int32
+    TransactionPostRequest:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          nullable: true
+        userId:
+          type: string
+          nullable: true
+        ticker:
+          type: string
+          nullable: true
+        date:
+          type: string
+          format: date-time
+        units:
+          type: number
+          format: double
+        pricePerUnit:
+          type: number
+          format: double
+        fees:
+          type: number
+          format: double
+        assetType:
+          "$ref": "#/components/schemas/AssetTypeEnum"
+        transactionType:
+          "$ref": "#/components/schemas/TransactionTypeEnum"
+      additionalProperties: false
+    TransactionTypeEnum:
+      enum:
+        - 1
+        - 2
+        - 3
+      type: integer
+      format: int32

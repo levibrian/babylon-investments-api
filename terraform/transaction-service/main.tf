@@ -111,14 +111,35 @@ module "api_gateway" {
   create_routes_and_integrations = true
 
   integrations = {
+    "ANY /" = {
+      lambda_arn             = module.transactions_lambda.lambda_function_arn
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
+      timeout_milliseconds   = 30000
+    }
     "GET /ivas/api/transactions" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      lambda_arn             = module.transactions_lambda.lambda_function_arn
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
     "POST /ivas/api/transactions" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
+      timeout_milliseconds   = 30000
+    }
+    "POST /ivas/api/transactions/bulk" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
+      timeout_milliseconds   = 30000
+    }
+    "POST /ivas/api/transactions/bulk/delete" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
@@ -141,6 +162,10 @@ module "api_gateway" {
     }
   }
 
+  body = templatefile("api.yaml", {
+    example_function_arn = module.transactions_lambda.lambda_function_arn
+  })
+  
   vpc_links = {
     ivas-dev-vpc = {
       name               = "${local.transactions_resource_base_name}-api-gateway-vpc-links"
@@ -148,7 +173,7 @@ module "api_gateway" {
       subnet_ids         = module.vpc.public_subnets
     }
   }
-
+  
   default_stage_tags = local.default_tags
   vpc_link_tags      = local.default_tags
   tags               = local.default_tags
