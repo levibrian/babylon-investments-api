@@ -118,14 +118,14 @@ module "api_gateway" {
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "GET /ivas/api/transactions" = {
+    "ANY /ivas/api/transactions" = {
       lambda_arn             = module.transactions_lambda.lambda_function_arn
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "POST /ivas/api/transactions" = {
+    "GET /ivas/api/portfolios" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
@@ -139,27 +139,27 @@ module "api_gateway" {
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "POST /ivas/api/transactions/bulk/delete" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
-      integration_type       = "AWS_PROXY"
-      payload_format_version = "2.0"
-      authorization_type     = "NONE"
-      timeout_milliseconds   = 30000
-    }
-    "DELETE /ivas/api/transactions" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
-      integration_type       = "AWS_PROXY"
-      payload_format_version = "2.0"
-      authorization_type     = "NONE"
-      timeout_milliseconds   = 30000
-    }
-    "GET /ivas/api/portfolios" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
-      integration_type       = "AWS_PROXY"
-      payload_format_version = "2.0"
-      authorization_type     = "NONE"
-      timeout_milliseconds   = 30000
-    }
+#    "POST /ivas/api/transactions" = {
+#      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+#      integration_type       = "AWS_PROXY"
+#      payload_format_version = "2.0"
+#      authorization_type     = "NONE"
+#      timeout_milliseconds   = 30000
+#    }
+#    "POST /ivas/api/transactions/bulk/delete" = {
+#      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+#      integration_type       = "AWS_PROXY"
+#      payload_format_version = "2.0"
+#      authorization_type     = "NONE"
+#      timeout_milliseconds   = 30000
+#    }
+#    "DELETE /ivas/api/transactions" = {
+#      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+#      integration_type       = "AWS_PROXY"
+#      payload_format_version = "2.0"
+#      authorization_type     = "NONE"
+#      timeout_milliseconds   = 30000
+#    }
   }
 
   body = templatefile("api.yaml", {
