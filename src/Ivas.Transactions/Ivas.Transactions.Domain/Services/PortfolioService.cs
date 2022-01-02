@@ -37,7 +37,7 @@ namespace Ivas.Transactions.Domain.Services
                 .GroupBy(x => x.Ticker)
                 .ToDictionary(
                     x => x.Key, 
-                    t => t.Select(t => t));
+                    t => t.Select(tr => tr));
 
             var userPortfolio = 
                 userTransactions
