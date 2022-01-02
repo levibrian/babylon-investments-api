@@ -162,9 +162,9 @@ module "api_gateway" {
 #    }
   }
 
-  body = templatefile("api.yaml", {
-    example_function_arn = module.transactions_lambda.lambda_function_arn
-  })
+#  body = templatefile("api.yaml", {
+#    example_function_arn = module.transactions_lambda.lambda_function_arn
+#  })
   
   vpc_links = {
     ivas-dev-vpc = {
