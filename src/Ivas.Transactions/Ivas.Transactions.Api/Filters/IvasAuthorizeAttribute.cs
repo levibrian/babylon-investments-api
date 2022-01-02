@@ -21,14 +21,24 @@ namespace Ivas.Transactions.Api.Filters
             var request = context.HttpContext.Request;
 
             var loggerFactory = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
-            var loggerService = loggerFactory.CreateLogger(nameof(IvasAuthorizeAttribute));
+            var logger = loggerFactory.CreateLogger(nameof(IvasAuthorizeAttribute));
             
-            loggerService.LogInformation($"Received Headers: {string.Join(",", context.HttpContext.Request.Headers.Values)}");
-            
-            if (request.Headers.TryGetValue(IvasApiHeaders.RapidApiUserKey, out var rapidApiUser) &&
-                request.Headers.TryGetValue(IvasApiHeaders.RapidApiKey, out var rapidApiKey) ||
-                request.Headers.TryGetValue(IvasApiHeaders.OverrideApiKey, out var overrideApiKey)) 
+            var isRapidApiUserProvided = request.Headers.TryGetValue(IvasApiHeaders.RapidApiUserKey, out var rapidApiUser);
+            var isRapidApiKeyProvided = request.Headers.TryGetValue(IvasApiHeaders.RapidApiKey, out var rapidApiKey);
+            var isBabylonApiKeyProvided = request.Headers.TryGetValue(IvasApiHeaders.OverrideApiKey, out var overrideApiKey);
+
+            if (isRapidApiUserProvided &&
+                isRapidApiKeyProvided ||
+                isBabylonApiKeyProvided)
+            {
+                logger.LogInformation($"Headers - Rapid Api User: {rapidApiUser}");
+                logger.LogInformation($"Headers - Rapid Api Key: {rapidApiKey}");
+                logger.LogInformation($"Headers - Babylon Api Key: {overrideApiKey}");
+                
                 return;
+            }
+            
+            logger.LogInformation($"No headers provided. Forcing authentication error.");
             
             var response = context.HttpContext.Response;
 
