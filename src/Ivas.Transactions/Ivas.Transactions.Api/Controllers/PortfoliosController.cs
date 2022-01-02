@@ -34,7 +34,7 @@ namespace Ivas.Transactions.Api.Controllers
             _logger.LogInformation("PortfoliosController - Called HttpGet Get Endpoint");
             
             var userPortfolio = await _portfolioService
-                .GetPortfolioByUser(userId);
+                .GetPortfolioByUser(ClientIdentifier, userId);
             
             return Ok(userPortfolio);
         }

@@ -12,7 +12,7 @@ namespace Ivas.Transactions.Domain.Services
 {
     public interface IPortfolioService
     {
-        Task<IEnumerable<TransactionSummaryGetResponse>> GetPortfolioByUser(string userId);
+        Task<IEnumerable<TransactionSummaryGetResponse>> GetPortfolioByUser(string clientIdentifier, string userId);
     }
     
     public class PortfolioService : IPortfolioService
@@ -29,10 +29,11 @@ namespace Ivas.Transactions.Domain.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         
-        public async Task<IEnumerable<TransactionSummaryGetResponse>> GetPortfolioByUser(string userId)
+        public async Task<IEnumerable<TransactionSummaryGetResponse>> GetPortfolioByUser(string clientIdentifier, string userId)
         {
             var userTransactions = (await _transactionRepository
-                    .GetByClientAsync(userId))
+                    .GetByClientAsync(clientIdentifier))
+                .Where(x => x.UserId.Equals(userId))
                 .GroupBy(x => x.Ticker)
                 .ToDictionary(
                     x => x.Key, 
