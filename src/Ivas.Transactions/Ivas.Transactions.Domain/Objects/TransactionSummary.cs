@@ -19,11 +19,11 @@ namespace Ivas.Transactions.Domain.Objects
 
         public decimal RealizedDividends => CalculateRealizedDividends();
 
-        public decimal RealizedGains => CalculateRealizedGains();
+        // public decimal RealizedGains => CalculateRealizedGains();
 
-        public decimal PricePerShare => 
-            BuyPositions
-                .Average(x => x.PricePerUnit);
+        public decimal PricePerShare =>
+            BuyPositions?
+                .Average(x => x.PricePerUnit) ?? default;
 
         private readonly IEnumerable<Transaction> _transactions;
 

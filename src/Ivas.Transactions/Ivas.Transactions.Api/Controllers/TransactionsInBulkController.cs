@@ -16,8 +16,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Ivas.Transactions.Api.Controllers
 {
+    [ApiController] 
     [IvasAuthorize]
-    [ApiController]
     public class TransactionsInBulkController : IvasController
     {
         private readonly ITransactionsInBulkService _transactionsInBulkService;

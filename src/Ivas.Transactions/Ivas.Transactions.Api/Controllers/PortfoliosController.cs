@@ -11,8 +11,8 @@ using Microsoft.Extensions.Logging;
 namespace Ivas.Transactions.Api.Controllers
 {
     [Route(IvasApiRoutes.PortfoliosBaseRoute)]
-    [IvasAuthorize]
     [ApiController]
+    [IvasAuthorize]
     public class PortfoliosController : IvasController
     {
         private readonly IPortfolioService _portfolioService;
@@ -29,6 +29,7 @@ namespace Ivas.Transactions.Api.Controllers
         }
         
         [HttpGet]
+        [IvasAuthorize()]
         public async Task<IActionResult> Get(string userId)
         {
             _logger.LogInformation("PortfoliosController - Called HttpGet Get Endpoint");

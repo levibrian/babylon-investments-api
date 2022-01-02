@@ -2,8 +2,11 @@
 using Ivas.Transactions.Api.Constants;
 using Ivas.Transactions.Shared.Exceptions.Custom;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Ivas.Transactions.Api.Filters
 {
@@ -13,14 +16,15 @@ namespace Ivas.Transactions.Api.Filters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class IvasAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
-        public IvasAuthorizeAttribute()
-        {
-        }
-        
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var request = context.HttpContext.Request;
 
+            var loggerFactory = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
+            var loggerService = loggerFactory.CreateLogger(nameof(IvasAuthorizeAttribute));
+            
+            loggerService.LogInformation($"Received Headers: {string.Join(",", context.HttpContext.Request.Headers.Values)}");
+            
             if (request.Headers.TryGetValue(IvasApiHeaders.RapidApiUserKey, out var rapidApiUser) &&
                 request.Headers.TryGetValue(IvasApiHeaders.RapidApiKey, out var rapidApiKey) ||
                 request.Headers.TryGetValue(IvasApiHeaders.OverrideApiKey, out var overrideApiKey)) 
