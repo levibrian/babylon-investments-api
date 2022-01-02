@@ -111,21 +111,21 @@ module "api_gateway" {
   create_routes_and_integrations = true
 
   integrations = {
-    "ANY /" = {
-      lambda_arn             = module.transactions_lambda.lambda_function_arn
+    "GET /ivas/api/transactions/{userId}" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "ANY /ivas/api/transactions" = {
-      lambda_arn             = module.transactions_lambda.lambda_function_arn
+    "POST /ivas/api/transactions" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "GET /ivas/api/portfolios" = {
+    "DELETE /ivas/api/transactions/{transactionId}" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
@@ -139,32 +139,21 @@ module "api_gateway" {
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-#    "POST /ivas/api/transactions" = {
-#      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
-#      integration_type       = "AWS_PROXY"
-#      payload_format_version = "2.0"
-#      authorization_type     = "NONE"
-#      timeout_milliseconds   = 30000
-#    }
-#    "POST /ivas/api/transactions/bulk/delete" = {
-#      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
-#      integration_type       = "AWS_PROXY"
-#      payload_format_version = "2.0"
-#      authorization_type     = "NONE"
-#      timeout_milliseconds   = 30000
-#    }
-#    "DELETE /ivas/api/transactions" = {
-#      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
-#      integration_type       = "AWS_PROXY"
-#      payload_format_version = "2.0"
-#      authorization_type     = "NONE"
-#      timeout_milliseconds   = 30000
-#    }
+    "POST /ivas/api/transactions/bulk/delete" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
+      timeout_milliseconds   = 30000
+    }
+    "GET /ivas/api/portfolios/{userId}" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      integration_type       = "AWS_PROXY"
+      payload_format_version = "2.0"
+      authorization_type     = "NONE"
+      timeout_milliseconds   = 30000
+    }
   }
-
-#  body = templatefile("api.yaml", {
-#    example_function_arn = module.transactions_lambda.lambda_function_arn
-#  })
   
   vpc_links = {
     ivas-dev-vpc = {
