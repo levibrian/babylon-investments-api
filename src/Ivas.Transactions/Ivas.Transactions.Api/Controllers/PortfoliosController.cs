@@ -28,7 +28,7 @@ namespace Ivas.Transactions.Api.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
-        [HttpGet("{userId}")]
+        [HttpGet]
         public async Task<IActionResult> Get(string userId)
         {
             _logger.LogInformation("PortfoliosController - Called HttpGet Get Endpoint");

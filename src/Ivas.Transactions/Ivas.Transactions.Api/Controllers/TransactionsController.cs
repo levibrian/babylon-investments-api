@@ -66,7 +66,7 @@ namespace Ivas.Transactions.Api.Controllers
             return Ok(operation);
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet]
         public async Task<IActionResult> Get(string userId)
         {
             _logger.LogInformation(
