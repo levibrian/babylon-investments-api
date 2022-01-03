@@ -39,6 +39,9 @@ namespace Ivas.Transactions.Api.Filters
             }
             
             logger.LogInformation($"No headers provided. Forcing authentication error.");
+            logger.LogInformation($"Headers - Rapid Api User: {rapidApiUser}");
+            logger.LogInformation($"Headers - Rapid Api Key: {rapidApiKey}");
+            logger.LogInformation($"Headers - Babylon Api Key: {overrideApiKey}");
             
             var response = context.HttpContext.Response;
 
