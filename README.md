@@ -1,7 +1,9 @@
-**Investors:**
+## README
+
+### Investors:
 Are you tired of always saving your information in excels? And building tenths of sheets where you always lose data?
 
-**Developers:**
+### Developers:
 Are you building THE NEXT FINANCE APP but you know nothing (nor wanna know nothing) regarding backend infrastructure, azure/aws, deploying, hosting, etc.
 SAY NO MORE
 
