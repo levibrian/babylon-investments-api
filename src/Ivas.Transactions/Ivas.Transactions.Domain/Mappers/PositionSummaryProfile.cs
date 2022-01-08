@@ -5,11 +5,11 @@ using Ivas.Transactions.Domain.Responses;
 
 namespace Ivas.Transactions.Domain.Mappers
 {
-    public class TransactionSummaryProfile : Profile
+    public class PositionSummaryProfile : Profile
     {
-        public TransactionSummaryProfile()
+        public PositionSummaryProfile()
         {
-            CreateMap<TransactionSummary, TransactionSummaryGetResponse>();
+            CreateMap<PositionSummary, PositionSummaryGetResponse>();
         }
     }
 }
