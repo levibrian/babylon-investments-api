@@ -1,10 +1,9 @@
 ﻿param (      
-    [Parameter(Mandatory = $true)] [String]$RepoFolder 
+    [Parameter(Mandatory = $true)] [String]$repoFolder 
 )
 
 function Build-Projects() {
-    $path = Resolve-Path -Path $RepoFolder
-#     $solutions = Get-ChildItem -Path $path -Filter src/Ivas.Transactions/*.sln
+    $path = Resolve-Path -Path $repoFolder
     $solutions = Get-ChildItem -Path $path -Recurse -Include "*.csproj"
     foreach ($file in $solutions) {
         Write-Host "Building '$file'..."
@@ -14,7 +13,7 @@ function Build-Projects() {
 }
 
 function Compress-Lambdas() {
-    $basePath = Resolve-Path -Path $RepoFolder 
+    $basePath = Resolve-Path -Path $repoFolder 
     $solutions = Get-ChildItem -Path $basePath -Recurse -Include "*.csproj"
     Write-Host "Generating $basePath"
     foreach ($file in $solutions) {
