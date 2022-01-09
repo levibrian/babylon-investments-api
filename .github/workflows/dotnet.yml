@@ -28,4 +28,4 @@ jobs:
       working-directory: src/Ivas.Transactions
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      working-directory: src
+      working-directory: src/Ivas.Transactions
