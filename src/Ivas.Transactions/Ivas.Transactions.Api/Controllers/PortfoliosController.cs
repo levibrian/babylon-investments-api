@@ -29,7 +29,7 @@ namespace Ivas.Transactions.Api.Controllers
         }
         
         [HttpGet]
-        [IvasAuthorize()]
+        [IvasAuthorize]
         public async Task<IActionResult> Get(string userId)
         {
             _logger.LogInformation("PortfoliosController - Called HttpGet Get Endpoint");

@@ -41,7 +41,7 @@ namespace Ivas.Transactions.Domain.Extensions
                     config.AddProfiles(new List<Profile>()
                     {
                         new TransactionProfile(),
-                        new TransactionSummaryProfile()
+                        new PositionSummaryProfile()
                     }));
         }
     }

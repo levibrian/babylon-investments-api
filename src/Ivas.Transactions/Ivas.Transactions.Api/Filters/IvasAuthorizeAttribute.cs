@@ -27,22 +27,16 @@ namespace Ivas.Transactions.Api.Filters
             var isRapidApiKeyProvided = request.Headers.TryGetValue(IvasApiHeaders.RapidApiKey, out var rapidApiKey);
             var isBabylonApiKeyProvided = request.Headers.TryGetValue(IvasApiHeaders.OverrideApiKey, out var overrideApiKey);
 
-            if (isRapidApiUserProvided &&
-                isRapidApiKeyProvided ||
-                isBabylonApiKeyProvided)
-            {
-                logger.LogInformation($"Headers - Rapid Api User: {rapidApiUser}");
-                logger.LogInformation($"Headers - Rapid Api Key: {rapidApiKey}");
-                logger.LogInformation($"Headers - Babylon Api Key: {overrideApiKey}");
-                
-                return;
-            }
-            
-            logger.LogInformation($"No headers provided. Forcing authentication error.");
             logger.LogInformation($"Headers - Rapid Api User: {rapidApiUser}");
             logger.LogInformation($"Headers - Rapid Api Key: {rapidApiKey}");
             logger.LogInformation($"Headers - Babylon Api Key: {overrideApiKey}");
             
+            if (isRapidApiUserProvided &&
+                isRapidApiKeyProvided ||
+                isBabylonApiKeyProvided) return;
+
+            logger.LogInformation($"No headers provided. Forcing authentication error.");
+
             var response = context.HttpContext.Response;
 
             response.Headers.Add("AuthStatus", IvasApiHeaders.UnAuthorizedHeader);
