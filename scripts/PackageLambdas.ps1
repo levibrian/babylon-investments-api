@@ -22,12 +22,11 @@ function Compress-Lambdas() {
         if ($lambdaParam.AWSProjectType -eq "Lambda") {
             $projectPath = $file.Directory
             Set-Location $projectPath
-            $zipfile = $file.BaseName
-            Write-Host "Generating $basePath/artifacts/$zipfile.zip"
-            dotnet lambda package -c Release -o "$basePath/artifacts/$zipfile.zip" /p:PreserveCompilationContext=true
+            $zipFile = $file.BaseName
+            Write-Host "Generating $basePath/artifacts/$zipFile.zip"
+            dotnet lambda package -c Release -o "$basePath/artifacts/$zipFile.zip" /p:PreserveCompilationContext=true
 
             if (!$?) { exit -1 }
-
         }
         else {
             Write-Host "Skipping '$file'."
@@ -35,7 +34,7 @@ function Compress-Lambdas() {
     }
 }
 
-$currentpath = Get-Location  
+$currentPath = Get-Location  
 Build-Projects
 Compress-Lambdas
-Set-Location $currentpath
+Set-Location $currentPath
