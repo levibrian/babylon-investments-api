@@ -1,4 +1,4 @@
-name: babylon-automated-flows
+name: on-push-build-and-test
 
 on:
   push:
