@@ -19,9 +19,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
          dotnet-version: ${{ matrix.dotnet-version }}
-         
-    - name: Install AWS lambda tools
       run: dotnet tool install -g Amazon.Lambda.Tools
+         
+#    - name: Install AWS lambda tools
+#      run: dotnet tool install -g Amazon.Lambda.Tools
       
     - name: Restore dependencies
       run: dotnet restore
