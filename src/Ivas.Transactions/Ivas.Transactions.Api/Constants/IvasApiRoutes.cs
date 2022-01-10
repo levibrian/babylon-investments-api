@@ -2,9 +2,9 @@ namespace Ivas.Transactions.Api.Constants
 {
     public static class IvasApiRoutes
     {
-        public const string PortfoliosBaseRoute = "ivas/api/portfolios";
-        public const string TransactionsBaseRoute = "ivas/api/transactions";
+        public const string PortfoliosBaseRoute = "babylon/api/portfolios";
+        public const string TransactionsBaseRoute = "babylon/api/transactions";
 
-        public const string TransactionsInBulkBaseRoute = "ivas/api/transactions/bulk";
+        public const string TransactionsInBulkBaseRoute = "babylon/api/transactions/bulk";
     }
 }

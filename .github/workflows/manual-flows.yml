@@ -1,0 +1,74 @@
+﻿name: babylon-manual-flows
+
+on:
+  workflow_dispatch: 
+    branches:
+      - main
+
+jobs:
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.x' ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET dependencies
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Install AWS lambda tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: src/Ivas.Transactions
+
+      - name: Build solution
+        run: dotnet build --no-restore
+        working-directory: src/Ivas.Transactions
+
+      - name: Run unit tests
+        run: dotnet test --no-build --verbosity normal
+        working-directory: src/Ivas.Transactions
+
+      - name: Create artifacts
+        run: ./PackageLambdas.ps1 -repoFolder ../
+        shell: pwsh
+        working-directory: scripts
+        
+  deploy-to-prd:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.x' ]
+  
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET dependencies
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+  
+      - name: Install AWS lambda tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+  
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: src/Ivas.Transactions
+  
+      - name: Build solution
+        run: dotnet build --no-restore
+        working-directory: src/Ivas.Transactions
+  
+      - name: Run unit tests
+        run: dotnet test --no-build --verbosity normal
+        working-directory: src/Ivas.Transactions
+  
+      - name: Create artifacts
+        run: ./PackageLambdas.ps1 -repoFolder ../
+        shell: pwsh
+        working-directory: scripts
+        
