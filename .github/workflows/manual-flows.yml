@@ -1,9 +1,6 @@
 ﻿name: babylon-manual-flows
 
-on:
-  workflow_dispatch: 
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   deploy-to-dev:
