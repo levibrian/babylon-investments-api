@@ -35,3 +35,9 @@ jobs:
         run: ./PackageLambdas.ps1 -repoFolder ../
         shell: pwsh
         working-directory: scripts
+        
+      # terraform workspace create dev
+      # terraform init
+      # terraform fmt
+      # terraform plan
+      # terraform apply
