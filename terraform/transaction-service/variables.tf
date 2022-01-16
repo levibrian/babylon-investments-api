@@ -9,7 +9,7 @@ variable "region" {
 }
 
 variable "env_suffix" {
-  type = string
+  type        = string
   description = "The suffix to format the environment local variable for deployment in AWS."
 }
 

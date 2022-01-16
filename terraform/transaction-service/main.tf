@@ -154,7 +154,7 @@ module "api_gateway" {
       timeout_milliseconds   = 30000
     }
   }
-  
+
   vpc_links = {
     ivas-dev-vpc = {
       name               = "${local.transactions_resource_base_name}-api-gateway-vpc-links"
@@ -162,7 +162,7 @@ module "api_gateway" {
       subnet_ids         = module.vpc.public_subnets
     }
   }
-  
+
   default_stage_tags = local.default_tags
   vpc_link_tags      = local.default_tags
   tags               = local.default_tags
