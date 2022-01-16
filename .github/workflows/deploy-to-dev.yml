@@ -19,22 +19,22 @@ jobs:
       - name: Install AWS lambda tools
         run: dotnet tool install -g Amazon.Lambda.Tools
 
-      - name: Restore dependencies
-        run: dotnet restore
-        working-directory: src/Ivas.Transactions
-
-      - name: Build solution
-        run: dotnet build --no-restore
-        working-directory: src/Ivas.Transactions
-
-      - name: Run unit tests
-        run: dotnet test --no-build --verbosity normal
-        working-directory: src/Ivas.Transactions
-
-      - name: Create artifacts
-        run: ./PackageLambdas.ps1 -repoFolder ../
-        shell: pwsh
-        working-directory: scripts
+#      - name: Restore dependencies
+#        run: dotnet restore
+#        working-directory: src/Ivas.Transactions
+#
+#      - name: Build solution
+#        run: dotnet build --no-restore
+#        working-directory: src/Ivas.Transactions
+#
+#      - name: Run unit tests
+#        run: dotnet test --no-build --verbosity normal
+#        working-directory: src/Ivas.Transactions
+#
+#      - name: Create artifacts
+#        run: ./PackageLambdas.ps1 -repoFolder ../
+#        shell: pwsh
+#        working-directory: scripts
 
       - name: Verify terraform version
         run: terraform --version
