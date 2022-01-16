@@ -39,11 +39,15 @@ jobs:
       - name: Verify terraform version
         run: terraform --version
         working-directory: terraform/transaction-service
-
+        
+      - name: Check terraform workspace
+        run: terraform workspace create dev
+        working-directory: terraform/transaction-service    
+    
       - name: Check terraform workspace
         run: terraform workspace show
         working-directory: terraform/transaction-service
-      
+
       - name: Terraform init
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
