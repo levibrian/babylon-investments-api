@@ -8,6 +8,11 @@ variable "region" {
   default = "eu-west-1"
 }
 
+variable "env_suffix" {
+  type = string
+  description = "The suffix to format the environment local variable for deployment in AWS."
+}
+
 variable "version_tag" {
   type    = string
   default = "1.0.0"
