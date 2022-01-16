@@ -41,7 +41,7 @@ jobs:
         working-directory: terraform/transaction-service
         
       - name: Check terraform workspace
-        run: terraform workspace create dev
+        run: terraform workspace new dev
         working-directory: terraform/transaction-service    
     
       - name: Check terraform workspace
