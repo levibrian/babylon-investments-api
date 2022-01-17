@@ -1,4 +1,4 @@
-[![babylon-manual-flows](https://github.com/levibrian/ivas-transactions-api/actions/workflows/manual-flows.yml/badge.svg)](https://github.com/levibrian/ivas-transactions-api/actions/workflows/manual-flows.yml)
+[![on-push-build-and-test](https://github.com/levibrian/ivas-transactions-api/actions/workflows/on-push-build-and-test.yml/badge.svg)](https://github.com/levibrian/ivas-transactions-api/actions/workflows/on-push-build-and-test.yml)
 
 ### Investors:
 Are you tired of always saving your information in excels? And building tenths of sheets where you always lose data?
