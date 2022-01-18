@@ -40,7 +40,7 @@ jobs:
         run: terraform validate -no-color
         working-directory: terraform/transaction-service
     
-      - uses: levibrian/ivas-transaction-api/.github/actions/terraform-plan@main 
+      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-plan@main 
         name: Terraform plan
         with:
           region: $REGION
