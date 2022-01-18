@@ -2,6 +2,9 @@
 
 on: workflow_dispatch
 
+env:
+  REGION: "eu-west-1"
+
 jobs:   
   deploy-to-dev:
     runs-on: ubuntu-latest
@@ -37,8 +40,9 @@ jobs:
         run: terraform validate -no-color
         working-directory: terraform/transaction-service
     
-      - name: Terraform plan
-        id: plan
-        run: terraform plan -no-color
-        continue-on-error: true
-        working-directory: terraform/transaction-service
+      - uses: levibrian/ivas-transaction-api/.github/actions/terraform-plan@main 
+        name: Terraform plan
+        with:
+          region: $REGION
+          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_KEY_ID }}
