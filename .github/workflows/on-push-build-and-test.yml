@@ -20,6 +20,12 @@ jobs:
       with:
          dotnet-version: ${{ matrix.dotnet-version }}
 
+    - name: Install AWS lambda tools
+      run: dotnet tool install -g Amazon.Lambda.Tools
+
+    - name: Setup terraform
+      uses: hashicorp/setup-terraform@v1
+
     - name: Restore dependencies
       run: dotnet restore
       working-directory: src/Ivas.Transactions
@@ -31,3 +37,17 @@ jobs:
     - name: Run unit tests
       run: dotnet test --no-build --verbosity normal
       working-directory: src/Ivas.Transactions
+
+    - name: Terraform format
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: false
+
+    - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
+      name: Terraform init and validate
+      with:
+        terraform-folder: "terraform/transaction-service"
+        access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+        use-backend: true
+      continue-on-error: false

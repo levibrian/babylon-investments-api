@@ -26,11 +26,17 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v1
 
+      - name: Create artifacts
+        run: | 
+        ./PackageLambdas.ps1
+        shell: pwsh
+        working-directory: scripts
+
       - name: Terraform format
         id: fmt
         run: terraform fmt -check
         continue-on-error: false
-        
+      
       - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
         name: Terraform init and validate
         with:
@@ -51,7 +57,7 @@ jobs:
           terraform-var-file: "terraform.tfvars"
           terraform-plan-file: "tf.plan"
         continue-on-error: false
-        
+
       - uses: levibrian/ivas-transactions-api/.github/actions/terraform-apply@main
         name: Terraform apply
         with:
