@@ -27,7 +27,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Create artifacts
-        run: ./PackageLambdas.ps1 ${GITHUB_WORKSPACE}/src
+        run: ./PackageLambdas.ps1 ${GITHUB_WORKSPACE}
         shell: pwsh
         working-directory: scripts
 
