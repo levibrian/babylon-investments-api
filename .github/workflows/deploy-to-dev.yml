@@ -32,16 +32,14 @@ jobs:
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
-    
-      - name: Terraform initialize
-        id: init
-        run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_KEY_ID }}"
-        working-directory: terraform/transaction-service
-    
-      - name: Terraform directory files validation
-        id: validate
-        run: terraform validate -no-color
-        working-directory: terraform/transaction-service
+        
+      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
+        name: Terraform init and validate
+        with:
+          terraform-folder: "terraform/transaction-service"
+          access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          use-backend: true
     
       - uses: levibrian/ivas-transactions-api/.github/actions/terraform-plan@main 
         name: Terraform plan
