@@ -17,6 +17,7 @@ set_up_aws_user_credentials() {
 }
 
 log_action "planning terraform"
+log_key_value_pair "working-folder" $WORKING_FOLDER
 REGION="$1"
 log_key_value_pair "region" "$REGION"
 ACCESS_KEY="$2"
