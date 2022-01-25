@@ -1,0 +1,72 @@
+﻿name: deploy-to-dev
+
+on: workflow_dispatch
+
+env:
+  REGION: "eu-west-1"
+  ENVIRONMENT: "prd"
+
+jobs:
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.x' ]
+
+    steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v2
+
+      - name: Setup .NET dependencies
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Install AWS lambda tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+
+      - name: Create artifacts
+        run: ./PackageLambdas.ps1 -repoFolder ${{ github.workspace }}
+        shell: pwsh
+        working-directory: scripts
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform format
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: false
+
+      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
+        name: Terraform init and validate
+        with:
+          terraform-folder: "terraform/transaction-service"
+          access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          use-backend: true
+        continue-on-error: false
+
+      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-plan@main
+        name: Terraform plan
+        with:
+          region: $REGION
+          access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          terraform-folder: "terraform/transaction-service"
+          environment: $ENVIRONMENT
+          terraform-var-file: "terraform.tfvars"
+          terraform-plan-file: "tf.plan"
+        continue-on-error: false
+
+      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-apply@main
+        name: Terraform apply
+        with:
+          region: $REGION
+          access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          terraform-folder: "terraform/transaction-service"
+          environment: $ENVIRONMENT
+          terraform-var-file: "terraform.tfvars"
+          terraform-plan-file: "tf.plan"
+        continue-on-error: false
