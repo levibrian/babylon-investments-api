@@ -46,7 +46,6 @@ jobs:
           access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           terraform-folder: "terraform/transaction-service"
-          backend-configuration: "backend.tf"
           terraform-var-file: "terraform.tfvars"
           terraform-plan-file: "tf.plan"
         continue-on-error: false
