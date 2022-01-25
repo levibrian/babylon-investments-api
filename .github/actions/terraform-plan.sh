@@ -51,7 +51,7 @@ mkdir -p $(dirname "$WORKING_FOLDER/$TFPLAN_OUTPUT")
 
 cd $WORKING_FOLDER
 
-terraform workspace new $ENVIRONMENT
+terraform workspace select $ENVIRONMENT || terraform workspace new $ENVIRONMENT
 
 terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
 
