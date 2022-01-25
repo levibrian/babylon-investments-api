@@ -31,13 +31,16 @@ SECRET_KEY="$3"
 TFM_FOLDER=$4
 log_key_value_pair "terraform-folder" $TFM_FOLDER
 
-TFVARS_FILE=$5
+ENVIRONMENT=$5
+log_key_value_pair "environment" $ENVIRONMENT
+
+TFVARS_FILE=$6
 log_key_value_pair "tfvars-file" $TFVARS_FILE
 
-TFPLAN_OUTPUT=$6
+TFPLAN_OUTPUT=$7
 log_key_value_pair "tfplan-output" $TFPLAN_OUTPUT
 
-DESTROY_MODE=$7
+DESTROY_MODE=$8
 log_key_value_pair "destroy-mode" $DESTROY_MODE
 
 set_up_aws_user_credentials $REGION $ACCESS_KEY $SECRET_KEY
@@ -47,6 +50,8 @@ WORKING_FOLDER="$BASE_FOLDER/$TFM_FOLDER"
 mkdir -p $(dirname "$WORKING_FOLDER/$TFPLAN_OUTPUT")
 
 cd $WORKING_FOLDER
+
+terraform workspace new $ENVIRONMENT
 
 terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
 
