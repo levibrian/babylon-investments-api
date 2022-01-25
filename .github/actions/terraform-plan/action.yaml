@@ -10,9 +10,6 @@ inputs:
     secret-key:
         description: "secret key"
         required: true
-    account: #FIXME we can remove it because there is wrong order in script
-        description: "aws account id"
-        required: true
     terraform-folder:
         description: "folder where your terraform configuration is"
         required: true
@@ -33,5 +30,5 @@ inputs:
 runs:
     using: "composite"
     steps:
-        - run: ${{ github.action_path }}/../tfm-plan.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.account }} ${{ inputs.terraform-folder }} ${{ inputs.backend-configuration }} ${{ inputs.terraform-var-file }} ${{ inputs.terraform-plan-file }} ${{ inputs.destroy-mode }}
+        - run: ${{ github.action_path }}/../tfm-plan.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.backend-configuration }} ${{ inputs.terraform-var-file }} ${{ inputs.terraform-plan-file }} ${{ inputs.destroy-mode }}
           shell: bash

@@ -44,5 +44,10 @@ jobs:
         name: Terraform plan
         with:
           region: $REGION
-          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          terraform-folder: "terraform/transaction-service"
+          backend-configuration: ""
+          terraform-var-file: "terraform.tfvars"
+          terraform-plan-file: "tf.plan"
+          
