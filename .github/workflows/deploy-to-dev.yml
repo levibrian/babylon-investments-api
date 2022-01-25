@@ -28,7 +28,7 @@ jobs:
       - name: Terraform format
         id: fmt
         run: terraform fmt -check
-        continue-on-error: true
+        continue-on-error: false
         
       - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
         name: Terraform init and validate
