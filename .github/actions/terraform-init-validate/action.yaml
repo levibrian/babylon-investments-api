@@ -19,7 +19,7 @@ runs:
   using: "composite"
   steps:
     - name: Give execution permits
-      run: chmod +x /.github/actions/terraform-init-validate.sh
+      run: chmod +x levibrian/ivas-transactions-api/.github/actions/terraform-init-validate.sh
       shell: bash
       
     - name: Running script
