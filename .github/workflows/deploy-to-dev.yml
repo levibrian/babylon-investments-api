@@ -26,9 +26,8 @@ jobs:
         run: dotnet tool install -g Amazon.Lambda.Tools
 
       - name: Create artifacts
-        run: ./PackageLambdas.ps1 $GITHUB_WORKSPACE
-        shell: pwsh
-        working-directory: scripts
+        run: echo $GITHUB_WORKSPACE
+        shell: bash
 
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v1

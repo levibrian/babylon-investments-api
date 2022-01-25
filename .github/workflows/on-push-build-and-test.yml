@@ -14,40 +14,42 @@ jobs:
         dotnet-version: [ '3.1.x' ]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET dependencies
-      uses: actions/setup-dotnet@v1
-      with:
-         dotnet-version: ${{ matrix.dotnet-version }}
-
-    - name: Install AWS lambda tools
-      run: dotnet tool install -g Amazon.Lambda.Tools
-
-    - name: Setup terraform
-      uses: hashicorp/setup-terraform@v1
-
-    - name: Restore dependencies
-      run: dotnet restore
-      working-directory: src/Ivas.Transactions
-      
-    - name: Build solution
-      run: dotnet build --no-restore
-      working-directory: src/Ivas.Transactions
-      
-    - name: Run unit tests
-      run: dotnet test --no-build --verbosity normal
-      working-directory: src/Ivas.Transactions
-
-    - name: Terraform format
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: false
-
-    - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
-      name: Terraform init and validate
-      with:
-        terraform-folder: "terraform/transaction-service"
-        access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
-        use-backend: true
-      continue-on-error: false
+      - name: Checkout repository content
+        uses: actions/checkout@v2
+        
+      - name: Setup .NET dependencies
+        uses: actions/setup-dotnet@v1
+        with:
+           dotnet-version: ${{ matrix.dotnet-version }}
+  
+      - name: Install AWS lambda tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+  
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+  
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: src/Ivas.Transactions
+        
+      - name: Build solution
+        run: dotnet build --no-restore
+        working-directory: src/Ivas.Transactions
+        
+      - name: Run unit tests
+        run: dotnet test --no-build --verbosity normal
+        working-directory: src/Ivas.Transactions
+  
+      - name: Terraform format
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: false
+  
+      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
+        name: Terraform init and validate
+        with:
+          terraform-folder: "terraform/transaction-service"
+          access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          use-backend: true
+        continue-on-error: false
