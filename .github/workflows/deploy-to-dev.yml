@@ -32,7 +32,7 @@ jobs:
     
       - name: Terraform initialize
         id: init
-        run: terraform init
+        run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_KEY_ID }}"
         working-directory: terraform/transaction-service
     
       - name: Terraform directory files validation
@@ -50,4 +50,3 @@ jobs:
           backend-configuration: ""
           terraform-var-file: "terraform.tfvars"
           terraform-plan-file: "tf.plan"
-          
