@@ -37,7 +37,8 @@ jobs:
           access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           use-backend: true
-    
+        continue-on-error: false
+
       - uses: levibrian/ivas-transactions-api/.github/actions/terraform-plan@main 
         name: Terraform plan
         with:
@@ -48,3 +49,4 @@ jobs:
           backend-configuration: ""
           terraform-var-file: "terraform.tfvars"
           terraform-plan-file: "tf.plan"
+        continue-on-error: false
