@@ -18,8 +18,10 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Give execution permits
+      run: chmod +x /.github/actions/terraform-init-validate.sh
+      shell: bash
+      
     - name: Running script
-      run: | 
-      chmod +x /.github/actions/terraform-init-validate.sh
-      ${{ github.action_path }}/../terraform-init-validate.sh ${{ inputs.terraform-folder }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.use-backend }}
+      run: ${{ github.action_path }}/../terraform-init-validate.sh ${{ inputs.terraform-folder }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.use-backend }}
       shell: bash
