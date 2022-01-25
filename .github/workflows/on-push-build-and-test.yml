@@ -51,5 +51,5 @@ jobs:
           terraform-folder: "terraform/transaction-service"
           access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
-          use-backend: true
+          use-backend: false
         continue-on-error: false
