@@ -18,5 +18,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: sh ${{ github.action_path }}/../terraform-init-validate.sh ${{ inputs.terraform-folder }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.use-backend }}
+    - name: Running script
+      run: |
+      sh ${{ github.action_path }}/../terraform-init-validate.sh ${{ inputs.terraform-folder }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.use-backend }}
       shell: bash
