@@ -37,17 +37,12 @@ log_key_value_pair "environment" $ENVIRONMENT
 TFVARS_FILE=$6
 log_key_value_pair "terraform-var-file" $TFVARS_FILE
 
-TFPLAN_OUTPUT=$7
-log_key_value_pair "tfplan-output" $TFPLAN_OUTPUT
-
-DESTROY_MODE=$8
-log_key_value_pair "destroy-mode" $DESTROY_MODE
+TERRAFORM_PLAN_FILE=$7
+log_key_value_pair "terraform-plan-file" $TERRAFORM_PLAN_FILE
 
 set_up_aws_user_credentials $REGION $ACCESS_KEY $SECRET_KEY
 
 WORKING_FOLDER="$BASE_FOLDER/$TFM_FOLDER"
-
-mkdir -p $(dirname "$WORKING_FOLDER/$TFPLAN_OUTPUT")
 
 cd $WORKING_FOLDER
 
@@ -55,10 +50,6 @@ terraform workspace select $ENVIRONMENT || terraform workspace new $ENVIRONMENT
 
 terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
 
-if [ "$DESTROY_MODE" = "true" ]; then 
-    terraform plan -no-color -destroy -var-file="$TFVARS_FILE" -out="$TFPLAN_OUTPUT"
-else
-    terraform plan -no-color -var-file="$TFVARS_FILE" -out="$TFPLAN_OUTPUT"
-fi
+terraform apply "$TERRAFORM_PLAN_FILE"
 
 cd $BASE_FOLDER
