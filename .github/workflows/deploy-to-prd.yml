@@ -7,7 +7,7 @@ env:
   ENVIRONMENT: "prd"
 
 jobs:
-  deploy-to-dev:
+  deploy-to-prd:
     runs-on: ubuntu-latest
     strategy:
       matrix:
