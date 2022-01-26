@@ -12,7 +12,7 @@ env:
   REGION: "eu-west-1"
 
 jobs:
-  deploy-to-dev:
+  destroy-stack:
     runs-on: ubuntu-latest
     strategy:
       matrix:

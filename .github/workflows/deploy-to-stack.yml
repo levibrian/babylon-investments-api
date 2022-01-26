@@ -13,7 +13,7 @@ env:
   ENVIRONMENT: "dev"
 
 jobs:
-  deploy-to-dev:
+  deploy-to-stack:
     runs-on: ubuntu-latest
     strategy:
       matrix:
