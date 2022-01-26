@@ -3,7 +3,7 @@
 on: 
   workflow_dispatch:
     inputs:
-      stack:
+      stack-name:
         description: the stack/environment to delete.
         type: string
         required: true
@@ -41,5 +41,5 @@ jobs:
           access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           terraform-folder: "terraform/transaction-service"
-          environment: ${{ github.event.inputs.stack }}
+          environment: ${{ github.event.inputs.stack-name }}
         continue-on-error: false
