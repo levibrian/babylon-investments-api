@@ -16,9 +16,18 @@ inputs:
   environment:
     description: "3 letter word to define the environment to deploy."
     required: true
+  stack-name:
+    description: "the stack name identifier."
+    required: false
+  terraform-var-file:
+    description: "file with the terraform variables (.tfvars or .tfvars.json)"
+    required: true
+  terraform-plan-file:
+    description: "file where terraform will put the proposed plan"
+    required: true
 
 runs:
   using: "composite"
   steps:
-    - run: ${{ github.action_path }}/../terraform-destroy.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.environment }} ${{ inputs.terraform-var-file }} ${{ inputs.terraform-plan-file }}
+    - run: ${{ github.action_path }}/../terraform-destroy.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.environment }} ${{ inputs.stack-name }} ${{ inputs.terraform-var-file }} ${{ inputs.terraform-plan-file }}
       shell: bash

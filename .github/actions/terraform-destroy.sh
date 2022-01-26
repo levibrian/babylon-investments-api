@@ -34,6 +34,12 @@ log_key_value_pair "terraform-folder" $TFM_FOLDER
 ENVIRONMENT=$5
 log_key_value_pair "environment" $ENVIRONMENT
 
+STACK_NAME=$6
+log_key_value_pair "stack-name" $STACK_NAME
+
+TFVARS_FILE=$7
+log_key_value_pair "terraform-var-file" $TFVARS_FILE
+
 set_up_aws_user_credentials $REGION $ACCESS_KEY $SECRET_KEY
 
 WORKING_FOLDER="$BASE_FOLDER/$TFM_FOLDER"
@@ -44,6 +50,16 @@ terraform workspace select $ENVIRONMENT || terraform workspace new $ENVIRONMENT
 
 terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
 
-terraform destroy -auto-approve
+if [ "$STACK_NAME" = "" ]; then 
+    terraform workspace select $ENVIRONMENT || terraform workspace new $ENVIRONMENT
+    
+    terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
+    
+    terraform destroy -auto-approve -var-file=$TFVARS_FILE -var env_suffix=$STACK_NAME | landscape
+else
+    terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
+
+    terraform destroy -auto-approve -var-file=$TFVARS_FILE -var env_suffix=$STACK_NAME | landscape
+fi
 
 cd $BASE_FOLDER

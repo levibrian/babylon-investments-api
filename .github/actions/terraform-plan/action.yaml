@@ -29,5 +29,5 @@ inputs:
 runs:
     using: "composite"
     steps:
-        - run: ${{ github.action_path }}/../terraform-plan.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.environment }} ${{ inputs.terraform-var-file }} ${{ inputs.terraform-plan-file }}
+        - run: ${{ github.action_path }}/../terraform-plan.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.environment }} ${{ inputs.stack-name }} ${{ inputs.terraform-var-file }} ${{ inputs.terraform-plan-file }}
           shell: bash
