@@ -43,4 +43,5 @@ jobs:
           terraform-folder: "terraform/transaction-service"
           environment: ${{ github.event.inputs.stack-name }}
           stack-name: ${{ github.event.inputs.stack-name }}
+          terraform-var-file: "terraform.tfvars"
         continue-on-error: false
