@@ -1,5 +1,5 @@
-﻿name: "terraform-apply"
-description: "Applies a terraform configuration based on a previous terraform plan file output."
+﻿name: "terraform-destroy"
+description: "Destroys a terraform configuration"
 inputs:
   region:
     description: "aws region name"
@@ -16,12 +16,9 @@ inputs:
   environment:
     description: "3 letter word to define the environment to deploy."
     required: true
-  terraform-plan-file:
-    description: "file where terraform will put the proposed plan"
-    required: true
 
 runs:
   using: "composite"
   steps:
-    - run: ${{ github.action_path }}/../terraform-apply.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.environment }} ${{ inputs.terraform-plan-file }}
+    - run: ${{ github.action_path }}/../terraform-destroy.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.environment }} ${{ inputs.terraform-var-file }} ${{ inputs.terraform-plan-file }}
       shell: bash

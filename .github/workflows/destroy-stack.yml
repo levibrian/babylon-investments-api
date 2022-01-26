@@ -1,0 +1,45 @@
+﻿name: deploy-to-dev
+
+on: 
+  workflow_dispatch:
+    inputs:
+      stack:
+        description: the stack/environment to delete.
+        type: string
+        required: true
+
+env:
+  REGION: "eu-west-1"
+
+jobs:
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.x' ]
+
+    steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v2
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
+        name: Terraform init and validate
+        with:
+          terraform-folder: "terraform/transaction-service"
+          access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          use-backend: true
+        continue-on-error: false
+
+      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-destroy@main
+        name: Terraform destroy
+        with:
+          region: $REGION
+          access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          terraform-folder: "terraform/transaction-service"
+          environment: ${{ github.event.inputs.stack }}
+        continue-on-error: false
