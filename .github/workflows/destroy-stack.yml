@@ -42,4 +42,5 @@ jobs:
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           terraform-folder: "terraform/transaction-service"
           environment: ${{ github.event.inputs.stack-name }}
+          stack-name: ${{ github.event.inputs.stack-name }}
         continue-on-error: false

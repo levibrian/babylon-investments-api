@@ -74,6 +74,6 @@ jobs:
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           terraform-folder: "terraform/transaction-service"
           environment: $ENVIRONMENT
-          terraform-var-file: "terraform.tfvars"
+          stack-name: ${{ github.event.inputs.stack-name }}
           terraform-plan-file: "tf.plan"
         continue-on-error: false

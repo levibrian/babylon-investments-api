@@ -16,6 +16,9 @@ inputs:
   environment:
     description: "3 letter word to define the environment to deploy."
     required: true
+  stack-name:
+    description: "the stack name identifier."
+    required: false
   terraform-plan-file:
     description: "file where terraform will put the proposed plan"
     required: true
@@ -23,5 +26,5 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: ${{ github.action_path }}/../terraform-apply.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.environment }} ${{ inputs.terraform-plan-file }}
+    - run: ${{ github.action_path }}/../terraform-apply.sh ${{ inputs.region }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.terraform-folder }} ${{ inputs.environment }} ${{ inputs.stack-name }} ${{ inputs.terraform-plan-file }}
       shell: bash

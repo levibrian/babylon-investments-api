@@ -59,6 +59,8 @@ if [ "$STACK_NAME" = "" ]; then
     terraform plan -no-color -var-file="$TFVARS_FILE" -out="$TFPLAN_OUTPUT"
     
 else
+    terraform workspace select $STACK_NAME || terraform workspace new $STACK_NAME
+
     terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
 
     terraform plan -no-color -var-file="$TFVARS_FILE" -var env_suffix="$STACK_NAME" -out="$TFPLAN_OUTPUT"
