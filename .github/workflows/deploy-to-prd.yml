@@ -36,7 +36,6 @@ jobs:
       - name: Terraform format
         id: fmt
         run: terraform fmt -check
-        continue-on-error: false
 
       - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
         name: Terraform init and validate
@@ -45,7 +44,6 @@ jobs:
           access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           use-backend: true
-        continue-on-error: false
 
       - uses: levibrian/ivas-transactions-api/.github/actions/terraform-plan@main
         name: Terraform plan
@@ -58,7 +56,6 @@ jobs:
           stack-name: $ENVIRONMENT
           terraform-var-file: "terraform.tfvars"
           terraform-plan-file: "tf.plan"
-        continue-on-error: false
 
       - uses: levibrian/ivas-transactions-api/.github/actions/terraform-apply@main
         name: Terraform apply
@@ -70,4 +67,3 @@ jobs:
           environment: $ENVIRONMENT
           stack-name: $ENVIRONMENT
           terraform-plan-file: "tf.plan"
-        continue-on-error: false
