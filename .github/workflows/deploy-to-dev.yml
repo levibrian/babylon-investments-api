@@ -55,7 +55,7 @@ jobs:
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           terraform-folder: "terraform/transaction-service"
           environment: $ENVIRONMENT
-          stack-name: ""
+          stack-name: $ENVIRONMENT
           terraform-var-file: "terraform.tfvars"
           terraform-plan-file: "tf.plan"
         continue-on-error: false
@@ -68,6 +68,6 @@ jobs:
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           terraform-folder: "terraform/transaction-service"
           environment: $ENVIRONMENT
-          stack-name: ""
+          stack-name: $ENVIRONMENT
           terraform-plan-file: "tf.plan"
         continue-on-error: false
