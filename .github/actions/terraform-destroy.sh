@@ -55,11 +55,11 @@ if [ "$STACK_NAME" = "" ]; then
     
     terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
     
-    terraform destroy -auto-approve -var-file=$TFVARS_FILE -var env_suffix=$STACK_NAME | landscape
+    terraform destroy -auto-approve -var-file=$TFVARS_FILE -var env_suffix=$STACK_NAME
 else
     terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
 
-    terraform destroy -auto-approve -var-file=$TFVARS_FILE -var env_suffix=$STACK_NAME | landscape
+    terraform destroy -auto-approve -var-file=$TFVARS_FILE -var env_suffix=$STACK_NAME
 fi
 
 cd $BASE_FOLDER
