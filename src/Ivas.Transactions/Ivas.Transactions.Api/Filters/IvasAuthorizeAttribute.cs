@@ -27,6 +27,7 @@ namespace Ivas.Transactions.Api.Filters
             var isRapidApiKeyProvided = request.Headers.TryGetValue(IvasApiHeaders.RapidApiKey, out var rapidApiKey);
             var isBabylonApiKeyProvided = request.Headers.TryGetValue(IvasApiHeaders.OverrideApiKey, out var overrideApiKey);
 
+            logger.LogInformation($"Headers Raw - {string.Join(",", request.Headers.Values)}");
             logger.LogInformation($"Headers - Rapid Api User: {rapidApiUser}");
             logger.LogInformation($"Headers - Rapid Api Key: {rapidApiKey}");
             logger.LogInformation($"Headers - Babylon Api Key: {overrideApiKey}");
