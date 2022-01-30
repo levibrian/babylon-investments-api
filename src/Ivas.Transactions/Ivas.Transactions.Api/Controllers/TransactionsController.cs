@@ -43,8 +43,6 @@ namespace Ivas.Transactions.Api.Controllers
         {
             _logger.LogInformation($"TransactionsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionDto) }, ClientIdentifier: { ClientIdentifier }");
             
-            doNotBuild
-            
             var transactionDto = _mapper.Map<TransactionPostRequest, TransactionPostDto>(createTransactionDto);
 
             transactionDto.ClientIdentifier = ClientIdentifier;
