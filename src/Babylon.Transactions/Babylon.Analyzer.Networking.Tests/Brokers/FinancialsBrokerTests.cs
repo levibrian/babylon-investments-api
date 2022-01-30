@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Babylon.Analyzer.Networking.Brokers;
-using Babylon.Analyzer.Networking.Interfaces.Brokers;
+using Babylon.Transactions.Networking.Brokers;
+using Babylon.Transactions.Networking.Interfaces.Brokers;
 using Xunit;
 
 namespace Babylon.Analyzer.Networking.Tests.Brokers
@@ -21,7 +21,7 @@ namespace Babylon.Analyzer.Networking.Tests.Brokers
 
 
             // Act
-            var results = await _financialsBroker.GetYearlyByTicker("AAPL");
+            var results = await _financialsBroker.GetByTicker("AAPL");
 
             // Assert
             Assert.NotNull(results);
