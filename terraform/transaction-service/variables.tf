@@ -20,12 +20,12 @@ variable "version_tag" {
 
 variable "client" {
   type    = string
-  default = "ivas"
+  default = "babylon"
 }
 
 variable "service_name" {
   type    = string
-  default = "ivas-transactions-service"
+  default = "babylon-transactions-service"
 }
 
 variable "packages_path" {
@@ -35,5 +35,5 @@ variable "packages_path" {
 
 variable "package_file_name" {
   type    = string
-  default = "Ivas.Transactions.Api.zip"
+  default = "babylonTransactions.Api.zip"
 }

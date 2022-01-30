@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  title: Ivas Transactions API
-  description: IVAS Transactions API to handle investment transactions and portfolios
+  title: babylon Transactions API
+  description: babylon Transactions API to handle investment transactions and portfolios
   version: v1
 paths:
-  "/ivas/api/portfolios/{userId}":
+  "/babylon/api/portfolios/{userId}":
     get:
       tags:
         - Portfolios
@@ -17,7 +17,7 @@ paths:
       responses:
         '200':
           description: Success
-  "/ivas/api/transactions":
+  "/babylon/api/transactions":
     post:
       tags:
         - Transactions
@@ -35,7 +35,7 @@ paths:
       responses:
         '200':
           description: Success
-  "/ivas/api/transactions/{transactionId}":
+  "/babylon/api/transactions/{transactionId}":
     delete:
       tags:
         - Transactions
@@ -49,7 +49,7 @@ paths:
       responses:
         '200':
           description: Success
-  "/ivas/api/transactions/{userId}":
+  "/babylon/api/transactions/{userId}":
     get:
       tags:
         - Transactions
@@ -62,7 +62,7 @@ paths:
       responses:
         '200':
           description: Success
-  "/ivas/api/transactions/bulk":
+  "/babylon/api/transactions/bulk":
     post:
       tags:
         - TransactionsInBulk
@@ -86,7 +86,7 @@ paths:
       responses:
         '200':
           description: Success
-  "/ivas/api/transactions/bulk/delete":
+  "/babylon/api/transactions/bulk/delete":
     post:
       tags:
         - TransactionsInBulk

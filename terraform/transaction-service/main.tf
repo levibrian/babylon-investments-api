@@ -91,7 +91,7 @@ module "api_gateway" {
   source = "terraform-aws-modules/apigateway-v2/aws"
 
   name          = local.transactions_api_gateway_name
-  description   = "IVAS Api Gateway."
+  description   = "babylon Api Gateway."
   protocol_type = "HTTP"
 
   cors_configuration = {
@@ -156,7 +156,7 @@ module "api_gateway" {
   }
 
   vpc_links = {
-    ivas-dev-vpc = {
+    babylon-dev-vpc = {
       name               = "${local.transactions_resource_base_name}-api-gateway-vpc-links"
       security_group_ids = [module.api_gateway_security_group.security_group_id]
       subnet_ids         = module.vpc.public_subnets
@@ -180,7 +180,7 @@ module "transactions_lambda" {
 
   function_name = local.transactions_lambda_name
   description   = "Lambda to store and analyze an investment portfolio."
-  handler       = "Ivas.Transactions.Api::Ivas.Transactions.Api.LambdaEntryPoint::FunctionHandlerAsync"
+  handler       = "Babylon.Transactions.Api::Babylon.Transactions.Api.LambdaEntryPoint::FunctionHandlerAsync"
   runtime       = "dotnetcore3.1"
   memory_size   = 512
   timeout       = 60
@@ -256,7 +256,7 @@ module "api_gateway_security_group" {
   version = "~> 4.0"
 
   name        = "${local.transactions_resource_base_name}-apg-security-group"
-  description = "Security group for exposing the IVAS Api Gateway."
+  description = "Security group for exposing the babylon Api Gateway."
   vpc_id      = module.vpc.vpc_id
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
@@ -270,7 +270,7 @@ module "lambda_security_group" {
   version = "~> 4.0"
 
   name        = "${local.transactions_resource_base_name}-lambda-security-group"
-  description = "Lambda security group for IVAS Transactions Lambda"
+  description = "Lambda security group for babylon Transactions Lambda"
   vpc_id      = module.vpc.vpc_id
 
   computed_ingress_with_source_security_group_id = [
@@ -308,7 +308,7 @@ module "endpoints" {
 # Application Manager
 ################################################################################
 
-resource "aws_resourcegroups_group" "ivas_app_resource_group" {
+resource "aws_resourcegroups_group" "babylon_app_resource_group" {
   name = "${local.transactions_resource_base_name}-resource-group"
 
   resource_query {
