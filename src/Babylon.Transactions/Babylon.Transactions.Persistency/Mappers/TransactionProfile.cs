@@ -16,11 +16,6 @@ namespace Babylon.Transactions.Persistency.Mappers
                     memberOptions => 
                         memberOptions.MapFrom(src => 
                             src.TransactionType.ToString()))
-                .ForMember(destinationMember =>
-                        destinationMember.AssetType, 
-                    memberOptions => 
-                        memberOptions.MapFrom(src => 
-                            src.AssetType.ToString()))
                 .ReverseMap();
         }
     }

@@ -22,9 +22,7 @@ namespace Babylon.Transactions.Persistency.Entities
         public decimal PricePerUnit { get; set; }
 
         public decimal Fees { get; set; }
-        
-        public string AssetType { get; set; }
-        
+
         public string TransactionType { get; set; }
     }
 }

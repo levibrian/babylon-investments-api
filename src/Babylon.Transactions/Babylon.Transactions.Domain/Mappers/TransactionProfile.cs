@@ -18,13 +18,8 @@ namespace Babylon.Transactions.Domain.Mappers
                         destinationMember.TransactionType,
                     memberOptions =>
                         memberOptions.MapFrom(src =>
-                            src.TransactionType.ToString()))
-                .ForMember(destinationMember =>
-                        destinationMember.AssetType,
-                    memberOptions =>
-                        memberOptions.MapFrom(src =>
-                            src.AssetType.ToString()));
-            
+                            src.TransactionType.ToString()));
+
             CreateMap<Transaction, TransactionDto>()
                 .ReverseMap();
         }

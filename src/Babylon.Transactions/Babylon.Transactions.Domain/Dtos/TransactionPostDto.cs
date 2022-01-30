@@ -16,9 +16,7 @@ namespace Babylon.Transactions.Domain.Dtos
         public decimal PricePerUnit { get; set; }
 
         public decimal Fees { get; set; }
-        
-        public AssetTypeEnum AssetType { get; set; }
-        
+
         public TransactionTypeEnum TransactionType { get; set; }
     }
 }

@@ -24,8 +24,6 @@ namespace Babylon.Transactions.Domain.Objects
 
         public override decimal Fees => _transactionRequest.Fees;
 
-        public override AssetTypeEnum AssetType => _transactionRequest.AssetType;
-        
         public override TransactionTypeEnum TransactionType => _transactionRequest.TransactionType;
         
         
