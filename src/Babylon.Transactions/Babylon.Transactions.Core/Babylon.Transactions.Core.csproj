@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Babylon.Transactions.Core.Abstractions\Babylon.Transactions.Core.Abstractions.csproj" />
+      <ProjectReference Include="..\Babylon.Transactions.Domain\Babylon.Transactions.Domain.csproj" />
+      <ProjectReference Include="..\Babylon.Transactions.Persistency\Babylon.Transactions.Persistency.csproj" />
+    </ItemGroup>
+
+</Project>

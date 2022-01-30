@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Babylon.Transactions.Domain.Abstractions\Babylon.Transactions.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\Babylon.Transactions.Persistency.Abstractions\Babylon.Transactions.Persistency.Abstractions.csproj" />
+    <ProjectReference Include="..\Babylon.Transactions.Persistency\Babylon.Transactions.Persistency.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services" />
+  </ItemGroup>
+
+</Project>
