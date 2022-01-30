@@ -26,6 +26,6 @@
     <Folder Include="Brokers\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Babylon.Transactions.Networking\Babylon.Transactions.Networking.csproj" />
+    <ProjectReference Include="..\Babylon.Networking\Babylon.Networking.csproj" />
   </ItemGroup>
 </Project>

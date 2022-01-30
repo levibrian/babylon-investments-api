@@ -1,6 +1,6 @@
-﻿using Babylon.Transactions.Networking.Enums;
+﻿using Babylon.Networking.Enums;
 
-namespace Babylon.Transactions.Networking.Constants
+namespace Babylon.Networking.Constants
 {
     public static class PolygonApiRoutes
     {

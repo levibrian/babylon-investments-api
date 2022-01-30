@@ -1,4 +1,4 @@
-﻿namespace Babylon.Transactions.Networking.Constants
+﻿namespace Babylon.Networking.Constants
 {
     public static class PolygonApiConfiguration
     {

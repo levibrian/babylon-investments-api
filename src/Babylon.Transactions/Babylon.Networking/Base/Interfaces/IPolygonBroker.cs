@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Babylon.Transactions.Networking.Base.Interfaces
+namespace Babylon.Networking.Base.Interfaces
 {
     public interface IPolygonBroker
     {

@@ -1,4 +1,4 @@
-﻿namespace Babylon.Transactions.Networking.Enums
+﻿namespace Babylon.Networking.Enums
 {
     public enum FinancialsTypes
     {

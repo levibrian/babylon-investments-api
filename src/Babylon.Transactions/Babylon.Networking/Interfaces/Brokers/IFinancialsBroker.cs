@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Babylon.Transactions.Domain.Abstractions.Networking;
 
-namespace Babylon.Transactions.Networking.Interfaces.Brokers
+namespace Babylon.Networking.Interfaces.Brokers
 {
     public interface IFinancialsBroker
     {

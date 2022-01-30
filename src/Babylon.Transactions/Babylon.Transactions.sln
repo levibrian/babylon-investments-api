@@ -25,11 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Transactions.Inject
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Transactions.Shared", "Babylon.Transactions.Shared\Babylon.Transactions.Shared.csproj", "{E812D5CC-03F4-420A-8DB3-29578E5CF06A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Transactions.Networking", "Babylon.Transactions.Networking\Babylon.Transactions.Networking.csproj", "{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Networking", "Babylon.Networking\Babylon.Networking.csproj", "{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{78A6D29B-8AE3-4867-A151-5EF30EBF894E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Analyzer.Networking.Tests", "Babylon.Analyzer.Networking.Tests\Babylon.Analyzer.Networking.Tests.csproj", "{FDD18B7A-135D-4C2D-93DF-EE25DBD31A04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Networking.Tests", "Babylon.Networking.Tests\Babylon.Networking.Tests.csproj", "{FDD18B7A-135D-4C2D-93DF-EE25DBD31A04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

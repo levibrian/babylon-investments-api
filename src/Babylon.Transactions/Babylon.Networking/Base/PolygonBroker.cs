@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Babylon.Networking.Base.Interfaces;
 using Babylon.Transactions.Domain.Abstractions.Networking;
-using Babylon.Transactions.Networking.Base.Interfaces;
 
-namespace Babylon.Transactions.Networking.Base
+namespace Babylon.Networking.Base
 {
     public class PolygonBroker : IPolygonBroker
     {

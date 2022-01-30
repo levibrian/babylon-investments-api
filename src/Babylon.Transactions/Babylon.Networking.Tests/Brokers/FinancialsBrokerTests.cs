@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Babylon.Transactions.Networking.Brokers;
-using Babylon.Transactions.Networking.Interfaces.Brokers;
+using Babylon.Networking.Brokers;
+using Babylon.Networking.Interfaces.Brokers;
 using Xunit;
 
-namespace Babylon.Analyzer.Networking.Tests.Brokers
+namespace Babylon.Networking.Tests.Brokers
 {
     public class FinancialsBrokerTests
     {
