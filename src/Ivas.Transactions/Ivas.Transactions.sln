@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ivas.Transactions.Injection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ivas.Transactions.Shared", "Ivas.Transactions.Shared\Ivas.Transactions.Shared.csproj", "{E812D5CC-03F4-420A-8DB3-29578E5CF06A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ivas.Transactions.Networking", "Ivas.Transactions.Networking\Ivas.Transactions.Networking.csproj", "{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{E812D5CC-03F4-420A-8DB3-29578E5CF06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E812D5CC-03F4-420A-8DB3-29578E5CF06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E812D5CC-03F4-420A-8DB3-29578E5CF06A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{8E554AAA-1EC1-4749-A9E8-4D9E21C97D9E} = {815EA953-BDE1-48AF-A6DC-E3C6B138B421}
 		{D230B38B-FAA1-4FCC-8A55-06964AA17C88} = {377C4D51-AE90-46EA-9197-DA672BC77BBF}
 		{E812D5CC-03F4-420A-8DB3-29578E5CF06A} = {01FF4F93-4EA1-42C2-8103-0688B924DF2E}
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63} = {815EA953-BDE1-48AF-A6DC-E3C6B138B421}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D6DB0DA-A726-40E6-A5ED-497BE03D6828}

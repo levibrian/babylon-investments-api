@@ -42,8 +42,8 @@ namespace Ivas.Transactions.Api.Controllers
         public async Task<IActionResult> Create([FromBody] TransactionPostRequest createTransactionDto)
         {
             _logger.LogInformation($"TransactionsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionDto) }, ClientIdentifier: { ClientIdentifier }");
-
-            _logger.LogInformation($"Aguante River Plate..");
+            
+            doNotBuild
             
             var transactionDto = _mapper.Map<TransactionPostRequest, TransactionPostDto>(createTransactionDto);
 

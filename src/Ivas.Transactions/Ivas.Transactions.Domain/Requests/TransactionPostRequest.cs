@@ -16,9 +16,7 @@ namespace Ivas.Transactions.Domain.Requests
         public decimal PricePerUnit { get; set; }
 
         public decimal Fees { get; set; }
-        
-        public AssetTypeEnum AssetType { get; set; }
-        
+
         public TransactionTypeEnum TransactionType { get; set; }
     }
 }
