@@ -37,7 +37,7 @@ jobs:
         id: fmt
         run: terraform fmt -check
       
-      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
+      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-init-validate@main
         name: Terraform init and validate
         with:
           terraform-folder: "terraform/transaction-service"
@@ -45,7 +45,7 @@ jobs:
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           use-backend: true
 
-      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-plan@main 
+      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-plan@main 
         name: Terraform plan
         with:
           region: $REGION
@@ -57,7 +57,7 @@ jobs:
           terraform-var-file: "terraform.tfvars"
           terraform-plan-file: "tf.plan"
 
-      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-apply@main
+      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-apply@main
         name: Terraform apply
         with:
           region: $REGION

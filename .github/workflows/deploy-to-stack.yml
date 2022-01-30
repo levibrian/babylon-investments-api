@@ -44,7 +44,7 @@ jobs:
         run: terraform fmt -check
         continue-on-error: false
 
-      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
+      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-init-validate@main
         name: Terraform init and validate
         with:
           terraform-folder: "terraform/transaction-service"
@@ -53,7 +53,7 @@ jobs:
           use-backend: true
         continue-on-error: false
 
-      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-plan@main
+      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-plan@main
         name: Terraform plan
         with:
           region: $REGION
@@ -66,7 +66,7 @@ jobs:
           terraform-plan-file: "tf.plan"
         continue-on-error: false
 
-      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-apply@main
+      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-apply@main
         name: Terraform apply
         with:
           region: $REGION

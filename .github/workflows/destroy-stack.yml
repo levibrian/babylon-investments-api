@@ -25,7 +25,7 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v1
 
-      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-init-validate@main
+      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-init-validate@main
         name: Terraform init and validate
         with:
           terraform-folder: "terraform/transaction-service"
@@ -34,7 +34,7 @@ jobs:
           use-backend: true
         continue-on-error: false
 
-      - uses: levibrian/ivas-transactions-api/.github/actions/terraform-destroy@main
+      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-destroy@main
         name: Terraform destroy
         with:
           region: $REGION
