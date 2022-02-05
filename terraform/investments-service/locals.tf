@@ -1,5 +1,5 @@
 locals {
-  investments_resource_base_name  = "${var.client}-${local.environment}-Investments"
+  investments_resource_base_name  = "${var.client}-${local.environment}-investments"
   investments_api_gateway_name    = "${local.investments_resource_base_name}-api"
   investments_lambda_name         = "${local.investments_resource_base_name}-lambda"
   investments_dynamodb_table_name = "${local.investments_resource_base_name}-table"
