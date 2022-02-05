@@ -40,7 +40,7 @@ jobs:
       - uses: levibrian/babylon-Investments-api/.github/actions/terraform-init-validate@main
         name: Terraform init and validate
         with:
-          terraform-folder: "terraform/transaction-service"
+          terraform-folder: "terraform/investments-service"
           access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           use-backend: true
@@ -51,7 +51,7 @@ jobs:
           region: $REGION
           access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
-          terraform-folder: "terraform/transaction-service"
+          terraform-folder: "terraform/investments-service"
           environment: $ENVIRONMENT
           stack-name: $ENVIRONMENT
           terraform-var-file: "terraform.tfvars"
@@ -63,7 +63,7 @@ jobs:
           region: $REGION
           access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-key: ${{ secrets.AWS_SECRET_KEY_ID }}
-          terraform-folder: "terraform/transaction-service"
+          terraform-folder: "terraform/investments-service"
           environment: $ENVIRONMENT
           stack-name: $ENVIRONMENT
           terraform-plan-file: "tf.plan"
