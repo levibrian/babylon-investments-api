@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: babylon Transactions API
-  description: babylon Transactions API to handle investment transactions and portfolios
+  title: babylon Investments API
+  description: babylon Investments API to handle investment Investments and portfolios
   version: v1
 paths:
   "/babylon/api/portfolios/{userId}":
@@ -17,10 +17,10 @@ paths:
       responses:
         '200':
           description: Success
-  "/babylon/api/transactions":
+  "/babylon/api/Investments":
     post:
       tags:
-        - Transactions
+        - Investments
       requestBody:
         content:
           application/json:
@@ -35,10 +35,10 @@ paths:
       responses:
         '200':
           description: Success
-  "/babylon/api/transactions/{transactionId}":
+  "/babylon/api/Investments/{transactionId}":
     delete:
       tags:
-        - Transactions
+        - Investments
       parameters:
         - name: transactionId
           in: path
@@ -49,10 +49,10 @@ paths:
       responses:
         '200':
           description: Success
-  "/babylon/api/transactions/{userId}":
+  "/babylon/api/Investments/{userId}":
     get:
       tags:
-        - Transactions
+        - Investments
       parameters:
         - name: userId
           in: path
@@ -62,10 +62,10 @@ paths:
       responses:
         '200':
           description: Success
-  "/babylon/api/transactions/bulk":
+  "/babylon/api/Investments/bulk":
     post:
       tags:
-        - TransactionsInBulk
+        - InvestmentsInBulk
       requestBody:
         content:
           application/json:
@@ -86,10 +86,10 @@ paths:
       responses:
         '200':
           description: Success
-  "/babylon/api/transactions/bulk/delete":
+  "/babylon/api/Investments/bulk/delete":
     post:
       tags:
-        - TransactionsInBulk
+        - InvestmentsInBulk
       requestBody:
         content:
           application/json:

@@ -2,8 +2,8 @@
 # IAM Role
 ################################################################################
 
-resource "aws_iam_role" "transactions_lambda_role" {
-  name               = "${local.transactions_lambda_name}-iam"
+resource "aws_iam_role" "Investments_lambda_role" {
+  name               = "${local.Investments_lambda_name}-iam"
   assume_role_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -22,9 +22,9 @@ resource "aws_iam_role" "transactions_lambda_role" {
   tags               = local.default_tags
 }
 
-resource "aws_iam_role_policy" "transactions_lambda_policy" {
-  name   = "${local.transactions_lambda_name}-policy"
-  role   = aws_iam_role.transactions_lambda_role.name
+resource "aws_iam_role_policy" "Investments_lambda_policy" {
+  name   = "${local.Investments_lambda_name}-policy"
+  role   = aws_iam_role.Investments_lambda_role.name
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -78,7 +78,7 @@ EOF
 resource "aws_lambda_permission" "lambda_apigateway_trigger" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = module.transactions_lambda.lambda_function_arn
+  function_name = module.Investments_lambda.lambda_function_arn
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
 }
@@ -90,7 +90,7 @@ resource "aws_lambda_permission" "lambda_apigateway_trigger" {
 module "api_gateway" {
   source = "terraform-aws-modules/apigateway-v2/aws"
 
-  name          = local.transactions_api_gateway_name
+  name          = local.Investments_api_gateway_name
   description   = "babylon Api Gateway."
   protocol_type = "HTTP"
 
@@ -111,43 +111,43 @@ module "api_gateway" {
   create_routes_and_integrations = true
 
   integrations = {
-    "GET /babylon/api/transactions" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+    "GET /babylon/api/Investments" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.Investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "POST /babylon/api/transactions" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+    "POST /babylon/api/Investments" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.Investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "DELETE /babylon/api/transactions/{transactionId}" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+    "DELETE /babylon/api/Investments/{transactionId}" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.Investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "POST /babylon/api/transactions/bulk" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+    "POST /babylon/api/Investments/bulk" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.Investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "POST /babylon/api/transactions/bulk/delete" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+    "POST /babylon/api/Investments/bulk/delete" = {
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.Investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
     "GET /babylon/api/portfolios" = {
-      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.transactions_lambda.lambda_function_arn}/invocations"
+      lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.Investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
@@ -157,7 +157,7 @@ module "api_gateway" {
 
   vpc_links = {
     babylon-dev-vpc = {
-      name               = "${local.transactions_resource_base_name}-api-gateway-vpc-links"
+      name               = "${local.Investments_resource_base_name}-api-gateway-vpc-links"
       security_group_ids = [module.api_gateway_security_group.security_group_id]
       subnet_ids         = module.vpc.public_subnets
     }
@@ -167,39 +167,39 @@ module "api_gateway" {
   vpc_link_tags      = local.default_tags
   tags               = local.default_tags
 
-  depends_on = [module.transactions_lambda]
+  depends_on = [module.Investments_lambda]
 }
 
 ################################################################################
 # Lambda Module
 ################################################################################
 
-module "transactions_lambda" {
+module "Investments_lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "2.23.0"
 
-  function_name = local.transactions_lambda_name
+  function_name = local.Investments_lambda_name
   description   = "Lambda to store and analyze an investment portfolio."
-  handler       = "Babylon.Transactions.Api::Babylon.Transactions.Api.LambdaEntryPoint::FunctionHandlerAsync"
+  handler       = "Babylon.Investments.Api::Babylon.Investments.Api.LambdaEntryPoint::FunctionHandlerAsync"
   runtime       = "dotnetcore3.1"
   memory_size   = 512
   timeout       = 60
 
   create_package         = false
-  local_existing_package = local.transactions_lambda_file_path
+  local_existing_package = local.Investments_lambda_file_path
 
   vpc_subnet_ids         = module.vpc.private_subnets
   vpc_security_group_ids = [module.lambda_security_group.security_group_id]
 
   attach_policy_json = true
-  policy_json        = aws_iam_role_policy.transactions_lambda_policy.policy
+  policy_json        = aws_iam_role_policy.Investments_lambda_policy.policy
 
-  lambda_role = aws_iam_role.transactions_lambda_role.arn
+  lambda_role = aws_iam_role.Investments_lambda_role.arn
 
   tags = local.default_tags
 
   environment_variables = {
-    TRANSACTIONS_DYNAMO_DB_TABLE = module.dynamodb_table.dynamodb_table_id
+    Investments_DYNAMO_DB_TABLE = module.dynamodb_table.dynamodb_table_id
     USE_DEV_ENVIRONMENT          = false
   }
 
@@ -213,7 +213,7 @@ module "transactions_lambda" {
 module "dynamodb_table" {
   source = "terraform-aws-modules/dynamodb-table/aws"
 
-  name      = local.transactions_dynamodb_table_name
+  name      = local.Investments_dynamodb_table_name
   hash_key  = "ClientIdentifier"
   range_key = "TransactionId"
 
@@ -239,7 +239,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 2"
 
-  name = local.transactions_resource_base_name
+  name = local.Investments_resource_base_name
   cidr = "10.79.0.0/16"
 
   azs             = ["${var.region}a", "${var.region}b"]
@@ -255,7 +255,7 @@ module "api_gateway_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 4.0"
 
-  name        = "${local.transactions_resource_base_name}-apg-security-group"
+  name        = "${local.Investments_resource_base_name}-apg-security-group"
   description = "Security group for exposing the babylon Api Gateway."
   vpc_id      = module.vpc.vpc_id
 
@@ -269,8 +269,8 @@ module "lambda_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 4.0"
 
-  name        = "${local.transactions_resource_base_name}-lambda-security-group"
-  description = "Lambda security group for babylon Transactions Lambda"
+  name        = "${local.Investments_resource_base_name}-lambda-security-group"
+  description = "Lambda security group for babylon Investments Lambda"
   vpc_id      = module.vpc.vpc_id
 
   computed_ingress_with_source_security_group_id = [
@@ -309,7 +309,7 @@ module "endpoints" {
 ################################################################################
 
 resource "aws_resourcegroups_group" "babylon_app_resource_group" {
-  name = "${local.transactions_resource_base_name}-resource-group"
+  name = "${local.Investments_resource_base_name}-resource-group"
 
   resource_query {
     query = <<JSON
@@ -326,7 +326,7 @@ resource "aws_resourcegroups_group" "babylon_app_resource_group" {
         },
         {
           "Key": "ServiceGroup",
-          "Values": ["${local.transactions_resource_base_name}"]
+          "Values": ["${local.Investments_resource_base_name}"]
         }
       ]
     }
@@ -334,7 +334,7 @@ resource "aws_resourcegroups_group" "babylon_app_resource_group" {
   }
 
   tags = merge(local.default_tags, tomap({
-    "Name"  = local.transactions_resource_base_name,
+    "Name"  = local.Investments_resource_base_name,
     "Stage" = terraform.workspace
   }))
 }

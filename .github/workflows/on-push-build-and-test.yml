@@ -30,22 +30,22 @@ jobs:
   
       - name: Restore dependencies
         run: dotnet restore
-        working-directory: src/Babylon.Transactions
+        working-directory: src/Babylon.Investments
         
       - name: Build solution
         run: dotnet build --no-restore
-        working-directory: src/Babylon.Transactions
+        working-directory: src/Babylon.Investments
         
       - name: Run unit tests
         run: dotnet test --no-build --verbosity normal
-        working-directory: src/Babylon.Transactions
+        working-directory: src/Babylon.Investments
   
       - name: Terraform format
         id: fmt
         run: terraform fmt -check
         continue-on-error: false
   
-      - uses: levibrian/babylon-transactions-api/.github/actions/terraform-init-validate@main
+      - uses: levibrian/babylon-Investments-api/.github/actions/terraform-init-validate@main
         name: Terraform init and validate
         with:
           terraform-folder: "terraform/transaction-service"
