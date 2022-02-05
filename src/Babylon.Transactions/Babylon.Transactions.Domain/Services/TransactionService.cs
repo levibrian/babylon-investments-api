@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using Babylon.Networking.Interfaces.Brokers;
 using Babylon.Transactions.Domain.Abstractions.Services;
 using Babylon.Transactions.Domain.Contracts.Repositories;
 using Babylon.Transactions.Domain.Dtos;
@@ -32,6 +33,8 @@ namespace Babylon.Transactions.Domain.Services
 
         private readonly ITransactionRepository _transactionRepository;
 
+        private readonly IFinancialsBroker _financialsBroker;
+        
         private readonly IMapper _mapper;
 
         private readonly ILogger<TransactionService> _logger;
@@ -39,6 +42,7 @@ namespace Babylon.Transactions.Domain.Services
         public TransactionService(
             ITransactionValidator transactionValidator,
             ITransactionRepository transactionRepository,
+            IFinancialsBroker financialsBroker,
             IMapper mapper,
             ILogger<TransactionService> logger)
         {
@@ -47,7 +51,9 @@ namespace Babylon.Transactions.Domain.Services
             
             _transactionRepository = transactionRepository 
                                      ?? throw new ArgumentNullException(nameof(transactionRepository));
-            
+
+            _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
+
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -67,7 +73,7 @@ namespace Babylon.Transactions.Domain.Services
                     string.Join(", ", validationResult.Errors.Select(x => x.Message)));
             }
             
-            var domainObject = new TransactionCreate(dto);
+            var domainObject = new TransactionCreate(dto, _financialsBroker);
 
             await _transactionRepository.Insert(domainObject);
             

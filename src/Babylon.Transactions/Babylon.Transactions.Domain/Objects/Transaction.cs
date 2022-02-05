@@ -22,6 +22,8 @@ namespace Babylon.Transactions.Domain.Objects
 
         public virtual decimal Fees { get; set; }
 
+        public virtual AssetTypeEnum AssetType { get; set; }
+        
         public virtual TransactionTypeEnum TransactionType { get; set; }
 
         protected Transaction()

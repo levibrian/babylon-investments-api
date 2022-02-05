@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Babylon.Networking.Interfaces.Brokers;
 using Babylon.Transactions.Domain.Abstractions.Services;
 using Babylon.Transactions.Domain.Contracts.Repositories;
 using Babylon.Transactions.Domain.Dtos;
@@ -17,7 +18,6 @@ namespace Babylon.Transactions.Domain.Services
         ICreatableAsyncService<IEnumerable<TransactionPostDto>>,
         IDeletableAsyncService<IEnumerable<TransactionDeleteDto>>
     {
-        
     }
     
     public class TransactionsInBulkService : ITransactionsInBulkService
@@ -26,15 +26,19 @@ namespace Babylon.Transactions.Domain.Services
 
         private readonly ITransactionValidator _transactionValidator;
 
+        private readonly IFinancialsBroker _financialsBroker;
+        
         private readonly ILogger<TransactionsInBulkService> _logger;
         
         public TransactionsInBulkService(
             ITransactionRepository transactionRepository,
             ITransactionValidator transactionValidator,
+            IFinancialsBroker financialsBroker,
             ILogger<TransactionsInBulkService> logger)
         {
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));
+            _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
@@ -51,7 +55,7 @@ namespace Babylon.Transactions.Domain.Services
                             .Select(x => x.Errors.Select(x => x.Message))));
 
             var domainEntitiesToInsert = entity
-                .Select(transaction => new TransactionCreate(transaction))
+                .Select(transaction => new TransactionCreate(transaction, _financialsBroker))
                 .ToList();
 
             await _transactionRepository.InsertInBulk(domainEntitiesToInsert);

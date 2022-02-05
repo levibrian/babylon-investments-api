@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Babylon.Networking\Babylon.Networking.csproj" />
       <ProjectReference Include="..\Babylon.Transactions.Domain.Abstractions\Babylon.Transactions.Domain.Abstractions.csproj" />
       <ProjectReference Include="..\Babylon.Transactions.Shared\Babylon.Transactions.Shared.csproj" />
     </ItemGroup>

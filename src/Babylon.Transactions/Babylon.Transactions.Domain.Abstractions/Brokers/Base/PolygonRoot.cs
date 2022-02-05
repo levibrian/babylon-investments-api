@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Babylon.Transactions.Domain.Abstractions.Networking
+namespace Babylon.Transactions.Domain.Abstractions.Brokers.Base
 {
     public class PolygonRoot<T> where T : class
     {
