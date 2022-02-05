@@ -1,0 +1,90 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentation", "1. Presentation", "{2E00A18E-C54F-4575-9C8F-0722C59BB340}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Domain", "2. Domain", "{815EA953-BDE1-48AF-A6DC-E3C6B138B421}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Persistency", "3. Persistency", "{C5FFC3DD-908F-4CBF-BBDD-4305D907B0C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Shared", "4. Shared", "{01FF4F93-4EA1-42C2-8103-0688B924DF2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Injection", "5. Injection", "{377C4D51-AE90-46EA-9197-DA672BC77BBF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Babylon.Investments.Api", "Babylon.Investments.Api\Babylon.Investments.Api.csproj", "{F8C86D63-1AF1-4944-A175-4720A58B6F70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Investments.Domain.Abstractions", "Babylon.Investments.Domain.Abstractions\Babylon.Investments.Domain.Abstractions.csproj", "{7461F889-38FB-408A-B444-81BD35776E34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Investments.Persistency", "Babylon.Investments.Persistency\Babylon.Investments.Persistency.csproj", "{34F0FB39-4FBC-4CB8-B33D-FC10592BDA7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Investments.Domain", "Babylon.Investments.Domain\Babylon.Investments.Domain.csproj", "{8E554AAA-1EC1-4749-A9E8-4D9E21C97D9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Investments.Injection", "Babylon.Investments.Injection\Babylon.Investments.Injection.csproj", "{D230B38B-FAA1-4FCC-8A55-06964AA17C88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Investments.Shared", "Babylon.Investments.Shared\Babylon.Investments.Shared.csproj", "{E812D5CC-03F4-420A-8DB3-29578E5CF06A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Networking", "Babylon.Networking\Babylon.Networking.csproj", "{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{78A6D29B-8AE3-4867-A151-5EF30EBF894E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Networking.Tests", "Babylon.Networking.Tests\Babylon.Networking.Tests.csproj", "{FDD18B7A-135D-4C2D-93DF-EE25DBD31A04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8C86D63-1AF1-4944-A175-4720A58B6F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8C86D63-1AF1-4944-A175-4720A58B6F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8C86D63-1AF1-4944-A175-4720A58B6F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8C86D63-1AF1-4944-A175-4720A58B6F70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7461F889-38FB-408A-B444-81BD35776E34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7461F889-38FB-408A-B444-81BD35776E34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7461F889-38FB-408A-B444-81BD35776E34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7461F889-38FB-408A-B444-81BD35776E34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34F0FB39-4FBC-4CB8-B33D-FC10592BDA7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34F0FB39-4FBC-4CB8-B33D-FC10592BDA7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34F0FB39-4FBC-4CB8-B33D-FC10592BDA7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34F0FB39-4FBC-4CB8-B33D-FC10592BDA7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E554AAA-1EC1-4749-A9E8-4D9E21C97D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E554AAA-1EC1-4749-A9E8-4D9E21C97D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E554AAA-1EC1-4749-A9E8-4D9E21C97D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E554AAA-1EC1-4749-A9E8-4D9E21C97D9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D230B38B-FAA1-4FCC-8A55-06964AA17C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D230B38B-FAA1-4FCC-8A55-06964AA17C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D230B38B-FAA1-4FCC-8A55-06964AA17C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D230B38B-FAA1-4FCC-8A55-06964AA17C88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E812D5CC-03F4-420A-8DB3-29578E5CF06A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E812D5CC-03F4-420A-8DB3-29578E5CF06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E812D5CC-03F4-420A-8DB3-29578E5CF06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E812D5CC-03F4-420A-8DB3-29578E5CF06A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDD18B7A-135D-4C2D-93DF-EE25DBD31A04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDD18B7A-135D-4C2D-93DF-EE25DBD31A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDD18B7A-135D-4C2D-93DF-EE25DBD31A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDD18B7A-135D-4C2D-93DF-EE25DBD31A04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8C86D63-1AF1-4944-A175-4720A58B6F70} = {2E00A18E-C54F-4575-9C8F-0722C59BB340}
+		{7461F889-38FB-408A-B444-81BD35776E34} = {815EA953-BDE1-48AF-A6DC-E3C6B138B421}
+		{34F0FB39-4FBC-4CB8-B33D-FC10592BDA7B} = {C5FFC3DD-908F-4CBF-BBDD-4305D907B0C5}
+		{8E554AAA-1EC1-4749-A9E8-4D9E21C97D9E} = {815EA953-BDE1-48AF-A6DC-E3C6B138B421}
+		{D230B38B-FAA1-4FCC-8A55-06964AA17C88} = {377C4D51-AE90-46EA-9197-DA672BC77BBF}
+		{E812D5CC-03F4-420A-8DB3-29578E5CF06A} = {01FF4F93-4EA1-42C2-8103-0688B924DF2E}
+		{BD7F28DF-AC76-42C5-B3D0-5102D4BAAB63} = {815EA953-BDE1-48AF-A6DC-E3C6B138B421}
+		{78A6D29B-8AE3-4867-A151-5EF30EBF894E} = {815EA953-BDE1-48AF-A6DC-E3C6B138B421}
+		{FDD18B7A-135D-4C2D-93DF-EE25DBD31A04} = {78A6D29B-8AE3-4867-A151-5EF30EBF894E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9D6DB0DA-A726-40E6-A5ED-497BE03D6828}
+	EndGlobalSection
+EndGlobal

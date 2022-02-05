@@ -25,7 +25,7 @@ variable "client" {
 
 variable "service_name" {
   type    = string
-  default = "babylon-Investments-service"
+  default = "babylon-investments-service"
 }
 
 variable "packages_path" {
@@ -35,5 +35,5 @@ variable "packages_path" {
 
 variable "package_file_name" {
   type    = string
-  default = "babylonInvestments.Api.zip"
+  default = "Babylon.Investments.Api.zip"
 }
