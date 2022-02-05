@@ -91,7 +91,7 @@ module "api_gateway" {
   source = "terraform-aws-modules/apigateway-v2/aws"
 
   name          = local.investments_api_gateway_name
-  description   = "babylon Api Gateway."
+  description   = "Babylon Investments Api Gateway."
   protocol_type = "HTTP"
 
   cors_configuration = {
