@@ -18,10 +18,16 @@ namespace Babylon.Investments.Domain.Objects
 
         public decimal RealizedDividends => CalculateRealizedDividends();
 
-        // public decimal RealizedGains => CalculateRealizedGains();
+        public decimal RealizedGainLoss => CalculateRealizedGains();
 
         public decimal PricePerShare => BuyPositions?
             .Average(x => x.PricePerUnit) ?? default;
+
+        public PositionSummary(IEnumerable<Transaction> transactions)
+        {
+            _transactions = transactions 
+                            ?? throw new ArgumentNullException(nameof(transactions));
+        }
 
         private readonly IEnumerable<Transaction> _transactions;
 
@@ -36,13 +42,7 @@ namespace Babylon.Investments.Domain.Objects
         private IEnumerable<Transaction> DividendPositions => _transactions
             .Where(x =>
                 x.TransactionType == TransactionTypeEnum.Dividend);
-
-        public PositionSummary(IEnumerable<Transaction> transactions)
-        {
-            _transactions = transactions 
-                            ?? throw new ArgumentNullException(nameof(transactions));
-        }
-
+        
         private decimal CalculateRealizedDividends()
         {
             return DividendPositions
@@ -52,7 +52,7 @@ namespace Babylon.Investments.Domain.Objects
         
         private decimal CalculateRealizedGains()
         {
-            return 0;
+            return (decimal) 0.00;
         }
     }
 }

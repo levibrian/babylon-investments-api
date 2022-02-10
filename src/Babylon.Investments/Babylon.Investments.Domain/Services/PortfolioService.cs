@@ -31,13 +31,13 @@ namespace Babylon.Investments.Domain.Services
         
         public async Task<IEnumerable<PositionSummaryGetResponse>> GetPortfolioByUser(string clientIdentifier, string userId)
         {
-            var userInvestments = (await _transactionRepository
-                    .GetByClientAsync(clientIdentifier))
-                .Where(x => x.UserId.Equals(userId))
-                .GroupBy(x => x.Ticker)
-                .ToDictionary(
-                    x => x.Key, 
-                    t => t.Select(tr => tr));
+            var userInvestments = 
+                (await _transactionRepository.GetByClientAsync(clientIdentifier))
+                    .Where(x => x.UserId.Equals(userId))
+                    .GroupBy(x => x.Ticker)
+                    .ToDictionary(
+                        x => x.Key, 
+                        t => t.Select(tr => tr));
 
             var userPortfolio = 
                 userInvestments
