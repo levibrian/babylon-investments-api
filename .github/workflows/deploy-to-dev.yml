@@ -1,6 +1,10 @@
 ﻿name: deploy-to-dev
 
-on: workflow_dispatch
+on: 
+  push:
+    branches:
+      - main
+  workflow_dispatch
 
 env:
   REGION: "eu-west-1"
