@@ -7,6 +7,7 @@ using Babylon.Investments.Domain.Abstractions.Services;
 using Babylon.Investments.Domain.Contracts.Repositories;
 using Babylon.Investments.Domain.Dtos;
 using Babylon.Investments.Domain.Objects;
+using Babylon.Investments.Domain.Services.Base;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
 using Babylon.Investments.Shared.Notifications;
@@ -20,7 +21,7 @@ namespace Babylon.Investments.Domain.Services
     {
     }
     
-    public class TransactionsInBulkService : ITransactionsInBulkService
+    public class TransactionsInBulkService : TransactionBaseService, ITransactionsInBulkService
     {
         private readonly ITransactionRepository _transactionRepository;
 
@@ -34,7 +35,7 @@ namespace Babylon.Investments.Domain.Services
             ITransactionRepository transactionRepository,
             ITransactionValidator transactionValidator,
             IFinancialsBroker financialsBroker,
-            ILogger<TransactionsInBulkService> logger)
+            ILogger<TransactionsInBulkService> logger) : base(transactionValidator, transactionRepository, financialsBroker, logger)
         {
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));
@@ -44,21 +45,10 @@ namespace Babylon.Investments.Domain.Services
         
         public async Task<Result> CreateAsync(IEnumerable<TransactionPostDto> entity)
         {
-            var validationResults = _transactionValidator.Validate(entity);
-            
-            if (validationResults.Any(x => x.IsFailure)) 
-                throw new BabylonException(
-                    string.Join(
-                        ", ", 
-                        validationResults
-                            .Where(x => x.Errors.Any())
-                            .Select(x => x.Errors.Select(x => x.Message))));
-
-            var domainEntitiesToInsert = entity
-                .Select(transaction => new TransactionCreate(transaction, _financialsBroker))
-                .ToList();
-
-            await _transactionRepository.InsertInBulk(domainEntitiesToInsert);
+            foreach (var transactionToCreate in entity)
+            {
+                await base.CreateAsync(transactionToCreate);
+            }
 
             return Result.Ok();
         }

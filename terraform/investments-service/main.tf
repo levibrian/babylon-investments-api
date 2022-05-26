@@ -263,6 +263,7 @@ module "api_gateway_security_group" {
   ingress_rules       = ["http-80-tcp"]
 
   egress_rules = ["all-all"]
+  tags = local.default_tags
 }
 
 module "lambda_security_group" {
@@ -283,6 +284,7 @@ module "lambda_security_group" {
   number_of_computed_ingress_with_source_security_group_id = 1
 
   egress_rules = ["all-all"]
+  tags = local.default_tags
 }
 
 module "endpoints" {

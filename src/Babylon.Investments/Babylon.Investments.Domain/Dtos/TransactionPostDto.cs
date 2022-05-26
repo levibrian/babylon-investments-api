@@ -18,5 +18,10 @@ namespace Babylon.Investments.Domain.Dtos
         public decimal Fees { get; set; }
 
         public TransactionTypeEnum TransactionType { get; set; }
+
+        public TransactionPostDto()
+        {
+            TransactionId ??= new Guid().ToString();
+        }
     }
 }

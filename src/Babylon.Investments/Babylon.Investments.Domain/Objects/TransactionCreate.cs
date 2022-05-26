@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Babylon.Networking.Interfaces.Brokers;
 using Babylon.Investments.Domain.Dtos;
 using Babylon.Investments.Domain.Enums;
@@ -7,6 +8,34 @@ namespace Babylon.Investments.Domain.Objects
 {
     public class TransactionCreate : Transaction
     {
+        private readonly TransactionPostDto _transactionRequest;
+
+        private readonly IEnumerable<Transaction> _transactionHistory;
+
+        private readonly IFinancialsBroker _financialsBroker;
+        
+        public TransactionCreate()
+        {
+        }
+
+        public TransactionCreate(
+            TransactionPostDto transactionPostDto,
+            IEnumerable<Transaction> transactionHistory)
+        {
+            _transactionRequest = transactionPostDto ?? throw new ArgumentNullException(nameof(transactionPostDto));
+            _transactionHistory = transactionHistory ?? throw new ArgumentNullException(nameof(transactionHistory));
+        }
+        
+        public TransactionCreate(
+            TransactionPostDto transactionPostDto,
+            IEnumerable<Transaction> transactionHistory,
+            IFinancialsBroker financialsBroker)
+        {
+            _transactionRequest = transactionPostDto ?? throw new ArgumentNullException(nameof(transactionPostDto));
+            _transactionHistory = transactionHistory ?? throw new ArgumentNullException(nameof(transactionHistory));
+            _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
+        }
+        
         public override string TransactionId => _transactionRequest.TransactionId;
 
         public override string ClientIdentifier => _transactionRequest.ClientIdentifier;
@@ -26,23 +55,5 @@ namespace Babylon.Investments.Domain.Objects
         public override decimal Fees => _transactionRequest.Fees;
 
         public override TransactionTypeEnum TransactionType => _transactionRequest.TransactionType;
-
-        private readonly TransactionPostDto _transactionRequest;
-
-        private readonly IFinancialsBroker _financialsBroker;
-        
-        public TransactionCreate()
-        {
-        }
-        
-        public TransactionCreate(
-            TransactionPostDto transactionCreateDto, 
-            IFinancialsBroker financialsBroker)
-        {
-            _transactionRequest = transactionCreateDto ?? throw new ArgumentNullException(nameof(transactionCreateDto));
-            _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
-
-            if (string.IsNullOrEmpty(_transactionRequest.TransactionId)) _transactionRequest.TransactionId = Guid.NewGuid().ToString();
-        }
     }
 }

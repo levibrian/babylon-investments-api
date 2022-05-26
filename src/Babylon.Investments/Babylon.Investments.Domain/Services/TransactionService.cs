@@ -11,6 +11,7 @@ using Babylon.Investments.Domain.Dtos;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Requests;
 using Babylon.Investments.Domain.Responses;
+using Babylon.Investments.Domain.Services.Base;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
 using Babylon.Investments.Shared.Notifications;
@@ -27,13 +28,11 @@ namespace Babylon.Investments.Domain.Services
         Task<TransactionGetResponse> GetSingleAsync(string clientIdentifier, string transactionId);
     }
     
-    public class TransactionService : ITransactionService
+    public class TransactionService : TransactionBaseService, ITransactionService
     {
         private readonly ITransactionValidator _transactionValidator;
 
         private readonly ITransactionRepository _transactionRepository;
-
-        private readonly IFinancialsBroker _financialsBroker;
         
         private readonly IMapper _mapper;
 
@@ -44,7 +43,7 @@ namespace Babylon.Investments.Domain.Services
             ITransactionRepository transactionRepository,
             IFinancialsBroker financialsBroker,
             IMapper mapper,
-            ILogger<TransactionService> logger)
+            ILogger<TransactionService> logger) : base (transactionValidator, transactionRepository, financialsBroker, logger)
         {
             _transactionValidator = transactionValidator 
                                     ?? throw new ArgumentNullException(nameof(transactionValidator));
@@ -52,33 +51,12 @@ namespace Babylon.Investments.Domain.Services
             _transactionRepository = transactionRepository 
                                      ?? throw new ArgumentNullException(nameof(transactionRepository));
 
-            _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
-
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<Result> CreateAsync(TransactionPostDto dto)
-        {
-            _logger.LogInformation("Investmentservice - Called method CreateAsync");
-            
-            var validationResult = _transactionValidator.Validate(dto);
-
-            _logger.LogInformation($"Validation Result: { JsonSerializer.Serialize(validationResult) }");
-            
-            if (validationResult.IsFailure)
-            {
-                throw new BabylonException(
-                    string.Join(", ", validationResult.Errors.Select(x => x.Message)));
-            }
-            
-            var domainObject = new TransactionCreate(dto, _financialsBroker);
-
-            await _transactionRepository.Insert(domainObject);
-            
-            return Result.Ok(domainObject.TransactionId);
-        }
+        public new async Task<Result> CreateAsync(TransactionPostDto dto) => await base.CreateAsync(dto);
 
         public async Task<Result> DeleteAsync(TransactionDeleteDto entity)
         {
