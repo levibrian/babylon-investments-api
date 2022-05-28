@@ -1,6 +1,5 @@
-﻿using Babylon.Investments.Domain.Dtos;
-using Babylon.Investments.Domain.Enums;
-using Babylon.Investments.Domain.Requests;
+﻿using Babylon.Investments.Domain.Abstractions.Dtos;
+using Babylon.Investments.Domain.Abstractions.Enums;
 using Babylon.Investments.Shared.Notifications;
 using Babylon.Investments.Shared.Specifications.Interfaces;
 

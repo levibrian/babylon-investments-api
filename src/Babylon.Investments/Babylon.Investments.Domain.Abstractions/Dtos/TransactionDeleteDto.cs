@@ -1,9 +1,8 @@
-namespace Babylon.Investments.Domain.Dtos
+namespace Babylon.Investments.Domain.Abstractions.Dtos
 {
-    public class TransactionDto
+    public class TransactionDeleteDto
     {
         public string ClientIdentifier { get; set; }
-     
         public string TransactionId { get; set; }
     }
 }

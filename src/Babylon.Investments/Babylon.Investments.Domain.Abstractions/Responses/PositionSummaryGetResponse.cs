@@ -1,4 +1,4 @@
-﻿namespace Babylon.Investments.Domain.Responses
+﻿namespace Babylon.Investments.Domain.Abstractions.Responses
 {
     public class PositionSummaryGetResponse
     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Babylon.Investments.Domain.Abstractions.Dtos;
+using Babylon.Investments.Domain.Abstractions.Dtos.Base;
 
 namespace Babylon.Investments.Domain.Abstractions.Services
 {

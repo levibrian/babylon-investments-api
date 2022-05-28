@@ -1,5 +1,4 @@
 ﻿using System;
-using Babylon.Investments.Domain.Enums;
 using Babylon.Investments.Shared.Notifications;
 using Babylon.Investments.Shared.Specifications.Interfaces;
 

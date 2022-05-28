@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Babylon.Investments.Domain.Enums;
+using Babylon.Investments.Domain.Abstractions.Enums;
 
 namespace Babylon.Investments.Domain.Objects
 {

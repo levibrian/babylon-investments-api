@@ -1,6 +1,6 @@
 ﻿using System;
-using Babylon.Investments.Domain.Dtos;
-using Babylon.Investments.Domain.Enums;
+using Babylon.Investments.Domain.Abstractions.Dtos;
+using Babylon.Investments.Domain.Abstractions.Enums;
 
 namespace Babylon.Investments.Domain.Objects
 {

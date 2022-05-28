@@ -1,4 +1,4 @@
-namespace Babylon.Investments.Domain.Enums
+namespace Babylon.Investments.Domain.Abstractions.Enums
 {
     public enum AssetTypeEnum
     {

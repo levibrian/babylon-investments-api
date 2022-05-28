@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Babylon.Investments.Domain.Abstractions.Dtos;
 using Babylon.Networking.Interfaces.Brokers;
 using Babylon.Investments.Domain.Abstractions.Services;
 using Babylon.Investments.Domain.Contracts.Repositories;
-using Babylon.Investments.Domain.Dtos;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Services.Base;
 using Babylon.Investments.Domain.Validators;

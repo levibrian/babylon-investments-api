@@ -1,7 +1,6 @@
 using System;
-using Babylon.Investments.Domain.Enums;
 
-namespace Babylon.Investments.Domain.Responses
+namespace Babylon.Investments.Domain.Abstractions.Responses
 {
     public class TransactionGetResponse
     {

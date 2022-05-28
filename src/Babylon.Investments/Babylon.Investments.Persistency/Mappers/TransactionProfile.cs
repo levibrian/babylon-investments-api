@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Babylon.Investments.Domain.Dtos;
-using Babylon.Investments.Domain.Enums;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Persistency.Entities;
 

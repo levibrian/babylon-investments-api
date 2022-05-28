@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using Babylon.Investments.Domain.Dtos;
+using Babylon.Investments.Domain.Abstractions.Dtos;
 using Babylon.Investments.Domain.Objects;
-using Babylon.Investments.Domain.Requests;
 using Babylon.Investments.Domain.Rules;
 using Babylon.Investments.Domain.Rules.Primitives;
 using Babylon.Investments.Shared.Notifications;
