@@ -23,6 +23,6 @@
     <Folder Include="Enums\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Babylon.Investments.Domain.Abstractions\Babylon.Investments.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\Babylon.Investments.Domain.Contracts\Babylon.Investments.Domain.Contracts.csproj" />
   </ItemGroup>
 </Project>

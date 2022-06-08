@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using Babylon.Investments.Domain.Abstractions.Dtos;
+using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Rules;
 using Babylon.Investments.Domain.Rules.Primitives;

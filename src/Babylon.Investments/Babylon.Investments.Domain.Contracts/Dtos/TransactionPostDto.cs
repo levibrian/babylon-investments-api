@@ -1,7 +1,7 @@
 ﻿using System;
-using Babylon.Investments.Domain.Abstractions.Enums;
+using Babylon.Investments.Domain.Contracts.Enums;
 
-namespace Babylon.Investments.Domain.Abstractions.Dtos
+namespace Babylon.Investments.Domain.Contracts.Dtos
 {
     public class TransactionPostDto : TransactionDto
     {

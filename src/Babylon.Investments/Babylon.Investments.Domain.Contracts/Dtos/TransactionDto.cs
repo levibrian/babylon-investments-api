@@ -1,4 +1,4 @@
-namespace Babylon.Investments.Domain.Abstractions.Dtos
+namespace Babylon.Investments.Domain.Contracts.Dtos
 {
     public class TransactionDto
     {

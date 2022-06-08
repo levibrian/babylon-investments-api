@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Babylon.Investments.Domain.Abstractions.Dtos;
+using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Investments.Domain.Contracts.Repositories;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Validators;

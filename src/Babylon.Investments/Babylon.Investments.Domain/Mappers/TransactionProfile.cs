@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Babylon.Investments.Domain.Abstractions.Dtos;
-using Babylon.Investments.Domain.Abstractions.Requests;
-using Babylon.Investments.Domain.Abstractions.Responses;
+using Babylon.Investments.Domain.Contracts.Dtos;
+using Babylon.Investments.Domain.Contracts.Requests;
+using Babylon.Investments.Domain.Contracts.Responses;
 using Babylon.Investments.Domain.Objects;
 
 namespace Babylon.Investments.Domain.Mappers

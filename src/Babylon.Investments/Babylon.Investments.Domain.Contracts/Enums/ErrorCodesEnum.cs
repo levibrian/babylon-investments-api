@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Babylon.Investments.Domain.Abstractions.Enums
+namespace Babylon.Investments.Domain.Contracts.Enums
 {
     public enum ErrorCodesEnum
     {

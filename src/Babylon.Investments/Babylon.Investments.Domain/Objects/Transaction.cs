@@ -1,10 +1,10 @@
 ﻿using System;
-using Babylon.Investments.Domain.Abstractions.Dtos;
-using Babylon.Investments.Domain.Abstractions.Enums;
+using Babylon.Investments.Domain.Contracts.Dtos;
+using Babylon.Investments.Domain.Contracts.Enums;
 
 namespace Babylon.Investments.Domain.Objects
 {
-    public class Transaction : Abstractions.Objects.Domain
+    public class Transaction : Contracts.Objects.Domain
     {
         public virtual string TransactionId { get; set; }
 

@@ -4,7 +4,7 @@ using Babylon.Networking.Base;
 using Babylon.Networking.Constants;
 using Babylon.Networking.Enums;
 using Babylon.Networking.Interfaces.Brokers;
-using Babylon.Investments.Domain.Abstractions.Brokers;
+using Babylon.Investments.Domain.Contracts.Brokers;
 
 namespace Babylon.Networking.Brokers
 {

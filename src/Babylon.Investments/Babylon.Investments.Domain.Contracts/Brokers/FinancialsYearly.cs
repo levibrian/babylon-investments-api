@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Babylon.Investments.Domain.Abstractions.Brokers
+namespace Babylon.Investments.Domain.Contracts.Brokers
 {
     public class FinancialsYearly
     {

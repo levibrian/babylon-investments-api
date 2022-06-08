@@ -6,7 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Babylon.Networking\Babylon.Networking.csproj" />
-      <ProjectReference Include="..\Babylon.Investments.Domain.Abstractions\Babylon.Investments.Domain.Abstractions.csproj" />
+      <ProjectReference Include="..\Babylon.Investments.Domain.Contracts\Babylon.Investments.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Babylon.Investments.Shared\Babylon.Investments.Shared.csproj" />
     </ItemGroup>
 

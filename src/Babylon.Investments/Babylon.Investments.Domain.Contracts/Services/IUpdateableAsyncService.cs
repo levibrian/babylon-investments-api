@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Babylon.Investments.Domain.Abstractions.Dtos;
-using Babylon.Investments.Domain.Abstractions.Dtos.Base;
+using Babylon.Investments.Domain.Contracts.Dtos;
+using Babylon.Investments.Domain.Contracts.Dtos.Base;
 
-namespace Babylon.Investments.Domain.Abstractions.Services
+namespace Babylon.Investments.Domain.Contracts.Services
 {
     public interface IUpdateableAsyncService<in TDto> where TDto : Dto
     {

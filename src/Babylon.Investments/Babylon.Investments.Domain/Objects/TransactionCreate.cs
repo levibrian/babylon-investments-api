@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Babylon.Investments.Domain.Abstractions.Dtos;
-using Babylon.Investments.Domain.Abstractions.Enums;
+using Babylon.Investments.Domain.Contracts.Dtos;
+using Babylon.Investments.Domain.Contracts.Enums;
 using Babylon.Networking.Interfaces.Brokers;
 
 namespace Babylon.Investments.Domain.Objects

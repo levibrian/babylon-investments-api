@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Babylon.Investments.Domain.Abstractions.Responses;
+using Babylon.Investments.Domain.Contracts.Responses;
 using Babylon.Investments.Domain.Objects;
 
 namespace Babylon.Investments.Domain.Mappers

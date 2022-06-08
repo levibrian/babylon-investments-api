@@ -1,4 +1,4 @@
-﻿namespace Babylon.Investments.Domain.Abstractions.Enums
+﻿namespace Babylon.Investments.Domain.Contracts.Enums
 {
     public enum TransactionTypeEnum
     {
