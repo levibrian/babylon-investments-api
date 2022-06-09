@@ -1,6 +1,6 @@
 ﻿using System;
-using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Investments.Domain.Contracts.Enums;
+using Babylon.Investments.Domain.Contracts.Requests;
 
 namespace Babylon.Investments.Domain.Objects
 {
@@ -30,7 +30,7 @@ namespace Babylon.Investments.Domain.Objects
         {
         }
 
-        public Transaction(TransactionDto dto)
+        public Transaction(TransactionPostRequest dto)
         {
             TransactionId = dto.TransactionId;
         }

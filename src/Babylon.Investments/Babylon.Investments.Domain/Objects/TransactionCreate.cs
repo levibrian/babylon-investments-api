@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Investments.Domain.Contracts.Enums;
+using Babylon.Investments.Domain.Contracts.Requests;
 using Babylon.Networking.Interfaces.Brokers;
 
 namespace Babylon.Investments.Domain.Objects
 {
     public class TransactionCreate : Transaction
     {
-        private readonly TransactionPostDto _transactionRequest;
+        private readonly TransactionPostRequest _transactionRequest;
 
         private readonly IEnumerable<Transaction> _transactionHistory;
 
@@ -19,7 +19,7 @@ namespace Babylon.Investments.Domain.Objects
         }
 
         public TransactionCreate(
-            TransactionPostDto transactionPostDto,
+            TransactionPostRequest transactionPostDto,
             IEnumerable<Transaction> transactionHistory)
         {
             _transactionRequest = transactionPostDto ?? throw new ArgumentNullException(nameof(transactionPostDto));
@@ -27,7 +27,7 @@ namespace Babylon.Investments.Domain.Objects
         }
         
         public TransactionCreate(
-            TransactionPostDto transactionPostDto,
+            TransactionPostRequest transactionPostDto,
             IEnumerable<Transaction> transactionHistory,
             IFinancialsBroker financialsBroker)
         {

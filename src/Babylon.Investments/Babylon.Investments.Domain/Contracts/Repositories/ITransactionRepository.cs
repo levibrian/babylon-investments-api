@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Babylon.Investments.Domain.Contracts.Repositories.Base;
 using Babylon.Investments.Domain.Objects;
 
 namespace Babylon.Investments.Domain.Contracts.Repositories

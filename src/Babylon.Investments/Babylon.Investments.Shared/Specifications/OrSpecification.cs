@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Babylon.Investments.Shared.Notifications;
 using Babylon.Investments.Shared.Specifications.Base;

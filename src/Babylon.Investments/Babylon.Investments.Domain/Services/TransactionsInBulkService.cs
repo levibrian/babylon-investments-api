@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Networking.Interfaces.Brokers;
 using Babylon.Investments.Domain.Contracts.Services;
 using Babylon.Investments.Domain.Contracts.Repositories;
+using Babylon.Investments.Domain.Contracts.Requests;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Services.Base;
 using Babylon.Investments.Domain.Validators;
@@ -16,8 +16,8 @@ using Microsoft.Extensions.Logging;
 namespace Babylon.Investments.Domain.Services
 {
     public interface ITransactionsInBulkService : 
-        ICreatableAsyncService<IEnumerable<TransactionPostDto>>,
-        IDeletableAsyncService<IEnumerable<TransactionDeleteDto>>
+        ICreatableAsyncService<IEnumerable<TransactionPostRequest>>,
+        IDeletableAsyncService<IEnumerable<TransactionDeleteRequest>>
     {
     }
     
@@ -43,7 +43,7 @@ namespace Babylon.Investments.Domain.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
-        public async Task<Result> CreateAsync(IEnumerable<TransactionPostDto> entity)
+        public async Task<Result> CreateAsync(IEnumerable<TransactionPostRequest> entity)
         {
             foreach (var transactionToCreate in entity)
             {
@@ -53,7 +53,7 @@ namespace Babylon.Investments.Domain.Services
             return Result.Ok();
         }
 
-        public async Task<Result> DeleteAsync(IEnumerable<TransactionDeleteDto> transactionsToDelete)
+        public async Task<Result> DeleteAsync(IEnumerable<TransactionDeleteRequest> transactionsToDelete)
         {
             var validationResults =
                 _transactionValidator

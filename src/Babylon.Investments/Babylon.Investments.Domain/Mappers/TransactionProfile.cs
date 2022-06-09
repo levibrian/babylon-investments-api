@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Investments.Domain.Contracts.Requests;
 using Babylon.Investments.Domain.Contracts.Responses;
 using Babylon.Investments.Domain.Objects;
@@ -10,9 +9,6 @@ namespace Babylon.Investments.Domain.Mappers
     {
         public TransactionProfile()
         {
-            CreateMap<TransactionPostRequest, TransactionPostDto>()
-                .ReverseMap();
-
             CreateMap<Transaction, TransactionGetResponse>()
                 .ForMember(destinationMember =>
                         destinationMember.TransactionType,
@@ -20,7 +16,7 @@ namespace Babylon.Investments.Domain.Mappers
                         memberOptions.MapFrom(src =>
                             src.TransactionType.ToString()));
 
-            CreateMap<Transaction, TransactionDto>()
+            CreateMap<Transaction, TransactionPostRequest>()
                 .ReverseMap();
         }
     }

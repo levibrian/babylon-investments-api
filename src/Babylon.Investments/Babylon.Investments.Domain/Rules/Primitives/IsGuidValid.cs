@@ -1,5 +1,4 @@
 ﻿using System;
-using Babylon.Investments.Shared.Notifications;
 using Babylon.Investments.Shared.Specifications.Interfaces;
 
 namespace Babylon.Investments.Domain.Rules.Primitives

@@ -1,8 +1,5 @@
 ﻿using System;
 using Babylon.Investments.Api.Constants;
-using Babylon.Investments.Shared.Exceptions.Custom;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;

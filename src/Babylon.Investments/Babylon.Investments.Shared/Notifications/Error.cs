@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Babylon.Investments.Shared.Extensions;
 
 namespace Babylon.Investments.Shared.Notifications

@@ -5,7 +5,6 @@ using AutoMapper;
 using Babylon.Investments.Api.Constants;
 using Babylon.Investments.Api.Controllers.Base;
 using Babylon.Investments.Api.Filters;
-using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Investments.Domain.Contracts.Requests;
 using Babylon.Investments.Domain.Cryptography;
 using Babylon.Investments.Domain.Services;
@@ -20,7 +19,7 @@ namespace Babylon.Investments.Api.Controllers
     [BabylonAuthorize]
     public class TransactionsController : BabylonController
     {
-        private readonly ITransactionService _Investmentservice;
+        private readonly ITransactionService _investmentservice;
 
         private readonly IMapper _mapper;
 
@@ -32,21 +31,19 @@ namespace Babylon.Investments.Api.Controllers
             IMapper mapper,
             ILogger<TransactionsController> logger) : base (aesCipher)
         {
-            _Investmentservice = Investmentservice ?? throw new ArgumentNullException(nameof(Investmentservice));
+            _investmentservice = Investmentservice ?? throw new ArgumentNullException(nameof(Investmentservice));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TransactionPostRequest createTransactionDto)
+        public async Task<IActionResult> Create([FromBody] TransactionPostRequest createTransactionRequest)
         {
-            _logger.LogInformation($"InvestmentsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionDto) }, ClientIdentifier: { ClientIdentifier }");
+            _logger.LogInformation($"InvestmentsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionRequest) }, ClientIdentifier: { ClientIdentifier }");
             
-            var transactionDto = _mapper.Map<TransactionPostRequest, TransactionPostDto>(createTransactionDto);
+            createTransactionRequest.ClientIdentifier = ClientIdentifier;
 
-            transactionDto.ClientIdentifier = ClientIdentifier;
-
-            var operation = await _Investmentservice.CreateAsync(transactionDto);
+            var operation = await _investmentservice.CreateAsync(createTransactionRequest);
             
             return Ok(operation);
         }
@@ -57,7 +54,7 @@ namespace Babylon.Investments.Api.Controllers
             _logger.LogInformation(
                 $"InvestmentsController - Requested Delete Transaction with parameters: TransactionId: { transactionId }, ClientIdentifier { ClientIdentifier } ");
             
-            var operation = await _Investmentservice.DeleteAsync(new TransactionDeleteDto()
+            var operation = await _investmentservice.DeleteAsync(new TransactionDeleteRequest()
             {
                 ClientIdentifier = ClientIdentifier,
                 TransactionId = transactionId.ToString()
@@ -72,7 +69,7 @@ namespace Babylon.Investments.Api.Controllers
             _logger.LogInformation(
                 $"InvestmentsController - Requested Get Many Investments with parameters: UserId: { userId } for Client: { ClientIdentifier } ");
             
-            var Investments = await _Investmentservice.GetByClientAndUserAsync(ClientIdentifier, userId);
+            var Investments = await _investmentservice.GetByClientAndUserAsync(ClientIdentifier, userId);
 
             return Ok(Investments);
         }

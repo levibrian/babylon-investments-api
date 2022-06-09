@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
-using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Investments.Domain.Contracts.Responses;
 using Babylon.Networking.Interfaces.Brokers;
 using Babylon.Investments.Domain.Contracts.Services;
 using Babylon.Investments.Domain.Contracts.Repositories;
+using Babylon.Investments.Domain.Contracts.Requests;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Services.Base;
 using Babylon.Investments.Domain.Validators;
@@ -19,8 +19,8 @@ using Microsoft.Extensions.Logging;
 namespace Babylon.Investments.Domain.Services
 {
     public interface ITransactionService :
-        ICreatableAsyncService<TransactionPostDto>, 
-        IDeletableAsyncService<TransactionDeleteDto>
+        ICreatableAsyncService<TransactionPostRequest>, 
+        IDeletableAsyncService<TransactionDeleteRequest>
     {
         Task<IEnumerable<TransactionGetResponse>> GetByClientAndUserAsync(string clientIdentifier, string userId);
 
@@ -55,9 +55,9 @@ namespace Babylon.Investments.Domain.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public new async Task<Result> CreateAsync(TransactionPostDto dto) => await base.CreateAsync(dto);
+        public new async Task<Result> CreateAsync(TransactionPostRequest request) => await base.CreateAsync(request);
 
-        public async Task<Result> DeleteAsync(TransactionDeleteDto entity)
+        public async Task<Result> DeleteAsync(TransactionDeleteRequest entity)
         {
             _logger.LogInformation("Investmentservice - Called method DeleteAsync");
             

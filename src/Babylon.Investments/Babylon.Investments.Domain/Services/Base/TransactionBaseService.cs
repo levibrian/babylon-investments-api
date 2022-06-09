@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Babylon.Investments.Domain.Contracts.Dtos;
 using Babylon.Investments.Domain.Contracts.Repositories;
+using Babylon.Investments.Domain.Contracts.Requests;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
@@ -35,7 +35,7 @@ namespace Babylon.Investments.Domain.Services.Base
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        protected async Task<Result> CreateAsync(TransactionPostDto dto)
+        protected async Task<Result> CreateAsync(TransactionPostRequest dto)
         {
             _logger.LogInformation("Transaction Service - Called method CreateAsync");
             

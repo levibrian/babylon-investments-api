@@ -1,5 +1,4 @@
-﻿using Babylon.Investments.Shared.Notifications;
-using Babylon.Investments.Shared.Specifications;
+﻿using Babylon.Investments.Shared.Specifications;
 using Babylon.Investments.Shared.Specifications.Interfaces;
 
 namespace Babylon.Investments.Shared.Extensions

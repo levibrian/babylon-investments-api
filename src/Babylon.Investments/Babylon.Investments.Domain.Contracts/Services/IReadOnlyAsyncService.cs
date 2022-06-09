@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Babylon.Investments.Domain.Contracts.Dtos;
-using Babylon.Investments.Domain.Contracts.Dtos.Base;
+using Babylon.Investments.Domain.Contracts.Requests.Base;
 
 namespace Babylon.Investments.Domain.Contracts.Services
 {
-    public interface IReadOnlyAsyncService<TDto> where TDto : Dto
+    public interface IReadOnlyAsyncService<TRequest> where TRequest : Request
     {
         /// <summary>
         /// Asynchronous query to fetch all records from a specified entity.
         /// </summary>
         /// <returns>The list of entities.</returns>
-        Task<IEnumerable<TDto>> GetAsync();
+        Task<IEnumerable<TRequest>> GetAsync();
 
         /// <summary>
         /// Asynchronous query to fetch a given entity.
         /// </summary>
         /// <param name="id">The Id of the entity.</param>
         /// <returns>The entity.</returns>
-        Task<TDto> GetByIdAsync(long id);
+        Task<TRequest> GetByIdAsync(long id);
     }
 }
