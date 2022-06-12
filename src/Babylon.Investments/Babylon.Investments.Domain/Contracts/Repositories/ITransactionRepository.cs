@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Babylon.Investments.Domain.Objects;
+using Babylon.Investments.Domain.Objects.Base;
 
 namespace Babylon.Investments.Domain.Contracts.Repositories
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Babylon.Investments.Domain.Contracts.Brokers;
+using Babylon.Investments.Domain.Abstractions.Brokers;
 
 namespace Babylon.Networking.Interfaces.Brokers
 {

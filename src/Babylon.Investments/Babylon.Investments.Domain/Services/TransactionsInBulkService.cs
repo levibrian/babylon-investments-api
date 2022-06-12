@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Babylon.Networking.Interfaces.Brokers;
-using Babylon.Investments.Domain.Contracts.Services;
+using Babylon.Investments.Domain.Abstractions.Requests;
+using Babylon.Investments.Domain.Abstractions.Services.Base;
 using Babylon.Investments.Domain.Contracts.Repositories;
-using Babylon.Investments.Domain.Contracts.Requests;
-using Babylon.Investments.Domain.Objects;
+using Babylon.Investments.Domain.Objects.Base;
 using Babylon.Investments.Domain.Services.Base;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
@@ -35,7 +36,8 @@ namespace Babylon.Investments.Domain.Services
             ITransactionRepository transactionRepository,
             ITransactionValidator transactionValidator,
             IFinancialsBroker financialsBroker,
-            ILogger<TransactionsInBulkService> logger) : base(transactionValidator, transactionRepository, financialsBroker, logger)
+            IMapper mapper,
+            ILogger<TransactionsInBulkService> logger) : base(transactionValidator, transactionRepository, financialsBroker, mapper, logger)
         {
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));

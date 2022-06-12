@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using Babylon.Investments.Domain.Contracts.Requests;
-using Babylon.Investments.Domain.Contracts.Responses;
+using Babylon.Investments.Domain.Abstractions.Requests;
+using Babylon.Investments.Domain.Abstractions.Responses;
 using Babylon.Investments.Domain.Objects;
+using Babylon.Investments.Domain.Objects.Base;
 
 namespace Babylon.Investments.Domain.Mappers
 {
@@ -15,6 +16,23 @@ namespace Babylon.Investments.Domain.Mappers
                     memberOptions =>
                         memberOptions.MapFrom(src =>
                             src.TransactionType.ToString()));
+
+            CreateMap<TransactionCreate, TransactionPostResponse>()
+                .ForMember(destinationMember =>
+                        destinationMember.TransactionType,
+                    memberOptions =>
+                        memberOptions.MapFrom(src =>
+                            src.TransactionType.ToString()))
+                .ForMember(destinationMember =>
+                        destinationMember.TransactedUnits,
+                    memberOptions =>
+                        memberOptions.MapFrom(src =>
+                            src.Units))
+                .ForMember(destinationMember =>
+                        destinationMember.Date,
+                    memberOptions =>
+                        memberOptions.MapFrom(src =>
+                            src.Date.ToString("dd/MM/yyyy")));
 
             CreateMap<Transaction, TransactionPostRequest>()
                 .ReverseMap();

@@ -1,4 +1,4 @@
-﻿namespace Babylon.Investments.Domain.Contracts.Requests
+﻿namespace Babylon.Investments.Domain.Abstractions.Requests
 {
     public class TransactionDeleteRequest : TransactionBaseRequest
     {

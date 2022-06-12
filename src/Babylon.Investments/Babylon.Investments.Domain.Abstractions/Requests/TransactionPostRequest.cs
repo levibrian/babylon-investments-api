@@ -1,7 +1,7 @@
 using System;
-using Babylon.Investments.Domain.Contracts.Enums;
+using Babylon.Investments.Domain.Abstractions.Enums;
 
-namespace Babylon.Investments.Domain.Contracts.Requests
+namespace Babylon.Investments.Domain.Abstractions.Requests
 {
     public class TransactionPostRequest : TransactionBaseRequest
     {

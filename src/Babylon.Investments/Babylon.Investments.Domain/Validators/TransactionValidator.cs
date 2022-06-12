@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Babylon.Investments.Domain.Contracts.Requests;
+using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Rules;
 using Babylon.Investments.Shared.Notifications;
 using Babylon.Investments.Shared.Validators;

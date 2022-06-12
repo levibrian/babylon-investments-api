@@ -1,12 +1,12 @@
 ﻿using System;
-using Babylon.Investments.Domain.Contracts.Enums;
-using Babylon.Investments.Domain.Contracts.Requests;
+using Babylon.Investments.Domain.Abstractions.Enums;
+using Babylon.Investments.Domain.Abstractions.Requests;
 
-namespace Babylon.Investments.Domain.Objects
+namespace Babylon.Investments.Domain.Objects.Base
 {
-    public class Transaction : Contracts.Objects.Domain
+    public class Transaction : Abstractions.Objects.Domain
     {
-        public virtual string TransactionId { get; set; }
+        public string TransactionId { get; set; }
 
         public virtual string ClientIdentifier { get; set; }
 
@@ -30,9 +30,9 @@ namespace Babylon.Investments.Domain.Objects
         {
         }
 
-        public Transaction(TransactionPostRequest dto)
+        public Transaction(TransactionBaseRequest request)
         {
-            TransactionId = dto.TransactionId;
+            TransactionId = request.TransactionId;
         }
     }
 }

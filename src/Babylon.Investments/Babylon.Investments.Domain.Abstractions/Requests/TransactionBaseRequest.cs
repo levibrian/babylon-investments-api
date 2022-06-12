@@ -1,6 +1,6 @@
-﻿using Babylon.Investments.Domain.Contracts.Requests.Base;
+﻿using Babylon.Investments.Domain.Abstractions.Requests.Base;
 
-namespace Babylon.Investments.Domain.Contracts.Requests
+namespace Babylon.Investments.Domain.Abstractions.Requests
 {
     public class TransactionBaseRequest : Request
     {

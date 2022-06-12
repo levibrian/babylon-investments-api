@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Babylon.Investments.Domain.Contracts.Requests.Base;
+using Babylon.Investments.Domain.Abstractions.Requests.Base;
 
-namespace Babylon.Investments.Domain.Contracts.Services
+namespace Babylon.Investments.Domain.Abstractions.Services.Base
 {
     public interface IUpdateableAsyncService<in TRequest> where TRequest : Request
     {

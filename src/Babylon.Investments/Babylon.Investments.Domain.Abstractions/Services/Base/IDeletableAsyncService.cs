@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Babylon.Investments.Domain.Contracts.Requests.Base;
 using Babylon.Investments.Shared.Notifications;
 
-namespace Babylon.Investments.Domain.Contracts.Services
+namespace Babylon.Investments.Domain.Abstractions.Services.Base
 {
     public interface IDeletableAsyncService<in TRequest>
     {

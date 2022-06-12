@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Babylon.Investments.Domain.Contracts.Responses;
+using Babylon.Investments.Domain.Abstractions.Responses;
 using Babylon.Investments.Domain.Contracts.Repositories;
 using Babylon.Investments.Domain.Objects;
 

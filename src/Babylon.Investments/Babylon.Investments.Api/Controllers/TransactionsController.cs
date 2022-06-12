@@ -5,7 +5,7 @@ using AutoMapper;
 using Babylon.Investments.Api.Constants;
 using Babylon.Investments.Api.Controllers.Base;
 using Babylon.Investments.Api.Filters;
-using Babylon.Investments.Domain.Contracts.Requests;
+using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Cryptography;
 using Babylon.Investments.Domain.Services;
 using Microsoft.AspNetCore.Mvc;

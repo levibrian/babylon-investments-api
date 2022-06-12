@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AutoMapper;
+using Babylon.Investments.Domain.Abstractions.Requests;
+using Babylon.Investments.Domain.Abstractions.Responses;
 using Babylon.Investments.Domain.Contracts.Repositories;
-using Babylon.Investments.Domain.Contracts.Requests;
 using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
@@ -20,6 +22,8 @@ namespace Babylon.Investments.Domain.Services.Base
         private readonly ITransactionRepository _transactionRepository;
 
         private readonly IFinancialsBroker _financialsBroker;
+
+        private readonly IMapper _mapper;
         
         private readonly ILogger<TransactionBaseService> _logger;
 
@@ -27,11 +31,13 @@ namespace Babylon.Investments.Domain.Services.Base
             ITransactionValidator transactionValidator,
             ITransactionRepository transactionRepository,
             IFinancialsBroker financialsBroker,
+            IMapper mapper,
             ILogger<TransactionBaseService> logger)
         {
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -56,8 +62,10 @@ namespace Babylon.Investments.Domain.Services.Base
             var domainObject = new TransactionCreate(dto, companyTransactionHistory, _financialsBroker);
 
             await _transactionRepository.Insert(domainObject);
+
+            var transactionResponse = _mapper.Map<TransactionCreate, TransactionPostResponse>(domainObject);
             
-            return Result.Ok(domainObject.TransactionId);
+            return Result.Ok(transactionResponse);
         }
     }
 }

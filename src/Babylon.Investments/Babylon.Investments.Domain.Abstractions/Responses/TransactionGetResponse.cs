@@ -1,6 +1,6 @@
 using System;
 
-namespace Babylon.Investments.Domain.Contracts.Responses
+namespace Babylon.Investments.Domain.Abstractions.Responses
 {
     public class TransactionGetResponse
     {

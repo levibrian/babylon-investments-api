@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Babylon.Networking.Base.Interfaces;
-using Babylon.Investments.Domain.Contracts.Brokers.Base;
+using Babylon.Investments.Domain.Abstractions.Brokers.Base;
 
 namespace Babylon.Networking.Base
 {

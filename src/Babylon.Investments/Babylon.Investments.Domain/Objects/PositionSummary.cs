@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Babylon.Investments.Domain.Contracts.Enums;
+using Babylon.Investments.Domain.Abstractions.Enums;
+using Babylon.Investments.Domain.Objects.Base;
 
 namespace Babylon.Investments.Domain.Objects
 {

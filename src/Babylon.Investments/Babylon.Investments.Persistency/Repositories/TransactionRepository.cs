@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
 using AutoMapper;
 using Babylon.Investments.Domain.Contracts.Repositories;
-using Babylon.Investments.Domain.Objects;
+using Babylon.Investments.Domain.Objects.Base;
 using Babylon.Investments.Persistency.Entities;
 using Babylon.Investments.Persistency.Repositories.Base;
 using Microsoft.Extensions.Logging;

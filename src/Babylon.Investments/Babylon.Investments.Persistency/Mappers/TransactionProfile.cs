@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Babylon.Investments.Domain.Objects;
+using Babylon.Investments.Domain.Objects.Base;
 using Babylon.Investments.Persistency.Entities;
 
 namespace Babylon.Investments.Persistency.Mappers

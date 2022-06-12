@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Injection", "5. Injectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Babylon.Investments.Api", "Babylon.Investments.Api\Babylon.Investments.Api.csproj", "{F8C86D63-1AF1-4944-A175-4720A58B6F70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Investments.Domain.Contracts", "Babylon.Investments.Domain.Contracts\Babylon.Investments.Domain.Contracts.csproj", "{7461F889-38FB-408A-B444-81BD35776E34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Investments.Domain.Abstractions", "Babylon.Investments.Domain.Abstractions\Babylon.Investments.Domain.Abstractions.csproj", "{7461F889-38FB-408A-B444-81BD35776E34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Babylon.Investments.Persistency", "Babylon.Investments.Persistency\Babylon.Investments.Persistency.csproj", "{34F0FB39-4FBC-4CB8-B33D-FC10592BDA7B}"
 EndProject

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Babylon.Investments.Domain.Contracts.Enums;
-using Babylon.Investments.Domain.Contracts.Requests;
+using System.Linq;
+using Babylon.Investments.Domain.Abstractions.Enums;
+using Babylon.Investments.Domain.Abstractions.Requests;
+using Babylon.Investments.Domain.Objects.Base;
 using Babylon.Networking.Interfaces.Brokers;
 
 namespace Babylon.Investments.Domain.Objects
@@ -36,7 +38,7 @@ namespace Babylon.Investments.Domain.Objects
             _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
         }
         
-        public override string TransactionId => _transactionRequest.TransactionId;
+        public new string TransactionId => _transactionRequest.TransactionId;
 
         public override string ClientIdentifier => _transactionRequest.ClientIdentifier;
 
@@ -55,5 +57,17 @@ namespace Babylon.Investments.Domain.Objects
         public override decimal Fees => _transactionRequest.Fees;
 
         public override TransactionTypeEnum TransactionType => _transactionRequest.TransactionType;
+
+        public decimal PreviousUnits => CalculateNetUnits();
+
+        private decimal CalculateNetUnits()
+        {
+            var buyPositions = _transactionHistory.Where(t => t.TransactionType == TransactionTypeEnum.Buy);
+            var sellPositions = _transactionHistory.Where(t => t.TransactionType == TransactionTypeEnum.Sell);
+
+            var netUnits = buyPositions.Sum(p => p.Units) - sellPositions.Sum(p => p.Units);
+
+            return netUnits >= 0 ? netUnits : 0;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
-using Babylon.Investments.Domain.Contracts.Enums;
-using Babylon.Investments.Domain.Contracts.Requests;
+using Babylon.Investments.Domain.Abstractions.Enums;
+using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Shared.Notifications;
 using Babylon.Investments.Shared.Specifications.Interfaces;
 
