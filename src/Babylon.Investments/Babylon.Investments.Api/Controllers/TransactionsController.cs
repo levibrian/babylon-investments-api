@@ -19,19 +19,19 @@ namespace Babylon.Investments.Api.Controllers
     [BabylonAuthorize]
     public class TransactionsController : BabylonController
     {
-        private readonly ITransactionService _investmentservice;
+        private readonly ITransactionService _transactionService;
 
         private readonly IMapper _mapper;
 
         private readonly ILogger<TransactionsController> _logger;
 
         public TransactionsController(
-            ITransactionService Investmentservice,
+            ITransactionService transactionService,
             IAesCipher aesCipher,
             IMapper mapper,
             ILogger<TransactionsController> logger) : base (aesCipher)
         {
-            _investmentservice = Investmentservice ?? throw new ArgumentNullException(nameof(Investmentservice));
+            _transactionService = transactionService ?? throw new ArgumentNullException(nameof(transactionService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -43,7 +43,7 @@ namespace Babylon.Investments.Api.Controllers
             
             createTransactionRequest.ClientIdentifier = ClientIdentifier;
 
-            var operation = await _investmentservice.CreateAsync(createTransactionRequest);
+            var operation = await _transactionService.CreateAsync(createTransactionRequest);
             
             return Ok(operation);
         }
@@ -54,7 +54,7 @@ namespace Babylon.Investments.Api.Controllers
             _logger.LogInformation(
                 $"InvestmentsController - Requested Delete Transaction with parameters: TransactionId: { transactionId }, ClientIdentifier { ClientIdentifier } ");
             
-            var operation = await _investmentservice.DeleteAsync(new TransactionDeleteRequest()
+            var operation = await _transactionService.DeleteAsync(new TransactionDeleteRequest()
             {
                 ClientIdentifier = ClientIdentifier,
                 TransactionId = transactionId.ToString()
@@ -69,7 +69,7 @@ namespace Babylon.Investments.Api.Controllers
             _logger.LogInformation(
                 $"InvestmentsController - Requested Get Many Investments with parameters: UserId: { userId } for Client: { ClientIdentifier } ");
             
-            var Investments = await _investmentservice.GetByClientAndUserAsync(ClientIdentifier, userId);
+            var Investments = await _transactionService.GetByClientAndUserAsync(ClientIdentifier, userId);
 
             return Ok(Investments);
         }

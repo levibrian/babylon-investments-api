@@ -19,20 +19,20 @@ namespace Babylon.Investments.Api.Controllers
     [BabylonAuthorize]
     public class TransactionsInBulkController : BabylonController
     {
-        private readonly ITransactionsInBulkService _investmentsInBulkService;
+        private readonly ITransactionsInBulkService _transactionsInBulkService;
 
         private readonly IMapper _mapper;
         
         private readonly ILogger<TransactionsInBulkController> _logger;
 
         public TransactionsInBulkController(
-            ITransactionsInBulkService investmentsInBulkService,
+            ITransactionsInBulkService transactionsInBulkService,
             IAesCipher aesCipher,
             IMapper mapper,
             ILogger<TransactionsInBulkController> logger) : base(aesCipher)
         {
-            _investmentsInBulkService = investmentsInBulkService ??
-                                         throw new ArgumentNullException(nameof(investmentsInBulkService));
+            _transactionsInBulkService = transactionsInBulkService ??
+                                         throw new ArgumentNullException(nameof(transactionsInBulkService));
             
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -53,7 +53,7 @@ namespace Babylon.Investments.Api.Controllers
                 transaction.ClientIdentifier = ClientIdentifier;
             }
 
-            var operation = await _investmentsInBulkService.CreateAsync(mappedInvestmentsToCreate);
+            var operation = await _transactionsInBulkService.CreateAsync(mappedInvestmentsToCreate);
 
             _logger.LogInformation($"InvestmentsInBulkController - Create Operation Result: {JsonSerializer.Serialize(operation)}");
             
@@ -76,7 +76,7 @@ namespace Babylon.Investments.Api.Controllers
                         })
                     .ToList();
 
-            var operation = await _investmentsInBulkService.DeleteAsync(investmentsToDelete);
+            var operation = await _transactionsInBulkService.DeleteAsync(investmentsToDelete);
             
             _logger.LogInformation($"InvestmentsInBulkController - Delete Operation Result: {JsonSerializer.Serialize(operation)}");
 
