@@ -56,7 +56,7 @@ namespace Babylon.Investments.Api
                     {
                         Version = "v1",
                         Title = "Babylon Investments API",
-                        Description = "Babylon Investments API to handle investment Investments and portfolios",
+                        Description = "Babylon Investments API to handle investment transactions and portfolios",
                     });
                 });   
             }

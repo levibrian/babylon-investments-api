@@ -9,17 +9,21 @@
         public string Ticker { get; set; }
         
         public string Date { get; set; }
-        
-        public double TransactedUnits { get; set; }
-        
-        public double PreviousUnits { get; set; }
-        
-        public double CumulativeUnits => PreviousUnits + TransactedUnits;
 
-        public double TransactedValue { get; set; }
+        public decimal TransactedPricePerUnit { get; set; }
 
-        public double PreviousValue { get; set; }
+        public decimal AveragePricePerUnit { get; set; }
+        
+        public decimal PreviousUnits { get; set; }
+        
+        public decimal TransactedUnits { get; set; }
 
-        public double CumulativeValue => PreviousValue + TransactedValue;
+        public decimal CumulativeUnits { get; set; }
+
+        public decimal PreviousValue { get; set; }
+        
+        public decimal TransactedValue { get; set; }
+
+        public decimal CumulativeValue { get; set; }
     }
 }

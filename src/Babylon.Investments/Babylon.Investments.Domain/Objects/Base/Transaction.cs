@@ -6,7 +6,7 @@ namespace Babylon.Investments.Domain.Objects.Base
 {
     public class Transaction : Abstractions.Objects.Domain
     {
-        public string TransactionId { get; set; }
+        public virtual string TransactionId { get; set; }
 
         public virtual string ClientIdentifier { get; set; }
 
@@ -21,18 +21,7 @@ namespace Babylon.Investments.Domain.Objects.Base
         public virtual decimal PricePerUnit { get; set; }
 
         public virtual decimal Fees { get; set; }
-
-        public virtual AssetTypeEnum AssetType { get; set; }
-        
+       
         public virtual TransactionTypeEnum TransactionType { get; set; }
-
-        protected Transaction()
-        {
-        }
-
-        public Transaction(TransactionBaseRequest request)
-        {
-            TransactionId = request.TransactionId;
-        }
     }
 }

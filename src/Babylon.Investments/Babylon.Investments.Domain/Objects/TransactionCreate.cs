@@ -14,32 +14,16 @@ namespace Babylon.Investments.Domain.Objects
 
         private readonly IEnumerable<Transaction> _transactionHistory;
 
-        private readonly IFinancialsBroker _financialsBroker;
-        
-        public TransactionCreate()
-        {
-        }
-
         public TransactionCreate(
-            TransactionPostRequest transactionPostDto,
+            TransactionPostRequest transactionPostRequest,
             IEnumerable<Transaction> transactionHistory)
         {
-            _transactionRequest = transactionPostDto ?? throw new ArgumentNullException(nameof(transactionPostDto));
+            _transactionRequest = transactionPostRequest ?? throw new ArgumentNullException(nameof(transactionPostRequest));
             _transactionHistory = transactionHistory ?? throw new ArgumentNullException(nameof(transactionHistory));
         }
-        
-        public TransactionCreate(
-            TransactionPostRequest transactionPostDto,
-            IEnumerable<Transaction> transactionHistory,
-            IFinancialsBroker financialsBroker)
-        {
-            _transactionRequest = transactionPostDto ?? throw new ArgumentNullException(nameof(transactionPostDto));
-            _transactionHistory = transactionHistory ?? throw new ArgumentNullException(nameof(transactionHistory));
-            _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
-        }
-        
-        public new string TransactionId => _transactionRequest.TransactionId;
 
+        public override string TransactionId => _transactionRequest.TransactionId ?? Guid.NewGuid().ToString();
+        
         public override string ClientIdentifier => _transactionRequest.ClientIdentifier;
 
         public override string UserId => _transactionRequest.UserId;
@@ -58,7 +42,19 @@ namespace Babylon.Investments.Domain.Objects
 
         public override TransactionTypeEnum TransactionType => _transactionRequest.TransactionType;
 
+        // Auto-Calculated properties
+
         public decimal PreviousUnits => CalculateNetUnits();
+
+        public decimal CumulativeUnits => PreviousUnits + Units; 
+        
+        public decimal TransactedValue => PricePerUnit * Units;
+
+        public decimal PreviousValue => CalculatePreviousValue();
+
+        public decimal CumulativeValue => PreviousValue + TransactedValue;
+
+        public decimal AveragePricePerUnit => CalculateAveragePricePerUnit();
 
         private decimal CalculateNetUnits()
         {
@@ -68,6 +64,34 @@ namespace Babylon.Investments.Domain.Objects
             var netUnits = buyPositions.Sum(p => p.Units) - sellPositions.Sum(p => p.Units);
 
             return netUnits >= 0 ? netUnits : 0;
+        }
+
+        private decimal CalculatePreviousValue()
+        {
+            var netPositions =
+                GetNetPositions()
+                    .Where(x => x.TransactionType == TransactionTypeEnum.Buy);
+
+            var averagePricePerUnit = CalculateAveragePricePerUnit();
+
+            return averagePricePerUnit * netPositions.Sum(p => p.Units);
+        }
+        
+        private decimal CalculateAveragePricePerUnit()
+        {
+            var netPositions = 
+                GetNetPositions()
+                    .Where(x => x.TransactionType == TransactionTypeEnum.Buy);
+
+            return netPositions.Average(x => x.PricePerUnit);
+        }
+
+        private IEnumerable<Transaction> GetNetPositions()
+        {
+            var buyPositions = _transactionHistory.Where(t => t.TransactionType == TransactionTypeEnum.Buy);
+            var sellPositions = _transactionHistory.Where(t => t.TransactionType == TransactionTypeEnum.Sell);
+
+            return buyPositions.Except(sellPositions);
         }
     }
 }

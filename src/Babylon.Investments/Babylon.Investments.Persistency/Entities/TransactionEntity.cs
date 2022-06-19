@@ -24,15 +24,5 @@ namespace Babylon.Investments.Persistency.Entities
         public decimal Fees { get; set; }
         
         public string TransactionType { get; set; }
-        
-        public decimal PreviousUnits { get; set; }
-        
-        public decimal CumulativeUnits { get; set; }
-        
-        public decimal TransactedValue { get; set; }
-        
-        public decimal PreviousCost { get; set; }
-        
-        public decimal CostOfTransaction { get; set; }
     }
 }

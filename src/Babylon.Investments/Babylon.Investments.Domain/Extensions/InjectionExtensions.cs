@@ -4,6 +4,8 @@ using Babylon.Investments.Domain.Cryptography;
 using Babylon.Investments.Domain.Mappers;
 using Babylon.Investments.Domain.Services;
 using Babylon.Investments.Domain.Validators;
+using Babylon.Networking.Brokers;
+using Babylon.Networking.Interfaces.Brokers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Babylon.Investments.Domain.Extensions
@@ -31,7 +33,8 @@ namespace Babylon.Investments.Domain.Extensions
         private static IServiceCollection RegisterOther(this IServiceCollection serviceCollection)
         {
             return serviceCollection
-                .AddTransient<IAesCipher, AesCipher>();
+                .AddTransient<IAesCipher, AesCipher>()
+                .AddTransient<IFinancialsBroker, FinancialsBroker>();
         }
         
         private static IServiceCollection RegisterMappers(this IServiceCollection serviceCollection)

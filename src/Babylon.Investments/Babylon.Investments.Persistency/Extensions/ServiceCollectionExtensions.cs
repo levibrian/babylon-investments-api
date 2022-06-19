@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Babylon.Investments.Persistency.Extensions
 {
-    public static class InjectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection RegisterPersistencyDependencies(
             this IServiceCollection serviceCollection, 
@@ -28,13 +28,13 @@ namespace Babylon.Investments.Persistency.Extensions
         private static IServiceCollection RegisterRepositories(
             this IServiceCollection serviceCollection)
         {
-            var InvestmentsTableName = 
+            var investmentsTableName = 
                 Environment.GetEnvironmentVariable(EnvironmentVariables.InvestmentsDynamoDbTable);
 
             return serviceCollection
                 .AddTransient<ITransactionRepository>(s => 
                     new TransactionRepository(
-                        InvestmentsTableName,
+                        investmentsTableName,
                         s.GetRequiredService<IDynamoDBContext>(),
                         s.GetRequiredService<IMapper>(),
                         s.GetRequiredService<ILogger<TransactionRepository>>()));
@@ -53,7 +53,7 @@ namespace Babylon.Investments.Persistency.Extensions
         {
             return serviceCollection
                 .AddDefaultAWSOptions(configuration.GetAWSOptions())
-                .AddSingleton<IAmazonDynamoDB>(x => CreateDynamoDb(string.Empty))
+                .AddSingleton(x => CreateDynamoDb(string.Empty))
                 .AddTransient<IDynamoDBContext, DynamoDBContext>();
         }
 

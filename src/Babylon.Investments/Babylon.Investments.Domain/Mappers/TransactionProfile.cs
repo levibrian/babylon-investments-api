@@ -24,6 +24,11 @@ namespace Babylon.Investments.Domain.Mappers
                         memberOptions.MapFrom(src =>
                             src.TransactionType.ToString()))
                 .ForMember(destinationMember =>
+                        destinationMember.TransactedPricePerUnit,
+                    memberOptions =>
+                        memberOptions.MapFrom(src =>
+                            src.PricePerUnit))
+                .ForMember(destinationMember =>
                         destinationMember.TransactedUnits,
                     memberOptions =>
                         memberOptions.MapFrom(src =>

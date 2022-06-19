@@ -37,7 +37,7 @@ namespace Babylon.Investments.Domain.Services
             ITransactionValidator transactionValidator,
             IFinancialsBroker financialsBroker,
             IMapper mapper,
-            ILogger<TransactionsInBulkService> logger) : base(transactionValidator, transactionRepository, financialsBroker, mapper, logger)
+            ILogger<TransactionsInBulkService> logger) : base(transactionValidator, transactionRepository, mapper, logger)
         {
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));

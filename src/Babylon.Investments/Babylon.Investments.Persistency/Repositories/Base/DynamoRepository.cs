@@ -8,7 +8,7 @@ namespace Babylon.Investments.Persistency.Repositories.Base
 {
     public abstract class DynamoRepository<T> : IRepositoryAsync<T> where T : class, new()
     {
-        protected readonly string _tableName;
+        protected readonly string TableName;
         
         private readonly IDynamoDBContext _dynamoDbContext;
 
@@ -18,7 +18,7 @@ namespace Babylon.Investments.Persistency.Repositories.Base
             string tableName, 
             IDynamoDBContext dynamoDbContext)
         {
-            _tableName = tableName ?? throw new ArgumentNullException(nameof(tableName));
+            TableName = tableName ?? throw new ArgumentNullException(nameof(tableName));
             _dynamoDbContext = dynamoDbContext ?? throw new ArgumentNullException(nameof(dynamoDbContext));
 
             _dynamoDbOperationConfig = new DynamoDBOperationConfig()

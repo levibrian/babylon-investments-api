@@ -21,8 +21,6 @@ namespace Babylon.Investments.Domain.Services.Base
 
         private readonly ITransactionRepository _transactionRepository;
 
-        private readonly IFinancialsBroker _financialsBroker;
-
         private readonly IMapper _mapper;
         
         private readonly ILogger<TransactionBaseService> _logger;
@@ -30,22 +28,20 @@ namespace Babylon.Investments.Domain.Services.Base
         protected TransactionBaseService(
             ITransactionValidator transactionValidator,
             ITransactionRepository transactionRepository,
-            IFinancialsBroker financialsBroker,
             IMapper mapper,
             ILogger<TransactionBaseService> logger)
         {
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
-            _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        protected async Task<Result> CreateAsync(TransactionPostRequest dto)
+        protected async Task<Result> CreateAsync(TransactionPostRequest request)
         {
             _logger.LogInformation("Transaction Service - Called method CreateAsync");
             
-            var validationResult = _transactionValidator.Validate(dto);
+            var validationResult = _transactionValidator.Validate(request);
 
             _logger.LogInformation($"Validation Result: { JsonSerializer.Serialize(validationResult) }");
             
@@ -56,10 +52,11 @@ namespace Babylon.Investments.Domain.Services.Base
             }
 
             var companyTransactionHistory = (await _transactionRepository
-                    .GetByClientAsync(dto.ClientIdentifier))
-                .Where(t => t.Ticker.Equals(dto.Ticker));
+                    .GetByClientAsync(request.ClientIdentifier))
+                .Where(t => t.Ticker.Equals(request.Ticker.ToUpperInvariant()))
+                .ToList();
             
-            var domainObject = new TransactionCreate(dto, companyTransactionHistory, _financialsBroker);
+            var domainObject = new TransactionCreate(request, companyTransactionHistory);
 
             await _transactionRepository.Insert(domainObject);
 

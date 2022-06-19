@@ -29,7 +29,7 @@ namespace Babylon.Investments.Persistency.Repositories
 
         public async Task Insert(Transaction transaction)
         {
-            _logger.LogInformation($"Saving Transaction into DynamoDB Table: { _tableName }");
+            _logger.LogInformation($"Saving Transaction into DynamoDB Table: { TableName }");
 
             try
             {
@@ -49,7 +49,7 @@ namespace Babylon.Investments.Persistency.Repositories
 
         public async Task InsertInBulk(IEnumerable<Transaction> InvestmentsToInsert)
         {
-            _logger.LogInformation($"Saving Transaction into DynamoDB Table: { _tableName }");
+            _logger.LogInformation($"Saving Transaction into DynamoDB Table: { TableName }");
 
             var transactionEntities = _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionEntity>>(InvestmentsToInsert);
 
@@ -60,7 +60,7 @@ namespace Babylon.Investments.Persistency.Repositories
         
         public async Task Delete(Transaction transaction)
         {
-            _logger.LogInformation($"Deleting Transaction with TransactionId: {transaction.TransactionId} from DynamoDB Table: { _tableName }");
+            _logger.LogInformation($"Deleting Transaction with TransactionId: {transaction.TransactionId} from DynamoDB Table: { TableName }");
             
             var transactionEntity = _mapper.Map<Transaction, TransactionEntity>(transaction);
 
@@ -71,7 +71,7 @@ namespace Babylon.Investments.Persistency.Repositories
 
         public async Task DeleteInBulk(IEnumerable<Transaction> InvestmentsToDelete)
         {
-            _logger.LogInformation($"Deleting Investments in Bulk from DynamoDB Table: { _tableName }");
+            _logger.LogInformation($"Deleting Investments in Bulk from DynamoDB Table: { TableName }");
 
             var transactionEntities = _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionEntity>>(InvestmentsToDelete);
 
