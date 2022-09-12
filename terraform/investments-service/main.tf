@@ -214,12 +214,12 @@ module "dynamodb_table" {
   source = "terraform-aws-modules/dynamodb-table/aws"
 
   name      = local.investments_dynamodb_table_name
-  hash_key  = "ClientIdentifier"
+  hash_key  = "TenantIdentifier"
   range_key = "TransactionId"
 
   attributes = [
     {
-      name = "ClientIdentifier"
+      name = "TenantIdentifier"
       type = "S"
     },
     {

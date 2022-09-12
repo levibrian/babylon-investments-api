@@ -13,8 +13,6 @@ namespace Babylon.Investments.Domain.Validators
         Result ValidateDelete(TransactionDeleteRequest objectToValidate);
 
         IEnumerable<Result> ValidateDelete(IEnumerable<TransactionDeleteRequest> objectToValidate);
-
-        IEnumerable<Result> Validate(IEnumerable<TransactionPostRequest> objectsToValidate);
     }
 
     public class TransactionValidator : ITransactionValidator
@@ -25,7 +23,7 @@ namespace Babylon.Investments.Domain.Validators
                 new IsTickerProvided()
                     .And(new IsTickerValid())
                     .And(new IsUserIdValid())
-                    .And(new IsClientIdentifierProvided())
+                    .And(new IsTenantIdentifierProvided())
                     .And(new IsDateNotFuture())
                     .And(new AreUnitsPositive())
                     .And(new IsPricePositive());
@@ -35,13 +33,11 @@ namespace Babylon.Investments.Domain.Validators
 
         public IEnumerable<Result> ValidateDelete(IEnumerable<TransactionDeleteRequest> objectToValidate) =>
             objectToValidate.Select(ValidateDelete);
-
-        public IEnumerable<Result> Validate(IEnumerable<TransactionPostRequest> objectsToValidate) => objectsToValidate.Select(Validate);
-
+        
         public Result ValidateDelete(TransactionDeleteRequest objectToValidate)
         {
             var transactionIdRules = 
-                new IsClientIdentifierProvided()
+                new IsTenantIdentifierProvided()
                     .And(new IsTransactionIdValid());
 
             return transactionIdRules.IsSatisfiedBy(objectToValidate);

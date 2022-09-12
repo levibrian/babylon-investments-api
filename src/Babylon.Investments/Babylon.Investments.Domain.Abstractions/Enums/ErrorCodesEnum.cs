@@ -13,8 +13,8 @@ namespace Babylon.Investments.Domain.Abstractions.Enums
         [Description("The User Id provided is not valid. Please provide a valid GUID.")]
         UserIdProvidedNotValid,
         
-        [Description("The Client Identifier is not provided.")]
-        ClientIdentifierNotProvided,
+        [Description("The Tenant Identifier is not provided.")]
+        TenantIdentifierNotProvided,
 
         [Description("Date provided is a future Date which is not valid.")]
         DateIsFutureDate,

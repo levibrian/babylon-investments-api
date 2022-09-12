@@ -10,7 +10,6 @@ using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
 using Babylon.Investments.Shared.Notifications;
-using Babylon.Networking.Interfaces.Brokers;
 using Microsoft.Extensions.Logging;
 
 namespace Babylon.Investments.Domain.Services.Base
@@ -52,7 +51,7 @@ namespace Babylon.Investments.Domain.Services.Base
             }
 
             var companyTransactionHistory = (await _transactionRepository
-                    .GetByClientAsync(request.ClientIdentifier))
+                    .GetByTenantAsync(request.TenantIdentifier))
                 .Where(t => t.Ticker.Equals(request.Ticker.ToUpperInvariant()))
                 .ToList();
             

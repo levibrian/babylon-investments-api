@@ -80,23 +80,23 @@ namespace Babylon.Investments.Persistency.Repositories
             _logger.LogInformation("Successfully deleted in bulk Investments from DynamoDB..");
         }
 
-        public async Task<IEnumerable<Transaction>> GetByClientAsync(string clientIdentifier)
+        public async Task<IEnumerable<Transaction>> GetByTenantAsync(string tenantIdentifier)
         {
-            _logger.LogInformation($"Getting all Investments from user: {clientIdentifier}");
+            _logger.LogInformation($"Getting all Investments from tenant: {tenantIdentifier}");
             
-            var userInvestments = await QueryAsync(clientIdentifier);
+            var userInvestments = await QueryAsync(tenantIdentifier);
 
-            _logger.LogInformation($"Successfully fetched all Investments of user {clientIdentifier}");
+            _logger.LogInformation($"Successfully fetched all Investments of tenant: {tenantIdentifier}");
             
             return _mapper
                 .Map<IEnumerable<TransactionEntity>, IEnumerable<Transaction>>(userInvestments);
         }
 
-        public async Task<Transaction> GetByIdAsync(string clientIdentifier, string transactionId)
+        public async Task<Transaction> GetByIdAsync(string tenantIdentifier, string transactionId)
         {
-            _logger.LogInformation($"Getting single transaction for: {clientIdentifier} with TransactionId: {transactionId}");
+            _logger.LogInformation($"Getting single transaction for tenant: {tenantIdentifier} with TransactionId: {transactionId}");
             
-            var transaction = await QuerySingleAsync(clientIdentifier, transactionId);
+            var transaction = await QuerySingleAsync(tenantIdentifier, transactionId);
 
             _logger.LogInformation($"Successfully fetched transaction {transactionId}..");
             

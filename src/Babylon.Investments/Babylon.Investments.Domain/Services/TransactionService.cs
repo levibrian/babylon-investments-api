@@ -22,9 +22,9 @@ namespace Babylon.Investments.Domain.Services
         ICreatableAsyncService<TransactionPostRequest>, 
         IDeletableAsyncService<TransactionDeleteRequest>
     {
-        Task<IEnumerable<TransactionGetResponse>> GetByClientAndUserAsync(string clientIdentifier, string userId);
+        Task<IEnumerable<TransactionGetResponse>> GetByClientAndUserAsync(string tenantIdentifier, string userId);
 
-        Task<TransactionGetResponse> GetSingleAsync(string clientIdentifier, string transactionId);
+        Task<TransactionGetResponse> GetSingleAsync(string tenantIdentifier, string transactionId);
     }
     
     public class TransactionService : TransactionBaseService, ITransactionService
@@ -74,7 +74,7 @@ namespace Babylon.Investments.Domain.Services
             }
 
             var transactionToDelete =
-                await _transactionRepository.GetByIdAsync(entity.ClientIdentifier, entity.TransactionId);
+                await _transactionRepository.GetByIdAsync(entity.TenantIdentifier, entity.TransactionId);
 
             _logger.LogInformation($"Transaction to delete: { JsonSerializer.Serialize(transactionToDelete) }");
             
@@ -90,20 +90,20 @@ namespace Babylon.Investments.Domain.Services
             return Result.Ok(transactionToDelete.TransactionId);
         }
 
-        public async Task<IEnumerable<TransactionGetResponse>> GetByClientAndUserAsync(string clientIdentifier, string userId)
+        public async Task<IEnumerable<TransactionGetResponse>> GetByClientAndUserAsync(string tenantIdentifier, string userId)
         {
             var clientInvestments =
-                (await _transactionRepository.GetByClientAsync(clientIdentifier)).OrderByDescending(x => x.Date);
+                (await _transactionRepository.GetByTenantAsync(tenantIdentifier)).OrderByDescending(x => x.Date);
 
             var userInvestments = clientInvestments.Where(x => x.UserId.Equals(userId));
             
             return _mapper.Map<IEnumerable<Transaction>, IEnumerable<TransactionGetResponse>>(userInvestments);
         }
 
-        public async Task<TransactionGetResponse> GetSingleAsync(string clientIdentifier, string transactionId)
+        public async Task<TransactionGetResponse> GetSingleAsync(string tenantIdentifier, string transactionId)
         {
             var transactionToGet =
-                await _transactionRepository.GetByIdAsync(clientIdentifier, transactionId);
+                await _transactionRepository.GetByIdAsync(tenantIdentifier, transactionId);
 
             return _mapper.Map<Transaction, TransactionGetResponse>(transactionToGet);
         }

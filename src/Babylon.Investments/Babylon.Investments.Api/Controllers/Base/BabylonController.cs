@@ -10,7 +10,7 @@ namespace Babylon.Investments.Api.Controllers.Base
     [Controller]
     public class BabylonController : ControllerBase
     {
-        protected string ClientIdentifier => HashClientIdentifier();
+        protected string TenantIdentifier => HashTenantIdentifier();
 
         private string RapidApiUser => GetRapidApiUserFromHeaders();
      
@@ -46,9 +46,9 @@ namespace Babylon.Investments.Api.Controllers.Base
             return rapidApiKey;
         }
         
-        private string HashClientIdentifier()
+        private string HashTenantIdentifier()
         {
-            var unhashedClientIdentifier =
+            var unhashedTenantIdentifier =
                 !string.IsNullOrEmpty(RapidApiUser) && !string.IsNullOrEmpty(RapidApiKey)
                     ? $"{RapidApiUser}-{RapidApiKey}"
                     : !string.IsNullOrEmpty(OverrideApiKey)
@@ -57,10 +57,10 @@ namespace Babylon.Investments.Api.Controllers.Base
 
             var ivArray = Convert.FromBase64String(CipherVariables.Iv);
             
-            var hashedClientIdentifier = _aesCipher
-                .Encrypt(unhashedClientIdentifier, ivArray);
+            var hashedTenantIdentifier = _aesCipher
+                .Encrypt(unhashedTenantIdentifier, ivArray);
             
-            return hashedClientIdentifier;
+            return hashedTenantIdentifier;
         }
     }
 }

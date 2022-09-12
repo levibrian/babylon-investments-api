@@ -75,10 +75,10 @@ namespace Babylon.Investments.Domain.Services
             foreach (var transaction in transactionsToDelete)
             {
                 var fetchedTransactionFromDb =
-                    await _transactionRepository.GetByIdAsync(transaction.ClientIdentifier, transaction.TransactionId);
+                    await _transactionRepository.GetByIdAsync(transaction.TenantIdentifier, transaction.TransactionId);
                 
                 if (fetchedTransactionFromDb == null) 
-                    _logger.LogWarning($"InvestmentsInBulkService - Delete In Bulk...Transaction with ClientIdentifier: {transaction.ClientIdentifier} and with TransactionId: {transaction.TransactionId} not found..");
+                    _logger.LogWarning($"InvestmentsInBulkService - Delete In Bulk...Transaction with TenantIdentifier: {transaction.TenantIdentifier} and with TransactionId: {transaction.TransactionId} not found..");
                 else 
                     entitiesToDelete.Add(fetchedTransactionFromDb);
             }

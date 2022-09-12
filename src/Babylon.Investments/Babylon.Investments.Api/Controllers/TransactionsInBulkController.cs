@@ -50,7 +50,7 @@ namespace Babylon.Investments.Api.Controllers
             
             foreach (var transaction in mappedInvestmentsToCreate)
             {
-                transaction.ClientIdentifier = ClientIdentifier;
+                transaction.TenantIdentifier = TenantIdentifier;
             }
 
             var operation = await _transactionsInBulkService.CreateAsync(mappedInvestmentsToCreate);
@@ -71,7 +71,7 @@ namespace Babylon.Investments.Api.Controllers
                     .Select(transactionId => 
                         new TransactionDeleteRequest()
                         {
-                            ClientIdentifier = ClientIdentifier, 
+                            TenantIdentifier = TenantIdentifier, 
                             TransactionId = transactionId
                         })
                     .ToList();

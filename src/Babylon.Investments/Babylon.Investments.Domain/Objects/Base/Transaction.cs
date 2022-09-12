@@ -8,7 +8,7 @@ namespace Babylon.Investments.Domain.Objects.Base
     {
         public virtual string TransactionId { get; set; }
 
-        public virtual string ClientIdentifier { get; set; }
+        public virtual string TenantIdentifier { get; set; }
 
         public virtual string UserId { get; set; }
         

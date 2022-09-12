@@ -34,7 +34,7 @@ namespace Babylon.Investments.Api.Controllers
         {
             _logger.LogInformation("PortfoliosController - Called HttpGet Get Endpoint");
             
-            var userPortfolio = await _portfolioService.GetPortfolioByUser(ClientIdentifier, userId);
+            var userPortfolio = await _portfolioService.GetPortfolioByUser(TenantIdentifier, userId);
             
             return Ok(userPortfolio);
         }

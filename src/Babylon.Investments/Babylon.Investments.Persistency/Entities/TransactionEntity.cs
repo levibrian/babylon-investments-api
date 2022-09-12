@@ -6,7 +6,7 @@ namespace Babylon.Investments.Persistency.Entities
     public class TransactionEntity
     {
         [DynamoDBHashKey]
-        public string ClientIdentifier { get; set; }
+        public string TenantIdentifier { get; set; }
         
         [DynamoDBRangeKey]
         public string TransactionId { get; set; }
