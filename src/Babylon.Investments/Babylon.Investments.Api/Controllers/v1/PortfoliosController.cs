@@ -8,9 +8,9 @@ using Babylon.Investments.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Babylon.Investments.Api.Controllers
+namespace Babylon.Investments.Api.Controllers.v1
 {
-    [Route(BabylonApiRoutes.PortfoliosBaseRoute)]
+    [Route(BabylonApiRoutes.PortfoliosV1BaseRoute)]
     [ApiController]
     [BabylonAuthorize]
     public class PortfoliosController : BabylonController
@@ -34,7 +34,7 @@ namespace Babylon.Investments.Api.Controllers
         {
             _logger.LogInformation("PortfoliosController - Called HttpGet Get Endpoint");
             
-            var userPortfolio = await _portfolioService.GetPortfolioByUser(TenantIdentifier, userId);
+            var userPortfolio = await _portfolioService.GetPortfolioByUser(TenantId, userId);
             
             return Ok(userPortfolio);
         }

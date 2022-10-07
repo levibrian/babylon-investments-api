@@ -24,7 +24,7 @@ namespace Babylon.Investments.Domain.Objects
 
         public override string TransactionId => _transactionRequest.TransactionId ?? Guid.NewGuid().ToString();
         
-        public override string TenantIdentifier => _transactionRequest.TenantIdentifier;
+        public override string TenantId => _transactionRequest.TenantId;
 
         public override string UserId => _transactionRequest.UserId;
 

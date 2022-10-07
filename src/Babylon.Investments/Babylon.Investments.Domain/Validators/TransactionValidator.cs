@@ -23,7 +23,7 @@ namespace Babylon.Investments.Domain.Validators
                 new IsTickerProvided()
                     .And(new IsTickerValid())
                     .And(new IsUserIdValid())
-                    .And(new IsTenantIdentifierProvided())
+                    .And(new IsTenantIdProvided())
                     .And(new IsDateNotFuture())
                     .And(new AreUnitsPositive())
                     .And(new IsPricePositive());
@@ -37,7 +37,7 @@ namespace Babylon.Investments.Domain.Validators
         public Result ValidateDelete(TransactionDeleteRequest objectToValidate)
         {
             var transactionIdRules = 
-                new IsTenantIdentifierProvided()
+                new IsTenantIdProvided()
                     .And(new IsTransactionIdValid());
 
             return transactionIdRules.IsSatisfiedBy(objectToValidate);
