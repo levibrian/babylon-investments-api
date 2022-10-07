@@ -6,6 +6,6 @@ namespace Babylon.Investments.Domain.Abstractions.Requests
     {
         public string TransactionId { get; set; }
         
-        public string TenantIdentifier { get; set; }
+        public string TenantId { get; set; }
     }
 }

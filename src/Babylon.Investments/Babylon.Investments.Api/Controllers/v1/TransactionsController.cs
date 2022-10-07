@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Babylon.Investments.Api.Controllers
 {
-    [Route(BabylonApiRoutes.InvestmentsBaseRoute)]
+    [Route(BabylonApiRoutes.TransactionsV1BaseRoute)]
     [ApiController]
     [BabylonAuthorize]
     public class TransactionsController : BabylonController
@@ -39,9 +39,9 @@ namespace Babylon.Investments.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TransactionPostRequest createTransactionRequest)
         {
-            _logger.LogInformation($"InvestmentsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionRequest) }, TenantIdentifier: { TenantIdentifier }");
+            _logger.LogInformation($"InvestmentsController - Requested Create Transaction with Body: { JsonSerializer.Serialize(createTransactionRequest) }, TenantId: { TenantId }");
             
-            createTransactionRequest.TenantIdentifier = TenantIdentifier;
+            createTransactionRequest.TenantId = TenantId;
 
             var operation = await _transactionService.CreateAsync(createTransactionRequest);
             
@@ -52,11 +52,11 @@ namespace Babylon.Investments.Api.Controllers
         public async Task<IActionResult> Delete(Guid transactionId)
         {
             _logger.LogInformation(
-                $"InvestmentsController - Requested Delete Transaction with parameters: TransactionId: { transactionId }, TenantIdentifier { TenantIdentifier } ");
+                $"InvestmentsController - Requested Delete Transaction with parameters: TransactionId: { transactionId }, TenantId: { TenantId } ");
             
             var operation = await _transactionService.DeleteAsync(new TransactionDeleteRequest()
             {
-                TenantIdentifier = TenantIdentifier,
+                TenantId = TenantId,
                 TransactionId = transactionId.ToString()
             });
 
@@ -67,9 +67,9 @@ namespace Babylon.Investments.Api.Controllers
         public async Task<IActionResult> Get(string userId)
         {
             _logger.LogInformation(
-                $"InvestmentsController - Requested Get Many Investments with parameters: UserId: { userId } for Client: { TenantIdentifier } ");
+                $"InvestmentsController - Requested Get Many Investments with parameters: UserId: { userId } for Client: { TenantId } ");
             
-            var userTransactionsFromTenant = await _transactionService.GetByClientAndUserAsync(TenantIdentifier, userId);
+            var userTransactionsFromTenant = await _transactionService.GetByClientAndUserAsync(TenantId, userId);
 
             return Ok(userTransactionsFromTenant);
         }

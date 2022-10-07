@@ -5,16 +5,16 @@ using Babylon.Investments.Shared.Specifications.Interfaces;
 
 namespace Babylon.Investments.Domain.Rules
 {
-    public class IsTenantIdentifierProvided : IResultedSpecification<TransactionBaseRequest>
+    public class IsTenantIdProvided : IResultedSpecification<TransactionBaseRequest>
     {
         public Result IsSatisfiedBy(TransactionBaseRequest transaction)
         {
             var expression =
-                !string.IsNullOrEmpty(transaction.TenantIdentifier);
+                !string.IsNullOrEmpty(transaction.TenantId);
             
             return expression 
                 ? Result.Ok() 
-                : Result.Failure(Error.CreateError(ErrorCodesEnum.TenantIdentifierNotProvided));
+                : Result.Failure(Error.CreateError(ErrorCodesEnum.TenantIdNotProvided));
         }
     }
 }

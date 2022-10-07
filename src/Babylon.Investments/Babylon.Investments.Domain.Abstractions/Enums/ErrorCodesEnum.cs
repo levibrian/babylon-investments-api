@@ -14,7 +14,7 @@ namespace Babylon.Investments.Domain.Abstractions.Enums
         UserIdProvidedNotValid,
         
         [Description("The Tenant Identifier is not provided.")]
-        TenantIdentifierNotProvided,
+        TenantIdNotProvided,
 
         [Description("Date provided is a future Date which is not valid.")]
         DateIsFutureDate,

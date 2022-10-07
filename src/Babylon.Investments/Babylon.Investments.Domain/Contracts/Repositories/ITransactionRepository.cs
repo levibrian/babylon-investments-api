@@ -6,9 +6,9 @@ namespace Babylon.Investments.Domain.Contracts.Repositories
 {
     public interface ITransactionRepository
     {
-        Task<Transaction> GetByIdAsync(string tenantIdentifier, string transactionId);
+        Task<Transaction> GetByIdAsync(string tenantId, string transactionId);
 
-        Task<IEnumerable<Transaction>> GetByTenantAsync(string tenantIdentifier);
+        Task<IEnumerable<Transaction>> GetByTenantAsync(string tenantId);
         
         Task Insert(Transaction transaction);
 

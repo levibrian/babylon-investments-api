@@ -11,7 +11,7 @@ namespace Babylon.Investments.Domain.Services
 {
     public interface IPortfolioService
     {
-        Task<IEnumerable<PositionSummaryGetResponse>> GetPortfolioByUser(string tenantIdentifier, string userId);
+        Task<IEnumerable<PositionSummaryGetResponse>> GetPortfolioByUser(string tenantId, string userId);
     }
     
     public class PortfolioService : IPortfolioService
@@ -28,10 +28,10 @@ namespace Babylon.Investments.Domain.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         
-        public async Task<IEnumerable<PositionSummaryGetResponse>> GetPortfolioByUser(string tenantIdentifier, string userId)
+        public async Task<IEnumerable<PositionSummaryGetResponse>> GetPortfolioByUser(string tenantId, string userId)
         {
             var userInvestments = 
-                (await _transactionRepository.GetByTenantAsync(tenantIdentifier))
+                (await _transactionRepository.GetByTenantAsync(tenantId))
                     .Where(x => x.UserId.Equals(userId))
                     .GroupBy(x => x.Ticker)
                     .ToDictionary(

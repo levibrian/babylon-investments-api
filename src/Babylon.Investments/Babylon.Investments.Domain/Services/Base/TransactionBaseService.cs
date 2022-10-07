@@ -51,7 +51,7 @@ namespace Babylon.Investments.Domain.Services.Base
             }
 
             var companyTransactionHistory = (await _transactionRepository
-                    .GetByTenantAsync(request.TenantIdentifier))
+                    .GetByTenantAsync(request.TenantId))
                 .Where(t => t.Ticker.Equals(request.Ticker.ToUpperInvariant()))
                 .ToList();
             

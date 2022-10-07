@@ -13,7 +13,7 @@ using Babylon.Investments.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Babylon.Investments.Api.Controllers
+namespace Babylon.Investments.Api.Controllers.v1
 {
     [ApiController] 
     [BabylonAuthorize]
@@ -38,7 +38,7 @@ namespace Babylon.Investments.Api.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        [HttpPost(BabylonApiRoutes.InvestmentsInBulkBaseRoute)]
+        [HttpPost(BabylonApiRoutes.TransactionsInBulkV1BaseRoute)]
         public async Task<IActionResult> Post([FromBody] IEnumerable<TransactionPostRequest> investmentsToCreate)
         {
             _logger.LogInformation("InvestmentsInBulkController - Called HttpPost Create Endpoint");
@@ -50,7 +50,7 @@ namespace Babylon.Investments.Api.Controllers
             
             foreach (var transaction in mappedInvestmentsToCreate)
             {
-                transaction.TenantIdentifier = TenantIdentifier;
+                transaction.TenantId = TenantId;
             }
 
             var operation = await _transactionsInBulkService.CreateAsync(mappedInvestmentsToCreate);
@@ -61,7 +61,7 @@ namespace Babylon.Investments.Api.Controllers
         }
 
         [HttpPost]
-        [Route(BabylonApiRoutes.InvestmentsInBulkBaseRoute + "/delete")]
+        [Route(BabylonApiRoutes.TransactionsInBulkV1BaseRoute + "/delete")]
         public async Task<IActionResult> Delete([FromBody] IEnumerable<string> transactionIds)
         {
             _logger.LogInformation("InvestmentsInBulkController - Called HttpPost Delete Endpoint");
@@ -71,7 +71,7 @@ namespace Babylon.Investments.Api.Controllers
                     .Select(transactionId => 
                         new TransactionDeleteRequest()
                         {
-                            TenantIdentifier = TenantIdentifier, 
+                            TenantId = TenantId, 
                             TransactionId = transactionId
                         })
                     .ToList();

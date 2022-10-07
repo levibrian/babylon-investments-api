@@ -111,42 +111,42 @@ module "api_gateway" {
   create_routes_and_integrations = true
 
   integrations = {
-    "GET /babylon/api/transactions" = {
+    "GET /babylon/api/v1/transactions" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "POST /babylon/api/transactions" = {
+    "POST /babylon/api/v1/transactions" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "DELETE /babylon/api/transactions/{transactionId}" = {
+    "DELETE /babylon/api/v1/transactions/{transactionId}" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "POST /babylon/api/transactions/bulk" = {
+    "POST /babylon/api/v1/transactions/bulk" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "POST /babylon/api/transactions/bulk/delete" = {
+    "POST /babylon/api/v1/transactions/bulk/delete" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
       authorization_type     = "NONE"
       timeout_milliseconds   = 30000
     }
-    "GET /babylon/api/portfolios" = {
+    "GET /babylon/api/v1/portfolios" = {
       lambda_arn             = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${module.investments_lambda.lambda_function_arn}/invocations"
       integration_type       = "AWS_PROXY"
       payload_format_version = "2.0"
@@ -214,12 +214,12 @@ module "dynamodb_table" {
   source = "terraform-aws-modules/dynamodb-table/aws"
 
   name      = local.investments_dynamodb_table_name
-  hash_key  = "TenantIdentifier"
+  hash_key  = "TenantId"
   range_key = "TransactionId"
 
   attributes = [
     {
-      name = "TenantIdentifier"
+      name = "TenantId"
       type = "S"
     },
     {
