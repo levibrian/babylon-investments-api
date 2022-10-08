@@ -58,19 +58,19 @@ namespace Babylon.Investments.Domain.Objects
 
         private decimal CalculateNetUnits()
         {
-            var buyPositions = _transactionHistory.Where(t => t.TransactionType == TransactionTypeEnum.Buy);
-            var sellPositions = _transactionHistory.Where(t => t.TransactionType == TransactionTypeEnum.Sell);
+            var buyPositions = _transactionHistory?.Where(t => t.TransactionType == TransactionTypeEnum.Buy);
+            var sellPositions = _transactionHistory?.Where(t => t.TransactionType == TransactionTypeEnum.Sell);
 
-            var netUnits = buyPositions.Sum(p => p.Units) - sellPositions.Sum(p => p.Units);
+            var netUnits = buyPositions?.Sum(p => p.Units) - sellPositions?.Sum(p => p.Units);
 
-            return netUnits >= 0 ? netUnits : 0;
+            return netUnits >= 0 ? netUnits.Value : 0;
         }
 
         private decimal CalculatePreviousValue()
         {
-            var netPositions =
-                GetNetPositions()
-                    .Where(x => x.TransactionType == TransactionTypeEnum.Buy);
+            var netPositions = GetNetPositions()
+                    .Where(x => x.TransactionType == TransactionTypeEnum.Buy)
+                    .ToList();
 
             var averagePricePerUnit = CalculateAveragePricePerUnit();
 
@@ -79,11 +79,11 @@ namespace Babylon.Investments.Domain.Objects
         
         private decimal CalculateAveragePricePerUnit()
         {
-            var netPositions = 
-                GetNetPositions()
-                    .Where(x => x.TransactionType == TransactionTypeEnum.Buy);
+            var netPositions = GetNetPositions()
+                    .Where(x => x.TransactionType == TransactionTypeEnum.Buy)
+                    .ToList();
 
-            return netPositions.Average(x => x.PricePerUnit);
+            return netPositions.Any() ? netPositions.Average(x => x.PricePerUnit) : 0;
         }
 
         private IEnumerable<Transaction> GetNetPositions()
