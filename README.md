@@ -1,4 +1,4 @@
-[![build](https://github.com/levibrian/ivas-Investments-api/actions/workflows/on-push-build-and-test.yml/badge.svg)](https://github.com/levibrian/babylon-investments-api/actions/workflows/on-push-build-and-test.yml)
+[![build](https://github.com/levibrian/babylon-investments-api/.github/actions/workflows/on-push-build-and-test.yml/badge.svg)](https://github.com/levibrian/babylon-investments-api/.github/actions/workflows/on-push-build-and-test.yml)
 
 ### Investors:
 Are you tired of always saving your information in excels? And building tenths of sheets where you always lose data?
@@ -7,7 +7,7 @@ Are you tired of always saving your information in excels? And building tenths o
 Are you building THE NEXT FINANCE APP but you know nothing (nor wanna know nothing) regarding backend infrastructure, azure/aws, deploying, hosting, etc.
 SAY NO MORE
 
-Here I present you: **The IVAS (Investment Assistant) API**
+Here I present you: **The BABYLON API**
 
 With this API you will be able to save (single, multiple), delete (single, multiple), retrieve your day to day buys/sells/dividends Investments of Stocks, ETFs and Cryptos!!!.
 
