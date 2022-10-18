@@ -1,4 +1,4 @@
-[![build](https://github.com/levibrian/babylon-investments-api/blob/main/.github/workflows/on-push-build-and-test.yml/badge.svg)](https://github.com/levibrian/babylon-investments-api/blob/main/.github/workflows/on-push-build-and-test.yml)
+![babylon build](https://github.com/levibrian/babylon-investments-api/actions/workflows/on-push-build-and-test.yml/badge.svg)
 
 ### Investors:
 Are you tired of always saving your information in excels? And building tenths of sheets where you always lose data?
