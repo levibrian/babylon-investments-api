@@ -5,12 +5,11 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Babylon.Investments.Domain.Abstractions.Responses;
-using Babylon.Networking.Interfaces.Brokers;
 using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Abstractions.Services.Base;
 using Babylon.Investments.Domain.Contracts.Repositories;
+using Babylon.Investments.Domain.Objects;
 using Babylon.Investments.Domain.Objects.Base;
-using Babylon.Investments.Domain.Services.Base;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
 using Babylon.Investments.Shared.Notifications;
@@ -27,7 +26,7 @@ namespace Babylon.Investments.Domain.Services
         Task<TransactionGetResponse> GetSingleAsync(string tenantId, string transactionId);
     }
     
-    public class TransactionService : TransactionBaseService, ITransactionService
+    public class TransactionService : ITransactionService
     {
         private readonly ITransactionValidator _transactionValidator;
 
@@ -41,7 +40,7 @@ namespace Babylon.Investments.Domain.Services
             ITransactionValidator transactionValidator,
             ITransactionRepository transactionRepository,
             IMapper mapper,
-            ILogger<TransactionService> logger) : base (transactionValidator, transactionRepository, mapper, logger)
+            ILogger<TransactionService> logger)
         {
             _transactionValidator = transactionValidator 
                                     ?? throw new ArgumentNullException(nameof(transactionValidator));
@@ -54,7 +53,33 @@ namespace Babylon.Investments.Domain.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public new async Task<Result> CreateAsync(TransactionPostRequest request) => await base.CreateAsync(request);
+        public async Task<Result> CreateAsync(TransactionPostRequest request)
+        {
+            _logger.LogInformation("Transaction Service - Called method CreateAsync");
+            
+            var validationResult = _transactionValidator.Validate(request);
+
+            _logger.LogInformation($"Validation Result: { JsonSerializer.Serialize(validationResult) }");
+            
+            if (validationResult.IsFailure)
+            {
+                throw new BabylonException(
+                    string.Join(", ", validationResult.Errors.Select(x => x.Message)));
+            }
+
+            var companyTransactionHistory = (await _transactionRepository
+                    .GetByTenantAsync(request.TenantId))
+                .Where(t => t.Ticker.Equals(request.Ticker.ToUpperInvariant()))
+                .ToList();
+            
+            var domainObject = new TransactionCreate(request, companyTransactionHistory);
+
+            await _transactionRepository.Insert(domainObject);
+
+            var transactionResponse = _mapper.Map<TransactionCreate, TransactionPostResponse>(domainObject);
+            
+            return Result.Ok(transactionResponse);
+        }
 
         public async Task<Result> DeleteAsync(TransactionDeleteRequest entity)
         {

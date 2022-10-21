@@ -8,7 +8,6 @@ using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Abstractions.Services.Base;
 using Babylon.Investments.Domain.Contracts.Repositories;
 using Babylon.Investments.Domain.Objects.Base;
-using Babylon.Investments.Domain.Services.Base;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
 using Babylon.Investments.Shared.Notifications;
@@ -22,7 +21,7 @@ namespace Babylon.Investments.Domain.Services
     {
     }
     
-    public class TransactionsInBulkService : TransactionBaseService, ITransactionsInBulkService
+    public class TransactionsInBulkService : TransactionService, ITransactionsInBulkService
     {
         private readonly ITransactionRepository _transactionRepository;
 
