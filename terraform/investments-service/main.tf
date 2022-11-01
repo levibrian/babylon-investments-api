@@ -2,7 +2,7 @@
 # IAM Role
 ################################################################################
 
-resource "aws_iam_role" "Investments_lambda_role" {
+resource "aws_iam_role" "investments_lambda_role" {
   name               = "${local.investments_lambda_name}-iam"
   assume_role_policy = <<EOF
 {
@@ -22,9 +22,9 @@ resource "aws_iam_role" "Investments_lambda_role" {
   tags               = local.default_tags
 }
 
-resource "aws_iam_role_policy" "Investments_lambda_policy" {
+resource "aws_iam_role_policy" "investments_lambda_policy" {
   name   = "${local.investments_lambda_name}-policy"
-  role   = aws_iam_role.Investments_lambda_role.name
+  role   = aws_iam_role.investments_lambda_role.name
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -192,7 +192,7 @@ module "investments_lambda" {
   vpc_security_group_ids = [module.lambda_security_group.security_group_id]
 
   attach_policy_json = true
-  policy_json        = aws_iam_role_policy.Investments_lambda_policy.policy
+  policy_json        = aws_iam_role_policy.investments_lambda_policy.policy
 
   lambda_role = aws_iam_role.Investments_lambda_role.arn
 

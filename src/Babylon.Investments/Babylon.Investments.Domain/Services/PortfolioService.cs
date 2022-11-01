@@ -31,7 +31,7 @@ namespace Babylon.Investments.Domain.Services
         public async Task<IEnumerable<PositionSummaryGetResponse>> GetPortfolioByUser(string tenantId, string userId)
         {
             var userInvestments = 
-                (await _transactionRepository.GetByTenantAsync(tenantId))
+                (await _transactionRepository.GetAsync(tenantId))
                     .Where(x => x.UserId.Equals(userId))
                     .GroupBy(x => x.Ticker)
                     .ToDictionary(

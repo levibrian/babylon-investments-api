@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Babylon.Networking.Interfaces.Brokers;
 using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Abstractions.Services.Base;
 using Babylon.Investments.Domain.Contracts.Repositories;
 using Babylon.Investments.Domain.Objects.Base;
+using Babylon.Investments.Domain.Strategies;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Exceptions.Custom;
 using Babylon.Investments.Shared.Notifications;
@@ -27,20 +27,17 @@ namespace Babylon.Investments.Domain.Services
 
         private readonly ITransactionValidator _transactionValidator;
 
-        private readonly IFinancialsBroker _financialsBroker;
-        
         private readonly ILogger<TransactionsInBulkService> _logger;
         
         public TransactionsInBulkService(
             ITransactionRepository transactionRepository,
             ITransactionValidator transactionValidator,
-            IFinancialsBroker financialsBroker,
+            IOperationStrategy operationStrategy,
             IMapper mapper,
-            ILogger<TransactionsInBulkService> logger) : base(transactionValidator, transactionRepository, mapper, logger)
+            ILogger<TransactionsInBulkService> logger) : base(transactionValidator, transactionRepository, operationStrategy, mapper, logger)
         {
             _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
             _transactionValidator = transactionValidator ?? throw new ArgumentNullException(nameof(transactionValidator));
-            _financialsBroker = financialsBroker ?? throw new ArgumentNullException(nameof(financialsBroker));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         

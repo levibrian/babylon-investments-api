@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
 using AutoMapper;
@@ -80,18 +81,32 @@ namespace Babylon.Investments.Persistency.Repositories
             _logger.LogInformation("Successfully deleted in bulk Investments from DynamoDB..");
         }
 
-        public async Task<IEnumerable<Transaction>> GetByTenantAsync(string tenantId)
+        public async Task<IEnumerable<Transaction>> GetAsync(string tenantId)
         {
             _logger.LogInformation($"Getting all Investments from tenant: {tenantId}");
             
-            var userInvestments = await QueryAsync(tenantId);
+            var tenantInvestments = await QueryAsync(tenantId);
 
             _logger.LogInformation($"Successfully fetched all Investments of tenant: {tenantId}");
             
             return _mapper
-                .Map<IEnumerable<TransactionEntity>, IEnumerable<Transaction>>(userInvestments);
+                .Map<IEnumerable<TransactionEntity>, IEnumerable<Transaction>>(tenantInvestments);
         }
 
+        public async Task<IEnumerable<Transaction>> GetByTickerAsync(string tenantId, string ticker)
+        {
+            _logger.LogInformation($"Getting company transaction history for ticker: {ticker} and tenant: {tenantId}");
+            
+            var companyTransactions = 
+                (await QueryAsync(tenantId))
+                    .Where(t => t.Ticker.Equals(ticker.ToUpperInvariant()));
+
+            _logger.LogInformation($"Successfully fetched all investments of tenant: {tenantId}");
+            
+            return _mapper
+                .Map<IEnumerable<TransactionEntity>, IEnumerable<Transaction>>(companyTransactions);
+        }
+        
         public async Task<Transaction> GetByIdAsync(string tenantId, string transactionId)
         {
             _logger.LogInformation($"Getting single transaction for tenant: {tenantId} with TransactionId: {transactionId}");

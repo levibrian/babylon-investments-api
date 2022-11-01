@@ -8,8 +8,10 @@ namespace Babylon.Investments.Domain.Contracts.Repositories
     {
         Task<Transaction> GetByIdAsync(string tenantId, string transactionId);
 
-        Task<IEnumerable<Transaction>> GetByTenantAsync(string tenantId);
-        
+        Task<IEnumerable<Transaction>> GetAsync(string tenantId);
+
+        Task<IEnumerable<Transaction>> GetByTickerAsync(string tenantId, string ticker);
+
         Task Insert(Transaction transaction);
 
         Task Delete(Transaction transaction);

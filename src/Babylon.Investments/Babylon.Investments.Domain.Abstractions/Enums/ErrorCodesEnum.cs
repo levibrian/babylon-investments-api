@@ -29,6 +29,9 @@ namespace Babylon.Investments.Domain.Abstractions.Enums
         TransactionIdProvidedNotValid,
         
         [Description("Expected string number..")]
-        StringNumberNotValid
+        StringNumberNotValid,
+        
+        [Description("The ")]
+        TransactionHistoryNonExistent
     }
 }

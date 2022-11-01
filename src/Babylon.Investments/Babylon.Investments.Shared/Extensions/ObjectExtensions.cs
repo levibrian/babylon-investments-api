@@ -1,4 +1,8 @@
-﻿namespace Babylon.Investments.Shared.Extensions
+﻿using System.Collections.Generic;
+using System.Linq;
+using Babylon.Investments.Shared.Notifications;
+
+namespace Babylon.Investments.Shared.Extensions
 {
     public static class ObjectExtensions
     {
@@ -16,6 +20,11 @@
             var stringToReturn = System.Text.Encoding.UTF8.GetString(arrayToStringify);
 
             return stringToReturn;
+        }
+
+        public static string ToFormattedErrorMessage(this IEnumerable<Error> errors)
+        {
+            return string.Join(", ", errors.Select(x => x.Message));
         }
     }
 }
