@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Contracts.Repositories;
@@ -23,16 +24,15 @@ namespace Babylon.Investments.Domain.Handlers
             _operationValidator = operationValidator;
         }
 
-        public async Task<Transaction> HandleAsync(TransactionPostRequest request)
+        public async Task<TransactionCreate> HandleAsync(TransactionPostRequest request)
         {
             var companyTransactionHistory = 
-                await _transactionRepository.GetByTickerAsync(request.TenantId, request.Ticker);
+                (await _transactionRepository.GetByTickerAsync(request.TenantId, request.Ticker))
+                .ToList();
             
-            // Missing logic to validate if the tenant has Transactions for that  Ticker.
+            var validationResult = _operationValidator.Validate(request, companyTransactionHistory);
 
-            var validationResult = _operationValidator.Validate(companyTransactionHistory);
-
-            if (validationResult.IsFailure)
+            if (!validationResult.IsSuccess)
             {
                 throw new InvalidOperationException(validationResult.Errors.ToFormattedErrorMessage());
             }

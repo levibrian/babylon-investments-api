@@ -14,7 +14,7 @@ namespace Babylon.Investments.Domain.Rules
             var expression = entityToEvaluate != null && entityToEvaluate.Any();
             
             return !expression 
-                ? Result.Failure(ErrorCodesEnum.TickerNotValid) 
+                ? Result.Failure(ErrorCodesEnum.TransactionHistoryNonExistent) 
                 : Result.Ok();
         }
     }

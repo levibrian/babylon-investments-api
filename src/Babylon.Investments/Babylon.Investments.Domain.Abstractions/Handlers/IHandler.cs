@@ -3,8 +3,8 @@ using Babylon.Investments.Domain.Abstractions.Requests.Base;
 
 namespace Babylon.Investments.Domain.Abstractions.Handlers
 {
-    public interface IHandler
+    public interface IHandler<T, in TV>
     {
-        Task<Objects.Domain> HandleAsync(Request request);
+        Task<T> HandleAsync(TV request);
     }
 }

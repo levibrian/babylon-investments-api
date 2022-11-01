@@ -8,8 +8,6 @@ namespace Babylon.Investments.Shared.Notifications
     {
         bool IsSuccess { get; }
 
-        bool IsFailure { get; }
-
         IEnumerable<Error> Errors { get; }
 
         Result AddErrors(IEnumerable<Error> errors);
@@ -22,8 +20,6 @@ namespace Babylon.Investments.Shared.Notifications
         public IEnumerable<Error> Errors { get; } = new List<Error>();
 
         public bool IsSuccess => !Errors.Any();
-
-        public bool IsFailure => !IsSuccess;
 
         public object Value { get; set; }
         

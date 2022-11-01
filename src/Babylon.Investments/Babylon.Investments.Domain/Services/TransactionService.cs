@@ -68,14 +68,14 @@ namespace Babylon.Investments.Domain.Services
 
             _logger.LogInformation("Validation Result: { Serialize }", JsonSerializer.Serialize(validationResult));
             
-            if (validationResult.IsFailure)
+            if (!validationResult.IsSuccess)
             {
                 throw new BabylonException(validationResult.Errors.ToFormattedErrorMessage());
             }
 
             var operationHandler = _operationStrategy.Create(request.TransactionType);
 
-            var domainObject = (TransactionCreate) await operationHandler.HandleAsync(request);
+            var domainObject = await operationHandler.HandleAsync(request);
 
             var transactionResponse = _mapper.Map<TransactionCreate, TransactionPostResponse>(domainObject);
             
@@ -84,13 +84,13 @@ namespace Babylon.Investments.Domain.Services
 
         public async Task<Result> DeleteAsync(TransactionDeleteRequest entity)
         {
-            _logger.LogInformation("Investmentservice - Called method DeleteAsync");
+            _logger.LogInformation("TransactionService - Called method DeleteAsync");
             
             var isEntityValid = _transactionValidator.ValidateDelete(entity);
             
-            _logger.LogInformation($"Validation Result: { JsonSerializer.Serialize(isEntityValid) }");
+            _logger.LogInformation("Validation Result: { Serialize }", JsonSerializer.Serialize(isEntityValid));
             
-            if (isEntityValid.IsFailure)
+            if (!isEntityValid.IsSuccess)
             {
                 throw new BabylonException(
                     string.Join(
@@ -102,7 +102,7 @@ namespace Babylon.Investments.Domain.Services
             var transactionToDelete =
                 await _transactionRepository.GetByIdAsync(entity.TenantId, entity.TransactionId);
 
-            _logger.LogInformation($"Transaction to delete: { JsonSerializer.Serialize(transactionToDelete) }");
+            _logger.LogInformation("Transaction to delete: { Serialize }", JsonSerializer.Serialize(transactionToDelete));
             
             if (transactionToDelete == null)
             {

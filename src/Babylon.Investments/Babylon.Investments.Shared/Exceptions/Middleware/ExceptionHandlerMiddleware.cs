@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Babylon.Investments.Shared.Exceptions.Middleware
 {
-    public class ExceptionHandlerMiddleware
+    public class ExceptionHandlerMiddleware 
     {
         private const string JsonContentType = "application/json";
         private readonly RequestDelegate _request;
@@ -19,7 +19,7 @@ namespace Babylon.Investments.Shared.Exceptions.Middleware
         /// <param name="next">The next.</param>
         public ExceptionHandlerMiddleware(RequestDelegate next)
         {
-            this._request = next;
+            _request = next;
         }
 
         /// <summary>
@@ -27,14 +27,14 @@ namespace Babylon.Investments.Shared.Exceptions.Middleware
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public Task Invoke(HttpContext context) => this.InvokeAsync(context);
+        public Task Invoke(HttpContext context) => InvokeAsync(context);
 
         /// <summary>
         /// Invokes the specified context asynchronously.
         /// </summary>
         /// <param name="context">The Http Context.</param>
         /// <returns></returns>
-        async Task InvokeAsync(HttpContext context)
+        private async Task InvokeAsync(HttpContext context)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Babylon.Investments.Shared.Exceptions.Middleware
         /// <param name="context">The Http Context.</param>
         /// <param name="exception">The exception thrown.</param>
         /// <returns></returns>
-        private async Task HandleException(HttpContext context, Exception exception)
+        private static async Task HandleException(HttpContext context, Exception exception)
         {
             // set http status code and content type
             context.Response.StatusCode = GetStatusCodeFromException(exception);
@@ -62,7 +62,8 @@ namespace Babylon.Investments.Shared.Exceptions.Middleware
             await context.Response.WriteAsync(
                 JsonConvert.SerializeObject(new ErrorObjectResult
                 {
-                    Message = exception.Message
+                    Message = exception.Message,
+                    StackTrace = exception.StackTrace
                 }));
 
             context.Response.Headers.Clear();

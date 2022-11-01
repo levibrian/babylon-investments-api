@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Contracts.Repositories;
 using Babylon.Investments.Domain.Objects;
-using Babylon.Investments.Domain.Objects.Base;
 
 namespace Babylon.Investments.Domain.Handlers
 {
@@ -16,12 +14,10 @@ namespace Babylon.Investments.Domain.Handlers
             _transactionRepository = transactionRepository;
         }
 
-        public async Task<Transaction> HandleAsync(TransactionPostRequest request)
+        public async Task<TransactionCreate> HandleAsync(TransactionPostRequest request)
         {
-            var companyTransactionHistory = (await _transactionRepository
-                    .GetAsync(request.TenantId))
-                .Where(t => t.Ticker.Equals(request.Ticker.ToUpperInvariant()))
-                .ToList();
+            var companyTransactionHistory = 
+                await _transactionRepository.GetByTickerAsync(request.TenantId, request.Ticker);
             
             var domainObject = new TransactionCreate(request, companyTransactionHistory);
             

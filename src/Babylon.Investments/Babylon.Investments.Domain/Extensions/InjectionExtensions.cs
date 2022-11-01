@@ -3,6 +3,7 @@ using AutoMapper;
 using Babylon.Investments.Domain.Cryptography;
 using Babylon.Investments.Domain.Mappers;
 using Babylon.Investments.Domain.Services;
+using Babylon.Investments.Domain.Strategies;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Networking.Brokers;
 using Babylon.Networking.Interfaces.Brokers;
@@ -25,6 +26,8 @@ namespace Babylon.Investments.Domain.Extensions
         {
             return serviceCollection
                 .AddTransient<ITransactionValidator, TransactionValidator>()
+                .AddTransient<IOperationValidator, OperationValidator>()
+                .AddTransient<IOperationStrategy, OperationStrategy>()
                 .AddTransient<ITransactionService, TransactionService>()
                 .AddTransient<ITransactionsInBulkService, TransactionsInBulkService>()
                 .AddTransient<IPortfolioService, PortfolioService>();

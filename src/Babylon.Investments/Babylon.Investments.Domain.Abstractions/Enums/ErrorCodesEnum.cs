@@ -31,7 +31,10 @@ namespace Babylon.Investments.Domain.Abstractions.Enums
         [Description("Expected string number..")]
         StringNumberNotValid,
         
-        [Description("The ")]
-        TransactionHistoryNonExistent
+        [Description("The tenant does not possess any transaction for the specified ticker.")]
+        TransactionHistoryNonExistent,
+        
+        [Description("The units provided in the transaction is greater than the units stored, therefore the operation for the current Ticker is invalid.")]
+        UnitsProvidedGreaterThanStored
     }
 }

@@ -58,7 +58,7 @@ namespace Babylon.Investments.Domain.Services
                     .ValidateDelete(transactionsToDelete)
                     .ToList();
             
-            if (validationResults.Any(x => x.IsFailure)) 
+            if (validationResults.Any(x => !x.IsSuccess)) 
                 throw new BabylonException(
                     string.Join(
                         ", ", 
@@ -74,7 +74,7 @@ namespace Babylon.Investments.Domain.Services
                     await _transactionRepository.GetByIdAsync(transaction.TenantId, transaction.TransactionId);
                 
                 if (fetchedTransactionFromDb == null) 
-                    _logger.LogWarning($"InvestmentsInBulkService - Delete In Bulk...Transaction with TenantId: {transaction.TenantId} and with TransactionId: {transaction.TransactionId} not found..");
+                    _logger.LogWarning("InvestmentsInBulkService - Delete In Bulk...Transaction with TenantId: {TransactionTenantId} and with TransactionId: {TransactionTransactionId} not found..", transaction.TenantId, transaction.TransactionId);
                 else 
                     entitiesToDelete.Add(fetchedTransactionFromDb);
             }

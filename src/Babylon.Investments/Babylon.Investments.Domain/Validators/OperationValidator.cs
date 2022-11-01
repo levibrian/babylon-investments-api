@@ -1,19 +1,26 @@
 ﻿using System.Collections.Generic;
+using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Objects.Base;
+using Babylon.Investments.Domain.Rules;
+using Babylon.Investments.Shared.Extensions;
 using Babylon.Investments.Shared.Notifications;
 
 namespace Babylon.Investments.Domain.Validators
 {
     public interface IOperationValidator
     {
-        Result Validate(IEnumerable<Transaction> transactionHistory);
+        Result Validate(TransactionPostRequest request, IEnumerable<Transaction> transactionHistory);
     }
     
     public class OperationValidator : IOperationValidator
     {
-        public Result Validate(IEnumerable<Transaction> transactionHistory)
+        public Result Validate(TransactionPostRequest request, IEnumerable<Transaction> transactionHistory)
         {
-            throw new System.NotImplementedException();
+            var transactionHistoryRules =
+                new IsTransactionHistoryAny()
+                    .And(new AreUnitsGreaterThanUnitsInHistory(request.Units));
+
+            return transactionHistoryRules.IsSatisfiedBy(transactionHistory);
         }
     }
 }
