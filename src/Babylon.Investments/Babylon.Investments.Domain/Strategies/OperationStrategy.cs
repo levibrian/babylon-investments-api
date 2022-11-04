@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Babylon.Investments.Domain.Abstractions.Enums;
 using Babylon.Investments.Domain.Factories;
@@ -13,9 +14,9 @@ namespace Babylon.Investments.Domain.Strategies
     
     public class OperationStrategy : IOperationStrategy
     {
-        private readonly IOperationFactory[] _operationFactories;
+        private readonly IEnumerable<IOperationFactory> _operationFactories;
 
-        public OperationStrategy(IOperationFactory[] operationFactories)
+        public OperationStrategy(IEnumerable<IOperationFactory> operationFactories)
         {
             _operationFactories = operationFactories;
         }

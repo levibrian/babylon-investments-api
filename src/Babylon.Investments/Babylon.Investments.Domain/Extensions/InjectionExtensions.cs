@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using AutoMapper;
 using Babylon.Investments.Domain.Cryptography;
+using Babylon.Investments.Domain.Factories;
 using Babylon.Investments.Domain.Mappers;
 using Babylon.Investments.Domain.Services;
 using Babylon.Investments.Domain.Strategies;
@@ -25,6 +27,8 @@ namespace Babylon.Investments.Domain.Extensions
         private static IServiceCollection RegisterServices(this IServiceCollection serviceCollection)
         {
             return serviceCollection
+                .AddTransient<IOperationFactory, BuyOperationFactory>()
+                .AddTransient<IOperationFactory, SellOperationFactory>()
                 .AddTransient<ITransactionValidator, TransactionValidator>()
                 .AddTransient<IOperationValidator, OperationValidator>()
                 .AddTransient<IOperationStrategy, OperationStrategy>()
