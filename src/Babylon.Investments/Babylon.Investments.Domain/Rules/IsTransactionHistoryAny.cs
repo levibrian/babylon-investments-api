@@ -7,15 +7,15 @@ using Babylon.Investments.Shared.Specifications.Interfaces;
 
 namespace Babylon.Investments.Domain.Rules
 {
-    public class IsTransactionHistoryAny : IResultedSpecification<IEnumerable<Transaction>>
+    public class IsTransactionHistoryAny : IResultedSpecification<ICollection<Transaction>>
     {
-        public Result IsSatisfiedBy(IEnumerable<Transaction> entityToEvaluate)
+        public Result IsSatisfiedBy(ICollection<Transaction> transactionHistory)
         {
-            var expression = entityToEvaluate != null && entityToEvaluate.Any();
+            var expression = transactionHistory != null && transactionHistory.Any();
             
-            return !expression 
-                ? Result.Failure(ErrorCodesEnum.TransactionHistoryNonExistent) 
-                : Result.Ok();
+            return expression 
+                ? Result.Ok() 
+                : Result.Failure(ErrorCodesEnum.TransactionHistoryNonExistent);
         }
     }
 }

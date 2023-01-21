@@ -1,5 +1,4 @@
 ﻿using Babylon.Investments.Domain.Abstractions.Enums;
-using Babylon.Investments.Domain.Abstractions.Handlers;
 using Babylon.Investments.Domain.Contracts.Repositories;
 using Babylon.Investments.Domain.Handlers;
 

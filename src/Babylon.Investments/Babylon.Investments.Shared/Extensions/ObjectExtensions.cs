@@ -22,7 +22,7 @@ namespace Babylon.Investments.Shared.Extensions
             return stringToReturn;
         }
 
-        public static string ToFormattedErrorMessage(this IEnumerable<Error> errors)
+        public static string ToFormattedResponseErrorMessage(this IEnumerable<Error> errors)
         {
             return string.Join(", ", errors.Select(x => x.Message));
         }

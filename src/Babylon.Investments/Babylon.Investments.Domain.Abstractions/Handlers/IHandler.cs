@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Babylon.Investments.Domain.Abstractions.Requests.Base;
 
 namespace Babylon.Investments.Domain.Abstractions.Handlers
 {

@@ -70,14 +70,14 @@ namespace Babylon.Investments.Domain.Services
             
             if (!validationResult.IsSuccess)
             {
-                throw new BabylonException(validationResult.Errors.ToFormattedErrorMessage());
+                throw new BabylonException(validationResult.Errors.ToFormattedResponseErrorMessage());
             }
 
             var operationHandler = _operationStrategy.Create(request.TransactionType);
 
             var domainObject = await operationHandler.HandleAsync(request);
 
-            var transactionResponse = _mapper.Map<TransactionCreate, TransactionPostResponse>(domainObject);
+            var transactionResponse = _mapper.Map<BuyOperation, TransactionPostResponse>(domainObject);
             
             return Result.Ok(transactionResponse);
         }

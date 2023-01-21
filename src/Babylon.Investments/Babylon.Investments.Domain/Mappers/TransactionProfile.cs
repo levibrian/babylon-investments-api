@@ -17,7 +17,7 @@ namespace Babylon.Investments.Domain.Mappers
                         memberOptions.MapFrom(src =>
                             src.TransactionType.ToString()));
 
-            CreateMap<TransactionCreate, TransactionPostResponse>()
+            CreateMap<BuyOperation, TransactionPostResponse>()
                 .ForMember(destinationMember =>
                         destinationMember.TransactionType,
                     memberOptions =>

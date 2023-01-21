@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 using AutoMapper;
 using Babylon.Investments.Domain.Cryptography;
 using Babylon.Investments.Domain.Factories;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Babylon.Investments.Domain.Extensions
 {
-    public static class InjectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection RegisterDomainDependencies(this IServiceCollection serviceCollection)
         {
@@ -30,7 +29,7 @@ namespace Babylon.Investments.Domain.Extensions
                 .AddTransient<IOperationFactory, BuyOperationFactory>()
                 .AddTransient<IOperationFactory, SellOperationFactory>()
                 .AddTransient<ITransactionValidator, TransactionValidator>()
-                .AddTransient<IOperationValidator, OperationValidator>()
+                .AddTransient<IOperationValidator, SellOperationValidator>()
                 .AddTransient<IOperationStrategy, OperationStrategy>()
                 .AddTransient<ITransactionService, TransactionService>()
                 .AddTransient<ITransactionsInBulkService, TransactionsInBulkService>()

@@ -1,26 +1,48 @@
 ﻿using System;
 using Babylon.Investments.Domain.Abstractions.Enums;
+using Babylon.Investments.Domain.Abstractions.Requests;
 
 namespace Babylon.Investments.Domain.Objects.Base
 {
-    public class Transaction : Abstractions.Objects.Domain
+    public abstract class Transaction : Abstractions.Objects.Domain
     {
-        public virtual string TransactionId { get; set; }
+        public string TransactionId => TransactionRequest.TransactionId ?? Guid.NewGuid().ToString();
 
-        public virtual string TenantId { get; set; }
-
-        public virtual string UserId { get; set; }
+        public string TenantId => TransactionRequest.TenantId;
         
-        public virtual string Ticker { get; set; }
+        public string UserId => TransactionRequest.UserId;
 
-        public virtual DateTime Date { get; set; }
+        public TransactionTypeEnum TransactionType => TransactionRequest.TransactionType;
+        
+        public string Ticker => TransactionRequest.Ticker;
+        
+        public DateTime Date => TransactionRequest.Date;
+        
+        public decimal Units => TransactionRequest.Units;
+        
+        public decimal PricePerUnit => TransactionRequest.PricePerUnit;
+        
+        public decimal Fees => TransactionRequest.Fees;
+        
+        public decimal AveragePricePerUnit { get; set; }
+        
+        public decimal PreviousUnits { get; set; }
+        
+        public decimal TransactedUnits { get; set; }
 
-        public virtual decimal Units { get; set; }
+        public decimal CumulativeUnits { get; set; }
 
-        public virtual decimal PricePerUnit { get; set; }
+        public decimal PreviousValue { get; set; }
+        
+        public decimal TransactedValue { get; set; }
 
-        public virtual decimal Fees { get; set; }
-       
-        public virtual TransactionTypeEnum TransactionType { get; set; }
+        public decimal CumulativeValue { get; set; }
+
+        protected readonly TransactionPostRequest TransactionRequest;
+        
+        protected Transaction(TransactionPostRequest transactionRequest)
+        {
+            TransactionRequest = transactionRequest ?? throw new ArgumentNullException(nameof(transactionRequest));
+        }
     }
 }

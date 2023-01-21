@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Babylon.Investments.Domain.Abstractions.Requests;
 using Babylon.Investments.Domain.Contracts.Repositories;
 using Babylon.Investments.Domain.Objects;
-using Babylon.Investments.Domain.Objects.Base;
 using Babylon.Investments.Domain.Validators;
 using Babylon.Investments.Shared.Extensions;
 
@@ -24,7 +23,7 @@ namespace Babylon.Investments.Domain.Handlers
             _operationValidator = operationValidator;
         }
 
-        public async Task<TransactionCreate> HandleAsync(TransactionPostRequest request)
+        public async Task<BuyOperation> HandleAsync(TransactionPostRequest request)
         {
             var companyTransactionHistory = 
                 (await _transactionRepository.GetByTickerAsync(request.TenantId, request.Ticker))
@@ -34,10 +33,10 @@ namespace Babylon.Investments.Domain.Handlers
 
             if (!validationResult.IsSuccess)
             {
-                throw new InvalidOperationException(validationResult.Errors.ToFormattedErrorMessage());
+                throw new InvalidOperationException(validationResult.Errors.ToFormattedResponseErrorMessage());
             }
             
-            var domainObject = new TransactionCreate(request, companyTransactionHistory);
+            var domainObject = new BuyOperation(request, companyTransactionHistory);
             
             await _transactionRepository.Insert(domainObject);
 

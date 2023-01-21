@@ -9,12 +9,12 @@ namespace Babylon.Investments.Domain.Validators
 {
     public interface IOperationValidator
     {
-        Result Validate(TransactionPostRequest request, IEnumerable<Transaction> transactionHistory);
+        Result Validate(TransactionPostRequest request, ICollection<Transaction> transactionHistory);
     }
     
-    public class OperationValidator : IOperationValidator
+    public class SellOperationValidator : IOperationValidator
     {
-        public Result Validate(TransactionPostRequest request, IEnumerable<Transaction> transactionHistory)
+        public Result Validate(TransactionPostRequest request, ICollection<Transaction> transactionHistory)
         {
             var transactionHistoryRules =
                 new IsTransactionHistoryAny()
