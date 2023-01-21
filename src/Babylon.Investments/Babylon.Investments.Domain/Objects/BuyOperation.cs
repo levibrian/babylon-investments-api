@@ -16,7 +16,7 @@ namespace Babylon.Investments.Domain.Objects
         {
             _companyTransactionHistory = companyTransactionHistory ?? throw new ArgumentNullException(nameof(companyTransactionHistory));
             
-            PreviousUnits = _companyTransactionHistory.
+            //PreviousUnits = _companyTransactionHistory.
         }
     }
 }
